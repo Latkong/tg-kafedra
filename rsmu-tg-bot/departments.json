@@ -1,0 +1,1078 @@
+{
+  "source": "https://rsmu.ru/structure/inst/dept",
+  "institutes": [
+    {
+      "id": "ikm",
+      "name": "Институт клинической медицины",
+      "abbr": "ИКМ",
+      "units": [
+        {
+          "name": "Кафедра госпитальной терапии имени академика Г.И. Сторожакова ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1361",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной терапии имени академика П.Е. Лукомского ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1358",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра дерматовенерологии имени академика Ю.К. Скрипкина ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1371",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра инфекционных болезней и эпидемиологии ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1374",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра клинической фармакологии им. Ю.Б. Белоусова ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1380",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра офтальмологии имени академика А.П.Нестерова ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1399",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра педиатрии имени академика М.Я. Студеникина ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1408",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра поликлинической терапии ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1411",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра пропедевтики внутренних болезней № 1 ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1306",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра пропедевтики внутренних болезней № 2 ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1414",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской терапии ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1429",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской терапии имени академика А.И. Нестерова ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1432",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра фтизиатрии ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1444",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра эндокринологии ИКМ",
+          "url": "https://rsmu.ru/index.php?id=1450",
+          "kind": "kafedra"
+        },
+        {
+          "name": "НИЛ ревматических заболеваний",
+          "url": "https://rsmu.ru/ikm/dept/rheumatic-diseases-lab/about",
+          "kind": "lab"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИКМ",
+          "url": "https://rsmu.ru/ikm/administracija",
+          "kind": "upr"
+        }
+      ]
+    },
+    {
+      "id": "imd",
+      "name": "Институт материнства и детства",
+      "abbr": "ИМД",
+      "units": [
+        {
+          "name": "Кафедра акушерства и гинекологии им. академика Г.М. Савельевой ИМД",
+          "url": "https://rsmu.ru/index.php?id=1232",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной педиатрии № 2 ИМД",
+          "url": "https://rsmu.ru/index.php?id=1254",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной педиатрии им. академика В.А.Таболина ИМД",
+          "url": "https://rsmu.ru/index.php?id=1251",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной терапии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1257",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра дерматовенерологии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1264",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра детской хирургии имени академика Ю.Ф. Исакова ИМД",
+          "url": "https://rsmu.ru/index.php?id=1268",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра инфекционных болезней у детей ИМД",
+          "url": "https://rsmu.ru/index.php?id=1275",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра онкологии, гематологии и лучевой терапии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1290",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра офтальмологии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1296",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра поликлинической и неотложной педиатрии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1303",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра пропедевтики детских болезней ИМД",
+          "url": "https://rsmu.ru/index.php?id=1309",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской педиатрии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1321",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской терапии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1324",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра челюстно-лицевой хирургии и стоматологии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1194",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра эндокринологии ИМД",
+          "url": "https://rsmu.ru/index.php?id=1188",
+          "kind": "kafedra"
+        },
+        {
+          "name": "НИЛ здоровья женщины, матери и ребенка",
+          "url": "https://rsmu.ru/structure/inst/pf/departments/nil-zdorovja-zhenshchiny-materi-i-rebenka",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел детской реконструктивной и пластической хирургии",
+          "url": "https://rsmu.ru/structure/inst/pf/departments/otdel-detskoi-rekonstruktivnoi-i-plasticheskoi-khirurgii",
+          "kind": "lab"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИМД",
+          "url": "https://rsmu.ru/imd/administracija",
+          "kind": "upr"
+        }
+      ]
+    },
+    {
+      "id": "ih",
+      "name": "Институт хирургии",
+      "abbr": "ИХ",
+      "units": [
+        {
+          "name": "Кафедра акушерства и гинекологии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1336",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра анестезиологии, реаниматологии и интенсивной терапии имени профессора В.Д. Малышева ИХ",
+          "url": "https://rsmu.ru/index.php?id=1342",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной хирургии № 1 имени В.С. Маята ИХ",
+          "url": "https://rsmu.ru/index.php?id=1365",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной хирургии №2 ИХ",
+          "url": "https://rsmu.ru/index.php?id=1368",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра госпитальной хирургии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1261",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей хирургии имени В.М. Буянова ИХ",
+          "url": "https://rsmu.ru/index.php?id=1390",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра онкологии и лучевой терапии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1393",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра оториноларингологии имени академика Б.С.Преображенского ИХ",
+          "url": "https://rsmu.ru/index.php?id=1396",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра оториноларингологии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1293",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра травматологии, ортопедии и военно-полевой хирургии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1318",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра урологии и андрологии имени академика Н.А. Лопаткина ИХ",
+          "url": "https://rsmu.ru/index.php?id=1426",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской хирургии №1 ИХ",
+          "url": "https://rsmu.ru/index.php?id=1435",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра факультетской хирургии ИХ",
+          "url": "https://rsmu.ru/index.php?id=1327",
+          "kind": "kafedra"
+        },
+        {
+          "name": "НИЛ хирургической гастроэнтерологии и эндоскопии",
+          "url": "https://rsmu.ru/structure/inst/institut-khirurgii/structure/nil-khirurgicheskoi-gastroehnterologii-i-ehndoskopii",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел абдоминальной онкологии",
+          "url": "https://rsmu.ru/structure/inst/institut-khirurgii/structure/otdel-abdominalnoi-onkologii",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел абдоминальной хирургии",
+          "url": "https://rsmu.ru/structure/inst/institut-khirurgii/structure/otdel-abdominalnoi-khirurgii",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел анестезиологии и реаниматологии",
+          "url": "https://rsmu.ru/structure/inst/institut-khirurgii/structure/otdel-anesteziologii-i-reanimatologii",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел фундаментальных и прикладных исследований в сердечно-сосудистой хирургии",
+          "url": "https://rsmu.ru/ih/structure/otdel-fundamentalnykh-i-prikladnykh-issledovanii-v-serdechno-sosudistoi-khirurgii",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел экспериментальной хирургии",
+          "url": "https://rsmu.ru/structure/inst/institut-khirurgii/structure/otdel-ehksperimentalnoi-khirurgii",
+          "kind": "lab"
+        }
+      ]
+    },
+    {
+      "id": "is",
+      "name": "Институт стоматологии",
+      "abbr": "ИС",
+      "units": [
+        {
+          "name": "Кафедра ортопедической стоматологии ИС",
+          "url": "https://rsmu.ru/index.php?id=2141",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра терапевтической стоматологии ИС",
+          "url": "https://rsmu.ru/index.php?id=1015",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра челюстно-лицевой хирургии и стоматологии ИС",
+          "url": "https://rsmu.ru/index.php?id=1016",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Клинико-диагностический центр терапевтической стоматологии ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/kdc-ter-stomat",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория зуботехнических изделий ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/struktura-instituta/laboratorija-zubotekhnicheskikh-izdelii",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория симуляционных технологий в стоматологии ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/struktura-instituta/laboratorija-simmuljacionnykh-tekhnologii-v-stomatologii",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория цифровых технологий в стоматологии ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/struktura-instituta/laboratorija-cifrovykh-tekhnologii-v-stomatologii",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Междисциплинарный стоматологический центр РНИМУ",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/struktura-instituta/mezhdisciplinarnyi-stomatologicheskii-centr",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Учебно-клинический центр пропедевтики стоматологических заболеваний ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/struktura-instituta/uchebno-klinicheskii-centr-propedevtiki-stomatologicheskikh-zabolevanii",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИС",
+          "url": "https://rsmu.ru/structure/edu-dept/sf/rukovodstvo",
+          "kind": "kafedra"
+        }
+      ]
+    },
+    {
+      "id": "mbf",
+      "name": "Институт биомедицины",
+      "abbr": "МБФ",
+      "units": [
+        {
+          "name": "Кафедра биоинформатики МБФ",
+          "url": "https://rsmu.ru/index.php?id=1455",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра биохимии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1458",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра высшей математики МБФ",
+          "url": "https://rsmu.ru/index.php?id=1461",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра иммунологии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1464",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра клеточной биомедицины и клеточных технологий МБФ",
+          "url": "https://rsmu.ru/structure/edu-dept/cell-biomed/about",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра лучевой диагностики МБФ",
+          "url": "https://rsmu.ru/mbf/dept/kld-mbf/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра медицинских нанобиотехнологий МБФ",
+          "url": "https://rsmu.ru/index.php?id=1476",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра медицинской кибернетики и информатики им. С.А. Гаспаряна МБФ",
+          "url": "https://rsmu.ru/index.php?id=1473",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра молекулярной биологии и медицинской биотехнологии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1479",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра молекулярной фармакологии и радиобиологии имени академика П.В. Сергеева МБФ",
+          "url": "https://rsmu.ru/index.php?id=1485",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей и клеточной биологии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1491",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей и медицинской биофизики МБФ",
+          "url": "https://rsmu.ru/index.php?id=1494",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей и медицинской генетики МБФ",
+          "url": "https://rsmu.ru/index.php?id=1482",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей патологии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1497",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра организации биомедицинских исследований МБФ",
+          "url": "https://rsmu.ru/index.php?id=1500",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра терапии МБФ",
+          "url": "https://rsmu.ru/mbf/dept/kafedra-terapii-mbf/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра трансплантологии и искусственных органов имени В.П. Демихова МБФ",
+          "url": "https://rsmu.ru/mbf/dept/kafedra-tio/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра физики МБФ",
+          "url": "https://rsmu.ru/index.php?id=1507",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра хирургии МБФ",
+          "url": "https://rsmu.ru/mbf/dept/kafedra-khirurgii-ib-mbf/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра экспериментальной и клинической хирургии МБФ",
+          "url": "https://rsmu.ru/index.php?id=1510",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Методический отдел ПИШ",
+          "url": "https://rsmu.ru/pish/struktura-i-rukovodstvo/metodicheskii-otdel",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел клеточных технологий ПИШ",
+          "url": "https://rsmu.ru/pish/struktura-i-rukovodstvo/otdel-kletochnykh-tekhnologii",
+          "kind": "upr"
+        },
+        {
+          "name": "Центр реализации образовательных программ Института биомедицины (МБФ)",
+          "url": "https://rsmu.ru/mbf/administracija",
+          "kind": "upr"
+        },
+        {
+          "name": "Передовая инженерная школа \"Школа медицинской инженерии\"",
+          "url": "https://rsmu.ru/index.php?id=3394",
+          "kind": "faculty"
+        }
+      ]
+    },
+    {
+      "id": "imm",
+      "name": "Институт мировой медицины",
+      "abbr": "ИММ",
+      "units": [
+        {
+          "name": "Кафедра гуманитарных наук ИММ",
+          "url": "https://rsmu.ru/index.php?id=507",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра иностранных языков ИММ",
+          "url": "https://rsmu.ru/index.php?id=1272",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра истории медицины и социально-гуманитарных наук ИММ",
+          "url": "https://rsmu.ru/index.php?id=1377",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра латинского языка и основ терминологии ИММ",
+          "url": "https://rsmu.ru/index.php?id=1278",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра медицинского права, этики и антропологии ИММ",
+          "url": "https://rsmu.ru/index.php?id=506",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра русского языка ИММ",
+          "url": "https://rsmu.ru/index.php?id=1420",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Центр социальных исследований медицины",
+          "url": null,
+          "kind": "lab"
+        }
+      ]
+    },
+    {
+      "id": "ikpsr",
+      "name": "Институт клинической психологии и социальной работы",
+      "abbr": "ИКПСР",
+      "units": [
+        {
+          "name": "Кафедра клинической психологии ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=640",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра когнитивных наук ИКПСР",
+          "url": "https://rsmu.ru/structure/edu-dept/psf/psf-dept/kafedra-kognitivnykh-nauk-ikpsr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей психологии и психологии развития ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=2385",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра педагогики и педагогической психологии ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=396",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра психотерапии ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=531",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра социальной работы ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=641",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория практических навыков ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=2842",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория социальных технологий ИКПСР",
+          "url": "https://rsmu.ru/ikpsr/kafedry-i-laboratorii/laboratorija-socialnykh-tekhnologii-ikpsr",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория телепсихологии ИКПСР",
+          "url": "https://rsmu.ru/index.php?id=3919",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Университетский центр психологической помощи",
+          "url": "https://rsmu.ru/index.php?id=1032",
+          "kind": "otdel"
+        },
+        {
+          "name": "Учебно-методический центр сопровождения аккредитации медицинских психологов",
+          "url": "https://rsmu.ru/ikpsr/uchebno-metodicheskii-centr-soprovozhdenija-akkreditacii-medicinskikh-psikhologov",
+          "kind": "upr"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИКПСР",
+          "url": "https://rsmu.ru/ikpsr/administracija",
+          "kind": "upr"
+        }
+      ]
+    },
+    {
+      "id": "ifmh",
+      "name": "Институт фармации и медицинской химии",
+      "abbr": "ИФМХ",
+      "units": [
+        {
+          "name": "Кафедра биохимии и молекулярной биологии ИФМХ",
+          "url": "https://rsmu.ru/index.php?id=1345",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра организации фармацевтической деятельности ИФМХ",
+          "url": "https://rsmu.ru/index.php?id=1504",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра фармакологии ИФМХ",
+          "url": "https://rsmu.ru/index.php?id=1330",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра физики и математики ИФМХ",
+          "url": "https://rsmu.ru/index.php?id=1333",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра химии ИФМХ",
+          "url": "https://rsmu.ru/index.php?id=1447",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Научно-испытательный центр",
+          "url": "https://rsmu.ru/structure/edu-dept/iphmch/structure/nauchno-ispytatelnyi-centr",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Отдел медицинской химии и токсикологии ИФМХ",
+          "url": "https://rsmu.ru/structure/edu-dept/iphmch/structure/otdel-medicinskoi-khimii-i-toksikologii-ifmkh",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИФМХ",
+          "url": "https://rsmu.ru/iphmch/administracija-imkhf",
+          "kind": "upr"
+        }
+      ]
+    },
+    {
+      "id": "iam",
+      "name": "Институт анатомии и морфологии им. Ю.М. Лопухина",
+      "abbr": "ИАМ",
+      "units": [
+        {
+          "name": "Кафедра анатомии человека ИАМ",
+          "url": "https://rsmu.ru/index.php?id=1339",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра морфологии ИАМ",
+          "url": "https://rsmu.ru/index.php?id=1488",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Мультипрофильный аккредитационно-симуляционный центр",
+          "url": "https://rsmu.ru/structure/edu-dept/cais/general",
+          "kind": "faculty"
+        },
+        {
+          "name": "Центр дополнительных практических навыков ИАМ",
+          "url": "https://rsmu.ru/iam/structure/centr-dopolnitelnykh-prakticheskikh-navykov-iam",
+          "kind": "upr"
+        },
+        {
+          "name": "Центр интегративной антропологии и гигиенической экспертизы",
+          "url": "https://rsmu.ru/iam/structure/centr-integrativnoi-antropologii-i-gigienicheskoi-ehkspertizy",
+          "kind": "lab"
+        }
+      ]
+    },
+    {
+      "id": "ibpch",
+      "name": "Институт биологии и патологии человека",
+      "abbr": "ИБПЧ",
+      "units": [
+        {
+          "name": "Кафедра биологии им. академика В.Н. Ярыгина ИБПЧ",
+          "url": "https://rsmu.ru/index.php?id=1242",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра патологической анатомии и клинической патологической анатомии ИБПЧ",
+          "url": "https://rsmu.ru/index.php?id=1402",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра патологической анатомии и клинической патологической анатомии детского возраста ИБПЧ",
+          "url": "https://rsmu.ru/index.php?id=1299",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра патофизиологии и клинической патофизиологии ИБПЧ",
+          "url": "https://rsmu.ru/index.php?id=1405",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра судебной медицины имени П.А. Минакова ИБПЧ",
+          "url": "https://rsmu.ru/index.php?id=1423",
+          "kind": "kafedra"
+        }
+      ]
+    },
+    {
+      "id": "ibe",
+      "name": "Институт биоэтики",
+      "abbr": "ИБЭ",
+      "units": [
+        {
+          "name": "Кафедра биоэтики ИБ",
+          "url": "https://rsmu.ru/index.php?id=1348",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория гуманитарной экспертизы биомедицинских инноваций ИБ",
+          "url": "https://rsmu.ru/structure/edu-dept/ib/structure/laboratorija-gumanitarnoi-ehkspertizy-biomedicinskikh-innovacii",
+          "kind": "kafedra"
+        }
+      ]
+    },
+    {
+      "id": "ipm",
+      "name": "Институт профилактической медицины им. З.П. Соловьева",
+      "abbr": "ИПМ",
+      "units": [
+        {
+          "name": "Кафедра гигиены ИПМ",
+          "url": "https://rsmu.ru/index.php?id=1244",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра медицины катастроф ИПМ",
+          "url": "https://rsmu.ru/index.php?id=1384",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра микробиологии и вирусологии ИПМ",
+          "url": "https://rsmu.ru/index.php?id=1281",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общественного здоровья и здравоохранения имени академика Ю.П. Лисицына ИПМ",
+          "url": "https://rsmu.ru/index.php?id=1287",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра реабилитации, спортивной медицины и физической культуры ИПМ",
+          "url": "https://rsmu.ru/index.php?id=1312",
+          "kind": "kafedra"
+        },
+        {
+          "name": "НИЛ микробиологии и биологической безопасности ИПМ",
+          "url": "https://rsmu.ru/ipm/structure-ipm/nil-mikrobiologii-i-biologicheskoi-bezopasnosti-ipm",
+          "kind": "lab"
+        },
+        {
+          "name": "НИЛ новейших технологий оздоровительной двигательной активности ИПМ",
+          "url": "https://rsmu.ru/ipm/structure-ipm/nil-noveishikh-tekhnologii-ozdorovitelnoi-dvigatelnoi-aktivnosti-ipm",
+          "kind": "lab"
+        },
+        {
+          "name": "Отдел медицинской биофизики ИПМ",
+          "url": "https://rsmu.ru/ipm/structure-ipm/otdel-medicinskoi-biofiziki-ipm",
+          "kind": "lab"
+        }
+      ]
+    },
+    {
+      "id": "if_",
+      "name": "Институт физиологии",
+      "abbr": "ИФ",
+      "units": [
+        {
+          "name": "Кафедра физиологии ИФ",
+          "url": "https://rsmu.ru/index.php?id=1511",
+          "kind": "kafedra"
+        },
+        {
+          "name": "НИЛ электрофизиологии",
+          "url": "https://rsmu.ru/structure/edu-dept/physiology-inst/physiology-dept/nil-ehlektrofiziologii/nauchnaja-rabota",
+          "kind": "lab"
+        }
+      ]
+    },
+    {
+      "id": "inn",
+      "name": "Институт нейронаук и нейротехнологий",
+      "abbr": "ИНН",
+      "units": [
+        {
+          "name": "Кафедра медицинских нейротехнологий ИНН",
+          "url": "https://rsmu.ru/inn/structure/kmn/about",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра медицинской реабилитации ИНН",
+          "url": "https://rsmu.ru/inn/structure/kmr/about",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра неврологии, нейрохирургии и медицинской генетики имени академика Л.О. Бадаляна ИНН",
+          "url": "https://rsmu.ru/index.php?id=1284",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра неврологии, нейрохирургии и медицинской генетики ИНН",
+          "url": "https://rsmu.ru/index.php?id=1387",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра психиатрии и медицинской психологии ИНН",
+          "url": "https://rsmu.ru/index.php?id=1417",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра фундаментальной нейрохирургии ИНН",
+          "url": "https://rsmu.ru/inn/structure/kafedra-fundamentalnoi-neirokhirurgii-inn/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория клеточной гибели и патологии",
+          "url": "https://rsmu.ru/inn/structure/laboratorija-kletochnoi-gibeli-i-patologii",
+          "kind": "lab"
+        },
+        {
+          "name": "НИЛ биомедицинских исследований в неврологии",
+          "url": "https://rsmu.ru/structure/edu-dept/inn/inn-structure/bin",
+          "kind": "lab"
+        },
+        {
+          "name": "НИЛ синтетических нейротехнологий",
+          "url": "https://rsmu.ru/inn/structure/nil-sinteticheskikh-neirotekhnologii",
+          "kind": "lab"
+        },
+        {
+          "name": "НИЛ сосудистых заболеваний головного мозга",
+          "url": "https://rsmu.ru/inn/structure/nil-sosudistykh-zabolevanii-golovnogo-mozga",
+          "kind": "lab"
+        },
+        {
+          "name": "Управление по реализации функций национального медицинского исследовательского центра по неврологии",
+          "url": "https://rsmu.ru/inn/structure/nmic-nevrologii",
+          "kind": "upr"
+        },
+        {
+          "name": "Центр реализации образовательных программ ИНН",
+          "url": "https://rsmu.ru/inn/administracija",
+          "kind": "upr"
+        }
+      ]
+    },
+    {
+      "id": "inopr",
+      "name": "Институт непрерывного образования и профессионального развития",
+      "abbr": "ИНОПР",
+      "units": [
+        {
+          "name": "Кафедра анестезиологии и реаниматологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/air/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра болезней старения ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/bs/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра гастроэнтерологии и диетологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-gastroehnterologii-i-dietologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра детской анестезиологии и интенсивной терапии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/dait/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра инновационной педиатрии и детской хирургии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/ipdh/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра интервенционной кардиологии и кардиореабилитации ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/ikk/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра кардиологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-kardiologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра клинической лабораторной диагностики ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kld/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра клинической функциональной диагностики ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kfd/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра кожных болезней и косметологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kbk/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра наркомании и токсикомании ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-narkomanii-i-toksikomanii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра неврологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-nevrologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра неонатологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-neonatologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра общей терапии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-obshchei-terapii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра онкологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-onkologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра организации профессионального образования и образовательных технологий ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/opoot/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра оториноларингологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-otorinolaringologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра офтальмологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-oftalmologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра паллиативной педиатрии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-palliativnoi-pediatrii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра педиатрии и школьной медицины ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/pshm/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра педиатрии с инфекционными болезнями у детей ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/pibd/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра пластической, реконструктивной хирургии, косметологии и клеточных технологий ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/prhkkt/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра поликлинической и социальной педиатрии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/psp/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра психиатрии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-psikhiatrii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра пульмонологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-pulmonologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра реабилитологии и физиотерапии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-reabilitologii-i-fizioterapii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра рентгенорадиологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-rentgenoradiologii-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра рентгенэндоваскулярных методов диагностики и лечения ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/rmdl/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра сердечно-сосудистой хирургии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/ssh/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра скорой и неотложной медицинской помощи ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/snmp/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра терапии, общей врачебной практики и ядерной медицины ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/tovpyam/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра ультразвуковой диагностики ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/kafedra-ultrazvukovoi-diagnostiki-inopr/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра управления, экономики здравоохранения и медицинского страхования ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/uezms/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра урологии, андрологии и онкоурологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/uao/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра хирургии и эндоскопии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/he/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Кафедра эндокринологии и диабетологии ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/kafedry/eid/o-kafedre",
+          "kind": "kafedra"
+        },
+        {
+          "name": "Лаборатория технологий обучения и оценивания в непрерывном образовании",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/laboratorija-tekhnologii-obuchenija-i-ocenivanija-v-nepreryvnom-obrazovanii",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел автоматизации планирования и мониторинга обучения",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/otdel-avtomatizacii-planirovanija-i-monitoringa-obuchenija",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел аналитического сопровождения непрерывного образования",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/otdel-analiticheskogo-soprovozhdenija-nepreryvnogo-obrazovanija",
+          "kind": "otdel"
+        },
+        {
+          "name": "Отдел методической поддержки и менеджмента качества непрерывного образования",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/otdel-metodicheskoi-podderzhki-i-menedzhmenta-kachestva-nepreryvnogo-obrazovanija",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел организации профессионального развития научно-педагогических работников",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/oopr",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел развития дополнительного профессионального образования",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/otdel-razvitija-dopolnitelnogo-professionalnogo-obrazovanija",
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел содействия трудоустройству и сопровождения выпускников",
+          "url": null,
+          "kind": "upr"
+        },
+        {
+          "name": "Отдел сопровождения пользователей информационных систем непрерывного образования",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/otdel-soprovozhdenija-polzovatelei-informacionnykh-sistem-nepreryvnogo-obrazovanija",
+          "kind": "otdel"
+        },
+        {
+          "name": "Центр организационно-методического сопровождения обучения ИНОПР",
+          "url": "https://rsmu.ru/inopr/struktura-inopr/comso",
+          "kind": "upr"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-09-05",
+  "kafedraCount": 151,
+  "unitCount": 193
+}
