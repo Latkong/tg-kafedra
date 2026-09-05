@@ -1,0 +1,3455 @@
+{
+  "source": "https://meduniver.com/Medical/Anatom/",
+  "sections": [
+    {
+      "id": "1",
+      "name": "Анатомическая терминология",
+      "url": "https://meduniver.com/Medical/Anatom/1.html",
+      "articles": []
+    },
+    {
+      "id": "2",
+      "name": "Кости и суставы",
+      "url": "https://meduniver.com/Medical/Anatom/2.html",
+      "articles": [
+        {
+          "title": "Общая остеология",
+          "url": "https://meduniver.com/Medical/Anatom/21.html",
+          "id": "21"
+        },
+        {
+          "title": "Кость как орган ( строение кости )",
+          "url": "https://meduniver.com/Medical/Anatom/22.html",
+          "id": "22"
+        },
+        {
+          "title": "Развитие кости.",
+          "url": "https://meduniver.com/Medical/Anatom/23.html",
+          "id": "23"
+        },
+        {
+          "title": "Классификация костей.",
+          "url": "https://meduniver.com/Medical/Anatom/24.html",
+          "id": "24"
+        },
+        {
+          "title": "Скелет туловища",
+          "url": "https://meduniver.com/Medical/Anatom/29.html",
+          "id": "29"
+        },
+        {
+          "title": "Общая артрология - ARTHROLOGIA",
+          "url": "https://meduniver.com/Medical/Anatom/25.html",
+          "id": "25"
+        },
+        {
+          "title": "Непрерывные соединения - СИНАРТРОЗЫ",
+          "url": "https://meduniver.com/Medical/Anatom/26.html",
+          "id": "26"
+        },
+        {
+          "title": "Прерывные соединения, суставы, диартрозы",
+          "url": "https://meduniver.com/Medical/Anatom/27.html",
+          "id": "27"
+        },
+        {
+          "title": "Классификация суставов и их общая характеристика",
+          "url": "https://meduniver.com/Medical/Anatom/28.html",
+          "id": "28"
+        },
+        {
+          "title": "Позвоночный столб",
+          "url": "https://meduniver.com/Medical/Anatom/30.html",
+          "id": "30"
+        },
+        {
+          "title": "Шейные позвонки",
+          "url": "https://meduniver.com/Medical/Anatom/31.html",
+          "id": "31"
+        },
+        {
+          "title": "Грудные позвонки, vertebrae thoracicae и Поясничные позвонки, vertebrae lumbales",
+          "url": "https://meduniver.com/Medical/Anatom/32.html",
+          "id": "32"
+        },
+        {
+          "title": "Крестцовые позвонки, vertebrae sacrales и Копчиковые позвонки, vertebrae coccygeae",
+          "url": "https://meduniver.com/Medical/Anatom/33.html",
+          "id": "33"
+        },
+        {
+          "title": "Суставы и связки позвонков (соединения между позвонками)",
+          "url": "https://meduniver.com/Medical/Anatom/34.html",
+          "id": "34"
+        },
+        {
+          "title": "Суставы и связки позвоночника и черепа (соединение позвоночного столба с черепом)",
+          "url": "https://meduniver.com/Medical/Anatom/35.html",
+          "id": "35"
+        },
+        {
+          "title": "Позвоночный столб как целое",
+          "url": "https://meduniver.com/Medical/Anatom/36.html",
+          "id": "36"
+        },
+        {
+          "title": "Грудина",
+          "url": "https://meduniver.com/Medical/Anatom/37.html",
+          "id": "37"
+        },
+        {
+          "title": "Ребра",
+          "url": "https://meduniver.com/Medical/Anatom/38.html",
+          "id": "38"
+        },
+        {
+          "title": "Суставы и связки ребер (соединения ребер)",
+          "url": "https://meduniver.com/Medical/Anatom/39.html",
+          "id": "39"
+        },
+        {
+          "title": "Грудная клетка в целом",
+          "url": "https://meduniver.com/Medical/Anatom/40.html",
+          "id": "40"
+        },
+        {
+          "title": "Скелет головы. Рост и развитие черепа",
+          "url": "https://meduniver.com/Medical/Anatom/41.html",
+          "id": "41"
+        },
+        {
+          "title": "Затылочная кость. Строение затылочной кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/42.html",
+          "id": "42"
+        },
+        {
+          "title": "Клиновидная кость. Строение клиновидной кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/43.html",
+          "id": "43"
+        },
+        {
+          "title": "Височная кость. Строение височной кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/44.html",
+          "id": "44"
+        },
+        {
+          "title": "Теменная кость. Строение теменной кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/45.html",
+          "id": "45"
+        },
+        {
+          "title": "Лобная кость. Строение лобной кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/46.html",
+          "id": "46"
+        },
+        {
+          "title": "Решетчатая кость. Строение решетчатой кости черепа",
+          "url": "https://meduniver.com/Medical/Anatom/47.html",
+          "id": "47"
+        },
+        {
+          "title": "Верхняя челюсть. Строение верхней челюсти",
+          "url": "https://meduniver.com/Medical/Anatom/48.html",
+          "id": "48"
+        },
+        {
+          "title": "Небная кость. Строение небной кости",
+          "url": "https://meduniver.com/Medical/Anatom/49.html",
+          "id": "49"
+        },
+        {
+          "title": "Нижняя носовая раковина, носовая кость, слезная кость, сошник, скуловая кость",
+          "url": "https://meduniver.com/Medical/Anatom/50.html",
+          "id": "50"
+        },
+        {
+          "title": "Нижняя челюсть. Строение нижней челюсти",
+          "url": "https://meduniver.com/Medical/Anatom/51.html",
+          "id": "51"
+        },
+        {
+          "title": "Подъязычная кость. Строение подъязычной кости",
+          "url": "https://meduniver.com/Medical/Anatom/52.html",
+          "id": "52"
+        },
+        {
+          "title": "Височно-нижнечелюстной сустав",
+          "url": "https://meduniver.com/Medical/Anatom/visochno-nignechelustnoi_sustav.html",
+          "id": "visochno-nignechelustnoi_sustav"
+        },
+        {
+          "title": "Непрерывные соединения черепа (швы, синхондрозы)",
+          "url": "https://meduniver.com/Medical/Anatom/neprerivnie_soedinenia_cherepa.html",
+          "id": "neprerivnie_soedinenia_cherepa"
+        },
+        {
+          "title": "Анатомия: Топография черепа. Череп как целое",
+          "url": "https://meduniver.com/Medical/Anatom/topografia_cherepa.html",
+          "id": "topografia_cherepa"
+        },
+        {
+          "title": "Анатомия: Наружное основание черепа (basis cranii externa)",
+          "url": "https://meduniver.com/Medical/Anatom/narugnoe_osnovanie_cherepa.html",
+          "id": "narugnoe_osnovanie_cherepa"
+        },
+        {
+          "title": "Анатомия: Внутреннее основание черепа (basis cranii interna)",
+          "url": "https://meduniver.com/Medical/Anatom/vnutrennee_osnovanie_cherepa.html",
+          "id": "vnutrennee_osnovanie_cherepa"
+        },
+        {
+          "title": "Анатомия: Кости лицевого черепа, полости и ямки",
+          "url": "https://meduniver.com/Medical/Anatom/anatomia_licevogo_cherepa.html",
+          "id": "anatomia_licevogo_cherepa"
+        },
+        {
+          "title": "Анатомия: Глазница. Стенки, отверстия глазницы и проходящие через них структуры",
+          "url": "https://meduniver.com/Medical/Anatom/anatomia_glaznici.html",
+          "id": "anatomia_glaznici"
+        },
+        {
+          "title": "Анатомия: Полость носа (cavum nasi). Стенки полости носа, носовые ходы и их сообщения",
+          "url": "https://meduniver.com/Medical/Anatom/anatomia_polosti_nosa.html",
+          "id": "anatomia_polosti_nosa"
+        },
+        {
+          "title": "Анатомия: Подвисочная ямка (fossa infratemporalis)",
+          "url": "https://meduniver.com/Medical/Anatom/anatomia_podvisochnoi_iamki.html",
+          "id": "anatomia_podvisochnoi_iamki"
+        },
+        {
+          "title": "Анатомия: Крыловидно-небная ямка (крылонебная ямка, ямка Биша, fossa pterygopalatina)",
+          "url": "https://meduniver.com/Medical/Anatom/anatomia_krilovidno-nebnoi_iamki.html",
+          "id": "anatomia_krilovidno-nebnoi_iamki"
+        },
+        {
+          "title": "Рентгеноанатомия черепа. КТ, рентгенограмма черепа в норме",
+          "url": "https://meduniver.com/Medical/Anatom/rentgenoanatomia_cherepa.html",
+          "id": "rentgenoanatomia_cherepa"
+        },
+        {
+          "title": "Анатомия ключицы",
+          "url": "https://meduniver.com/Medical/Anatom/53.html",
+          "id": "53"
+        },
+        {
+          "title": "Анатомия лопатки",
+          "url": "https://meduniver.com/Medical/Anatom/54.html",
+          "id": "54"
+        },
+        {
+          "title": "Суставы и связки лопатки, ключицы (соединения костей пояса верхней конечности)",
+          "url": "https://meduniver.com/Medical/Anatom/55.html",
+          "id": "55"
+        },
+        {
+          "title": "Плечевая кость",
+          "url": "https://meduniver.com/Medical/Anatom/56.html",
+          "id": "56"
+        },
+        {
+          "title": "Плечевой сустав",
+          "url": "https://meduniver.com/Medical/Anatom/57.html",
+          "id": "57"
+        },
+        {
+          "title": "Локтевая кость и лучевая кость",
+          "url": "https://meduniver.com/Medical/Anatom/58.html",
+          "id": "58"
+        },
+        {
+          "title": "Локтевой сустав",
+          "url": "https://meduniver.com/Medical/Anatom/59.html",
+          "id": "59"
+        },
+        {
+          "title": "Соединения костей предплечья между собой",
+          "url": "https://meduniver.com/Medical/Anatom/60.html",
+          "id": "60"
+        },
+        {
+          "title": "Кости кисти. Запястье",
+          "url": "https://meduniver.com/Medical/Anatom/61.html",
+          "id": "61"
+        },
+        {
+          "title": "Пясть. Кости пальцев кисти",
+          "url": "https://meduniver.com/Medical/Anatom/62.html",
+          "id": "62"
+        },
+        {
+          "title": "Лучезапястный сустав (соединения костей предплечья с кистью)",
+          "url": "https://meduniver.com/Medical/Anatom/63.html",
+          "id": "63"
+        },
+        {
+          "title": "Соединение костей кисти",
+          "url": "https://meduniver.com/Medical/Anatom/64.html",
+          "id": "64"
+        },
+        {
+          "title": "Пояс нижней конечности. Тазовая кость",
+          "url": "https://meduniver.com/Medical/Anatom/65.html",
+          "id": "65"
+        },
+        {
+          "title": "Подвздошная кость",
+          "url": "https://meduniver.com/Medical/Anatom/66.html",
+          "id": "66"
+        },
+        {
+          "title": "Лобковая кость",
+          "url": "https://meduniver.com/Medical/Anatom/67.html",
+          "id": "67"
+        },
+        {
+          "title": "Седалищная кость",
+          "url": "https://meduniver.com/Medical/Anatom/68.html",
+          "id": "68"
+        },
+        {
+          "title": "Суставы и связки таза (соединения костей таза)",
+          "url": "https://meduniver.com/Medical/Anatom/69.html",
+          "id": "69"
+        },
+        {
+          "title": "Таз как целое",
+          "url": "https://meduniver.com/Medical/Anatom/70.html",
+          "id": "70"
+        },
+        {
+          "title": "Бедренная кость",
+          "url": "https://meduniver.com/Medical/Anatom/71.html",
+          "id": "71"
+        },
+        {
+          "title": "Тазобедренный сустав",
+          "url": "https://meduniver.com/Medical/Anatom/72.html",
+          "id": "72"
+        },
+        {
+          "title": "Надколенник",
+          "url": "https://meduniver.com/Medical/Anatom/73.html",
+          "id": "73"
+        },
+        {
+          "title": "Кости голени. Большеберцовая кость",
+          "url": "https://meduniver.com/Medical/Anatom/74.html",
+          "id": "74"
+        },
+        {
+          "title": "Малоберцовая кость",
+          "url": "https://meduniver.com/Medical/Anatom/75.html",
+          "id": "75"
+        },
+        {
+          "title": "Коленный сустав",
+          "url": "https://meduniver.com/Medical/Anatom/76.html",
+          "id": "76"
+        },
+        {
+          "title": "Соединения костей голени между собой",
+          "url": "https://meduniver.com/Medical/Anatom/77.html",
+          "id": "77"
+        },
+        {
+          "title": "Кости стопы. Предплюсна",
+          "url": "https://meduniver.com/Medical/Anatom/78.html",
+          "id": "78"
+        },
+        {
+          "title": "Плюсна. Кости пальцев стопы",
+          "url": "https://meduniver.com/Medical/Anatom/79.html",
+          "id": "79"
+        },
+        {
+          "title": "Голеностопный сустав и суставы стопы (соединения костей голени со стопой и между костями стопы)",
+          "url": "https://meduniver.com/Medical/Anatom/80.html",
+          "id": "80"
+        },
+        {
+          "title": "Стопа как целое",
+          "url": "https://meduniver.com/Medical/Anatom/81.html",
+          "id": "81"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Мышцы",
+      "url": "https://meduniver.com/Medical/Anatom/3.html",
+      "articles": [
+        {
+          "title": "Развитие мышц",
+          "url": "https://meduniver.com/Medical/Anatom/82.html",
+          "id": "82"
+        },
+        {
+          "title": "Строение мышцы. Мышца как орган",
+          "url": "https://meduniver.com/Medical/Anatom/83.html",
+          "id": "83"
+        },
+        {
+          "title": "Работа мышц ( элементы биомеханики мышц )",
+          "url": "https://meduniver.com/Medical/Anatom/84.html",
+          "id": "84"
+        },
+        {
+          "title": "Закономерности распределения мыщц",
+          "url": "https://meduniver.com/Medical/Anatom/85.html",
+          "id": "85"
+        },
+        {
+          "title": "Классификация мышц",
+          "url": "https://meduniver.com/Medical/Anatom/86.html",
+          "id": "86"
+        },
+        {
+          "title": "Вспомогательные аппараты мышц: строение, виды фасций и сухожилий",
+          "url": "https://meduniver.com/Medical/Anatom/87.html",
+          "id": "87"
+        },
+        {
+          "title": "Влияние факторов внешней среды на мускулатуру",
+          "url": "https://meduniver.com/Medical/Anatom/88.html",
+          "id": "88"
+        },
+        {
+          "title": "Жевательные мышцы",
+          "url": "https://meduniver.com/Medical/Anatom/107.html",
+          "id": "107"
+        },
+        {
+          "title": "Мимические мышцы или мышцы лица. Мышцы окружности глаз. Мышцы окружности рта. Мышцы окружности носа",
+          "url": "https://meduniver.com/Medical/Anatom/108.html",
+          "id": "108"
+        },
+        {
+          "title": "Мышцы свода черепа",
+          "url": "https://meduniver.com/Medical/Anatom/109.html",
+          "id": "109"
+        },
+        {
+          "title": "Мышцы шеи",
+          "url": "https://meduniver.com/Medical/Anatom/101.html",
+          "id": "101"
+        },
+        {
+          "title": "Поверхностные мышцы шеи — дериваты жаберных дуг",
+          "url": "https://meduniver.com/Medical/Anatom/102.html",
+          "id": "102"
+        },
+        {
+          "title": "Средние мышцы шеи, или мышцы подъязычной кости",
+          "url": "https://meduniver.com/Medical/Anatom/103.html",
+          "id": "103"
+        },
+        {
+          "title": "Глубокие мышцы шеи",
+          "url": "https://meduniver.com/Medical/Anatom/104.html",
+          "id": "104"
+        },
+        {
+          "title": "Топография шеи и ее треугольники",
+          "url": "https://meduniver.com/Medical/Anatom/105.html",
+          "id": "105"
+        },
+        {
+          "title": "Фасции шеи по Привесу",
+          "url": "https://meduniver.com/Medical/Anatom/106.html",
+          "id": "106"
+        },
+        {
+          "title": "Мышцы спины",
+          "url": "https://meduniver.com/Medical/Anatom/89.html",
+          "id": "89"
+        },
+        {
+          "title": "Поверхностные мышцы спины",
+          "url": "https://meduniver.com/Medical/Anatom/90.html",
+          "id": "90"
+        },
+        {
+          "title": "Глубокие мышцы спины. Подзатылочные мышцы",
+          "url": "https://meduniver.com/Medical/Anatom/91.html",
+          "id": "91"
+        },
+        {
+          "title": "Фасции спины",
+          "url": "https://meduniver.com/Medical/Anatom/92.html",
+          "id": "92"
+        },
+        {
+          "title": "Мышцы вентральной стороны туловища",
+          "url": "https://meduniver.com/Medical/Anatom/93.html",
+          "id": "93"
+        },
+        {
+          "title": "Мышцы груди (грудной клетки)",
+          "url": "https://meduniver.com/Medical/Anatom/94.html",
+          "id": "94"
+        },
+        {
+          "title": "Диафрагма",
+          "url": "https://meduniver.com/Medical/Anatom/95.html",
+          "id": "95"
+        },
+        {
+          "title": "Фасция груди",
+          "url": "https://meduniver.com/Medical/Anatom/96.html",
+          "id": "96"
+        },
+        {
+          "title": "Мышцы живота",
+          "url": "https://meduniver.com/Medical/Anatom/97.html",
+          "id": "97"
+        },
+        {
+          "title": "Влагалище прямой мышцы живота. Белая линия живота",
+          "url": "https://meduniver.com/Medical/Anatom/98.html",
+          "id": "98"
+        },
+        {
+          "title": "Функция мышц живота",
+          "url": "https://meduniver.com/Medical/Anatom/99.html",
+          "id": "99"
+        },
+        {
+          "title": "Паховый канал, canalis inguinalis",
+          "url": "https://meduniver.com/Medical/Anatom/100.html",
+          "id": "100"
+        },
+        {
+          "title": "Мышцы пояса верхней конечности. Задняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/110.html",
+          "id": "110"
+        },
+        {
+          "title": "Мышцы пояса верхней конечности. Передняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/111.html",
+          "id": "111"
+        },
+        {
+          "title": "Мышцы плеча. Передние мышцы плеча",
+          "url": "https://meduniver.com/Medical/Anatom/112.html",
+          "id": "112"
+        },
+        {
+          "title": "Мышцы плеча. Задние мышцы плеча",
+          "url": "https://meduniver.com/Medical/Anatom/113.html",
+          "id": "113"
+        },
+        {
+          "title": "Мышцы предплечья. Передняя группа мышц предплечья",
+          "url": "https://meduniver.com/Medical/Anatom/114.html",
+          "id": "114"
+        },
+        {
+          "title": "Мышцы предплечья. Задняя группа мышц предплечья",
+          "url": "https://meduniver.com/Medical/Anatom/115.html",
+          "id": "115"
+        },
+        {
+          "title": "Мышцы кисти. Мышцы ладонной впадины. Мышцы thenar (тенара). Мышцы hypothenar (гипотенера)",
+          "url": "https://meduniver.com/Medical/Anatom/116.html",
+          "id": "116"
+        },
+        {
+          "title": "Фасции верхней конечности и влагалища сухожилий",
+          "url": "https://meduniver.com/Medical/Anatom/117.html",
+          "id": "117"
+        },
+        {
+          "title": "Каналы запястья. Влагалища сухожилий кисти",
+          "url": "https://meduniver.com/Medical/Anatom/118.html",
+          "id": "118"
+        },
+        {
+          "title": "Топография верхней конечности. Топография подмышечной области (regio axillaris), или подмышечной ямки (fossa axillaris)",
+          "url": "https://meduniver.com/Medical/Anatom/119.html",
+          "id": "119"
+        },
+        {
+          "title": "Трехстороннее и четырехсторонее отверстия. Локтевая ямка. Медиальная, латеральная, срединная борозды предплечья",
+          "url": "https://meduniver.com/Medical/Anatom/120.html",
+          "id": "120"
+        },
+        {
+          "title": "Мышцы пояса нижней конечности. Передняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/121.html",
+          "id": "121"
+        },
+        {
+          "title": "Мышцы пояса нижней конечности. Задняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/122.html",
+          "id": "122"
+        },
+        {
+          "title": "Мышцы бедра. Передняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/123.html",
+          "id": "123"
+        },
+        {
+          "title": "Мышцы бедра. Задняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/124.html",
+          "id": "124"
+        },
+        {
+          "title": "Мышцы бедра. Медиальная группа",
+          "url": "https://meduniver.com/Medical/Anatom/125.html",
+          "id": "125"
+        },
+        {
+          "title": "Мышцы голени. Передняя группа",
+          "url": "https://meduniver.com/Medical/Anatom/126.html",
+          "id": "126"
+        },
+        {
+          "title": "Мышцы голени. Латеральная группа мышц голени",
+          "url": "https://meduniver.com/Medical/Anatom/127.html",
+          "id": "127"
+        },
+        {
+          "title": "Мышцы голени. Задняя группа мышц голени",
+          "url": "https://meduniver.com/Medical/Anatom/128.html",
+          "id": "128"
+        },
+        {
+          "title": "Мышцы стопы",
+          "url": "https://meduniver.com/Medical/Anatom/129.html",
+          "id": "129"
+        },
+        {
+          "title": "Фасции нижней конечности и влагалища сухожилий стопы и голени",
+          "url": "https://meduniver.com/Medical/Anatom/130.html",
+          "id": "130"
+        },
+        {
+          "title": "Топография нижней конечности. Мышечная и сосудистая лакуна. Приводящий канал. Бедренный канал",
+          "url": "https://meduniver.com/Medical/Anatom/131.html",
+          "id": "131"
+        },
+        {
+          "title": "Промежность. Мочеполовая диафрагма. Тазовая диафрагма",
+          "url": "https://meduniver.com/Medical/Anatom/229.html",
+          "id": "229"
+        },
+        {
+          "title": "Мышцы промежности. Мышцы мочеполовой диафрагмы",
+          "url": "https://meduniver.com/Medical/Anatom/230.html",
+          "id": "230"
+        },
+        {
+          "title": "Мышцы тазовой диафрагмы",
+          "url": "https://meduniver.com/Medical/Anatom/231.html",
+          "id": "231"
+        },
+        {
+          "title": "Фасции промежности",
+          "url": "https://meduniver.com/Medical/Anatom/232.html",
+          "id": "232"
+        },
+        {
+          "title": "Сосуды (кровоснабжение), лимфатический отток от промежности. Нервы (иннервация) промежности",
+          "url": "https://meduniver.com/Medical/Anatom/233.html",
+          "id": "233"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Внутренние органы",
+      "url": "https://meduniver.com/Medical/Anatom/4.html",
+      "articles": [
+        {
+          "title": "Cпланхнология - учение о внутренностях ( органах ). Splanchnoligia. Общие данные",
+          "url": "https://meduniver.com/Medical/Anatom/132.html",
+          "id": "132"
+        },
+        {
+          "title": "Пищеварительная система (SYSTEMA DIGESTORIUM). Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/133.html",
+          "id": "133"
+        },
+        {
+          "title": "Полость рта, cavitas oris. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/134.html",
+          "id": "134"
+        },
+        {
+          "title": "Нёбо, palatum. Твердое небо. Мягкое небо. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/135.html",
+          "id": "135"
+        },
+        {
+          "title": "Зубы. Развитие зубов. Строение зуба. Сроки прорезывания молочных зубов. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/136.html",
+          "id": "136"
+        },
+        {
+          "title": "Зубы. Строение зуба (зубов). Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/137.html",
+          "id": "137"
+        },
+        {
+          "title": "Зубы. Резцы. Клыки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/138.html",
+          "id": "138"
+        },
+        {
+          "title": "Зубы. Малые коренные зубы. Большие коренные зубы. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/139.html",
+          "id": "139"
+        },
+        {
+          "title": "Молочные зубы. Прорезывание молочных зубов. Сроки прорезывания",
+          "url": "https://meduniver.com/Medical/Anatom/140.html",
+          "id": "140"
+        },
+        {
+          "title": "Прикус зубов. Зубной прикус. Рентгенологическое исследование зубов",
+          "url": "https://meduniver.com/Medical/Anatom/141.html",
+          "id": "141"
+        },
+        {
+          "title": "Язык. Строение языка. Мышцы языка. Иннервация, кровоснобжение языка. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/142.html",
+          "id": "142"
+        },
+        {
+          "title": "Железы полости рта. Околоушная слюная железа. Поднижнечелюстная слюная железа. Подъязычная слюная железа. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/143.html",
+          "id": "143"
+        },
+        {
+          "title": "Глотка. Строение глотки. Мышцы глотки. Кровоснабжение и инневация глотки. Акт глотания. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/144.html",
+          "id": "144"
+        },
+        {
+          "title": "Желудок. Топография желудка. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/147.html",
+          "id": "147"
+        },
+        {
+          "title": "Строение желудка. Стенки желудка. Мышцы желудка. Слизистая желудка",
+          "url": "https://meduniver.com/Medical/Anatom/148.html",
+          "id": "148"
+        },
+        {
+          "title": "Рентгеноанатомия желудка. Эндоскопия желудка",
+          "url": "https://meduniver.com/Medical/Anatom/149.html",
+          "id": "149"
+        },
+        {
+          "title": "Кровоснабжение и иннервация желудка. Лифатические узлы и пути лимфооттока от желудка",
+          "url": "https://meduniver.com/Medical/Anatom/150.html",
+          "id": "150"
+        },
+        {
+          "title": "Двенадцатиперстная кишка. Строение, стенки двенадцатиперстной кишки. Топография двенадцатиперстной кишки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/151.html",
+          "id": "151"
+        },
+        {
+          "title": "Рентгеноанатомия двенадцатиперстной кишки",
+          "url": "https://meduniver.com/Medical/Anatom/152.html",
+          "id": "152"
+        },
+        {
+          "title": "Тощая и подвздошная кишка. Строение тощей и подвздошной кишки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/153.html",
+          "id": "153"
+        },
+        {
+          "title": "Рентгеноанатомия тощей и подвздошной кишки",
+          "url": "https://meduniver.com/Medical/Anatom/154.html",
+          "id": "154"
+        },
+        {
+          "title": "Кровоснабжение и иннервация тонкой кишки. Лифатические узлы и пути лимфооттока от тонкой кишки",
+          "url": "https://meduniver.com/Medical/Anatom/155.html",
+          "id": "155"
+        },
+        {
+          "title": "Толстая кишка. Строение толстой кишки. Стенки толстой кишки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/156.html",
+          "id": "156"
+        },
+        {
+          "title": "Восходящая ободочная кишка. Поперечная ободочная кишка. Строение, стенки ободочной кишки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/158.html",
+          "id": "158"
+        },
+        {
+          "title": "Нисходящая ободочная кишка. Сигмовидная ободочная кишка. Отношение ободочной кишки к брюшине. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/159.html",
+          "id": "159"
+        },
+        {
+          "title": "Прямая кишка. Топография прямой кишки. Стенки, отношение к брюшине прямой кишки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/160.html",
+          "id": "160"
+        },
+        {
+          "title": "Рентгеноанатомия толстой кишки. Эндоскопия толстой кишки. Анатоми",
+          "url": "https://meduniver.com/Medical/Anatom/161.html",
+          "id": "161"
+        },
+        {
+          "title": "Общие закономерности строения кишечника",
+          "url": "https://meduniver.com/Medical/Anatom/163.html",
+          "id": "163"
+        },
+        {
+          "title": "Печень. Функции печени. Ворота печени. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/164.html",
+          "id": "164"
+        },
+        {
+          "title": "Строение печени. Желчный пузырь. Анатомия желчного пузыря",
+          "url": "https://meduniver.com/Medical/Anatom/165.html",
+          "id": "165"
+        },
+        {
+          "title": "Рентгеноанатомия желчного пузыря. Пути выведения желчи. Топография печени",
+          "url": "https://meduniver.com/Medical/Anatom/166.html",
+          "id": "166"
+        },
+        {
+          "title": "Связки печени. Сегментарное строение печени. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/167.html",
+          "id": "167"
+        },
+        {
+          "title": "Поджелудочная железа. Нормальная анатомия поджелудочной железы",
+          "url": "https://meduniver.com/Medical/Anatom/168.html",
+          "id": "168"
+        },
+        {
+          "title": "Строение поджелудочной железы. Кровоснабжение, иннервация, отток лимфы от поджелудочной железы",
+          "url": "https://meduniver.com/Medical/Anatom/169.html",
+          "id": "169"
+        },
+        {
+          "title": "Брюшина, peritoneum. Полость брюшины. Брюшная полость. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/170.html",
+          "id": "170"
+        },
+        {
+          "title": "Большой сальник. Малый сальник. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/171.html",
+          "id": "171"
+        },
+        {
+          "title": "Этажи брюшной полости. Верхний этаж. Сальниковое отверстие. Сальниковая сумка. Большой сальник. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/172.html",
+          "id": "172"
+        },
+        {
+          "title": "Средний этаж брюшной полости. Брыжейка. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/173.html",
+          "id": "173"
+        },
+        {
+          "title": "Нижний этаж брюшной полости. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/174.html",
+          "id": "174"
+        },
+        {
+          "title": "Брюшная полость и полость таза. Брюшина. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/146.html",
+          "id": "146"
+        },
+        {
+          "title": "Дыхательная система ( systema respiratorium ). Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/175.html",
+          "id": "175"
+        },
+        {
+          "title": "Полость носа. Слизистая полости носа. Зоны полости носа. Околоносовые пазухи. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/176.html",
+          "id": "176"
+        },
+        {
+          "title": "Кровоснабжение, иннервация полости носа и лимфоотток",
+          "url": "https://meduniver.com/Medical/Anatom/177.html",
+          "id": "177"
+        },
+        {
+          "title": "Гортань. Анатомия гортани",
+          "url": "https://meduniver.com/Medical/Anatom/178.html",
+          "id": "178"
+        },
+        {
+          "title": "Хрящи гортани. Связки гортани. Соединения гортани. Суставы гортани. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/179.html",
+          "id": "179"
+        },
+        {
+          "title": "Мышцы гортани. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/180.html",
+          "id": "180"
+        },
+        {
+          "title": "Полость гортани. Предверие гортани. Голосовая щель. Звукообразование в гортани. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/181.html",
+          "id": "181"
+        },
+        {
+          "title": "Кровоснабжение, иннервация, лимфоотток от гортани. Сосуды и нервы гортани. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/182.html",
+          "id": "182"
+        },
+        {
+          "title": "Трахея. Топография трахеи. Строение трахеи. Хрящи трахеи. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/183.html",
+          "id": "183"
+        },
+        {
+          "title": "Кровоснабжение трахеи. Иннервация трахеи. Сосуды и нервы трахеи",
+          "url": "https://meduniver.com/Medical/Anatom/184.html",
+          "id": "184"
+        },
+        {
+          "title": "Бронхи. Главные бронхи. Строение бронхов. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/185.html",
+          "id": "185"
+        },
+        {
+          "title": "Легкие. Анатомия легкого",
+          "url": "https://meduniver.com/Medical/Anatom/186.html",
+          "id": "186"
+        },
+        {
+          "title": "Строение легких. Разветвление бронхов. Макро-микроскопическое строение легкого",
+          "url": "https://meduniver.com/Medical/Anatom/187.html",
+          "id": "187"
+        },
+        {
+          "title": "Функции ( функция ) легких",
+          "url": "https://meduniver.com/Medical/Anatom/188.html",
+          "id": "188"
+        },
+        {
+          "title": "Кровообращение в легких. Лимфатический отток легких. Иннервация легких. Сосуды, нервы, лимфатичекие узлы легких",
+          "url": "https://meduniver.com/Medical/Anatom/189.html",
+          "id": "189"
+        },
+        {
+          "title": "Сегментарное строение легких. Сегменты легкого",
+          "url": "https://meduniver.com/Medical/Anatom/190.html",
+          "id": "190"
+        },
+        {
+          "title": "Анатомия главных бронхов. Кровоснабжение и иннервация главных бронхов",
+          "url": "https://meduniver.com/Medical/Anatom/771.html",
+          "id": "771"
+        },
+        {
+          "title": "Плевра. Пристеночная плевра. Висцеральная ( легочная ) плевра. Плевральная полость. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/191.html",
+          "id": "191"
+        },
+        {
+          "title": "Средостение. Переднее средостение. Заднее средостение. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/192.html",
+          "id": "192"
+        },
+        {
+          "title": "Плевральная полость ( плевральные мешки ). Границы плевральной полости ( полостей ). Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/193.html",
+          "id": "193"
+        },
+        {
+          "title": "Почка, ren. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/194.html",
+          "id": "194"
+        },
+        {
+          "title": "Топография почек. Оболочки почки. Фиксация почки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/195.html",
+          "id": "195"
+        },
+        {
+          "title": "Строение почек ( почки ). Кровоснабжение почек. Сосуды почек ( почки ). Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/196.html",
+          "id": "196"
+        },
+        {
+          "title": "Почечная лоханка. Почечные чашки",
+          "url": "https://meduniver.com/Medical/Anatom/197.html",
+          "id": "197"
+        },
+        {
+          "title": "Рентгеноанатомия почки",
+          "url": "https://meduniver.com/Medical/Anatom/198.html",
+          "id": "198"
+        },
+        {
+          "title": "Сегментарное строение почки. Сегменты почки",
+          "url": "https://meduniver.com/Medical/Anatom/199.html",
+          "id": "199"
+        },
+        {
+          "title": "Мочеточник. Строение мочеточника. Сужения мочеточника",
+          "url": "https://meduniver.com/Medical/Anatom/200.html",
+          "id": "200"
+        },
+        {
+          "title": "Кровоснабжение мочеточника. Сосуды и лимфатический отток от мочеточника. Иннервация мочеточника",
+          "url": "https://meduniver.com/Medical/Anatom/201.html",
+          "id": "201"
+        },
+        {
+          "title": "Мочевой пузырь. Стенки мочевого пузыря. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/202.html",
+          "id": "202"
+        },
+        {
+          "title": "Цистоскопия. Уродинамика. Кровоснабжение мочевого пузыря. Сосуды и лимфатический отток от мочевого пузыря",
+          "url": "https://meduniver.com/Medical/Anatom/203.html",
+          "id": "203"
+        },
+        {
+          "title": "Женский мочеиспускательный канал. Строение, кровоснабжение (сосуды), лимфатический отток от женской уретры",
+          "url": "https://meduniver.com/Medical/Anatom/204.html",
+          "id": "204"
+        },
+        {
+          "title": "Половые органы. Мужские половые органы. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/205.html",
+          "id": "205"
+        },
+        {
+          "title": "Яички. Строение яичек. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/206.html",
+          "id": "206"
+        },
+        {
+          "title": "Сосуды и нервы яичка. Кровоснабжение, лимфоотток от яичка. Иннервация яичка",
+          "url": "https://meduniver.com/Medical/Anatom/207.html",
+          "id": "207"
+        },
+        {
+          "title": "Семявыносящий проток, ductus deferens. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/208.html",
+          "id": "208"
+        },
+        {
+          "title": "Семенные пузырьки, vesiculae seminales. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/209.html",
+          "id": "209"
+        },
+        {
+          "title": "Сосуды (кровоснабжение), нервы (иннервация) лимфатический отток от семявыносящего протока и семенных пузырьков",
+          "url": "https://meduniver.com/Medical/Anatom/210.html",
+          "id": "210"
+        },
+        {
+          "title": "Семенной канатик. Опускание яичка. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/211.html",
+          "id": "211"
+        },
+        {
+          "title": "Оболочки яичка и семенного канатика. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/212.html",
+          "id": "212"
+        },
+        {
+          "title": "Половой член. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/213.html",
+          "id": "213"
+        },
+        {
+          "title": "Сосуды ( кровоснабжение ) полового члена. Нервы ( иннервация ) полового члена",
+          "url": "https://meduniver.com/Medical/Anatom/214.html",
+          "id": "214"
+        },
+        {
+          "title": "Мужской мочеиспускательный канал (мужская уретра)",
+          "url": "https://meduniver.com/Medical/Anatom/215.html",
+          "id": "215"
+        },
+        {
+          "title": "Сосуды (кровоснабжение), нервы (иннервация), лимфатический отток от мочеиспускательного канала. Акт мочеиспускания",
+          "url": "https://meduniver.com/Medical/Anatom/216.html",
+          "id": "216"
+        },
+        {
+          "title": "Женские половые органы. Анатомия яичника",
+          "url": "https://meduniver.com/Medical/Anatom/218.html",
+          "id": "218"
+        },
+        {
+          "title": "Сосуды и нервы яичника. Кровоснабжение, лимфатический отток от яичника. Иннервация яичника",
+          "url": "https://meduniver.com/Medical/Anatom/219.html",
+          "id": "219"
+        },
+        {
+          "title": "Маточная труба. Строение стенки трубы. Придаток яичника и околояичник. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/220.html",
+          "id": "220"
+        },
+        {
+          "title": "Матка. Стенки матки. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/221.html",
+          "id": "221"
+        },
+        {
+          "title": "Топография матки. Сосуды (кровоснабжение), лимфатический отток от матки. Иннервация (нервы) матки",
+          "url": "https://meduniver.com/Medical/Anatom/222.html",
+          "id": "222"
+        },
+        {
+          "title": "Влагалище. Стенки влагалища. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/223.html",
+          "id": "223"
+        },
+        {
+          "title": "Сосуды (кровоснабжение), лимфатический отток от влагалища. Нервы (иннервация) влагалища",
+          "url": "https://meduniver.com/Medical/Anatom/224.html",
+          "id": "224"
+        },
+        {
+          "title": "Наружные женские половые органы. Женская половая область. Лобок. Анатомия",
+          "url": "https://meduniver.com/Medical/Anatom/225.html",
+          "id": "225"
+        },
+        {
+          "title": "Развитие мочевых и половых ( мочеполовых ) органов",
+          "url": "https://meduniver.com/Medical/Anatom/226.html",
+          "id": "226"
+        },
+        {
+          "title": "Аномалии органов мочеотделения. Аномалии матки, труб и влагалища",
+          "url": "https://meduniver.com/Medical/Anatom/227.html",
+          "id": "227"
+        },
+        {
+          "title": "Развитие наружных половых органов",
+          "url": "https://meduniver.com/Medical/Anatom/228.html",
+          "id": "228"
+        },
+        {
+          "title": "Промежность. Мочеполовая диафрагма. Тазовая диафрагма",
+          "url": "https://meduniver.com/Medical/Anatom/229.html",
+          "id": "229"
+        },
+        {
+          "title": "Мышцы промежности. Мышцы мочеполовой диафрагмы",
+          "url": "https://meduniver.com/Medical/Anatom/230.html",
+          "id": "230"
+        },
+        {
+          "title": "Мышцы тазовой диафрагмы",
+          "url": "https://meduniver.com/Medical/Anatom/231.html",
+          "id": "231"
+        },
+        {
+          "title": "Фасции промежности",
+          "url": "https://meduniver.com/Medical/Anatom/232.html",
+          "id": "232"
+        },
+        {
+          "title": "Сосуды (кровоснабжение), лимфатический отток от промежности. Нервы (иннервация) промежности",
+          "url": "https://meduniver.com/Medical/Anatom/233.html",
+          "id": "233"
+        },
+        {
+          "title": "Мышцы гортани. Наружные и собственные мышцы гортани",
+          "url": "https://meduniver.com/Medical/Anatom/765.html",
+          "id": "765"
+        },
+        {
+          "title": "Анатомия мышц гортани. Эластическая перепонка гортани",
+          "url": "https://meduniver.com/Medical/Anatom/766.html",
+          "id": "766"
+        },
+        {
+          "title": "Преддверие гортани. Слизистая оболочка гортани",
+          "url": "https://meduniver.com/Medical/Anatom/767.html",
+          "id": "767"
+        },
+        {
+          "title": "Кровеносные сосуды гортани. Лимфатические сосуды гортани",
+          "url": "https://meduniver.com/Medical/Anatom/768.html",
+          "id": "768"
+        },
+        {
+          "title": "Иннервация гортани. Нервы подходящие к гортани",
+          "url": "https://meduniver.com/Medical/Anatom/769.html",
+          "id": "769"
+        },
+        {
+          "title": "Волокна гортанного нерва. Иннервация слизистой гортани",
+          "url": "https://meduniver.com/Medical/Anatom/770.html",
+          "id": "770"
+        },
+        {
+          "title": "Физиология носа. Дыхательная функция носа",
+          "url": "https://meduniver.com/Medical/Anatom/772.html",
+          "id": "772"
+        },
+        {
+          "title": "Барьерная функция носа. Защитная функция носа",
+          "url": "https://meduniver.com/Medical/Anatom/773.html",
+          "id": "773"
+        },
+        {
+          "title": "Согревание воздуха в полости носа. Функция слизеотделения носа",
+          "url": "https://meduniver.com/Medical/Anatom/774.html",
+          "id": "774"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Эндокринные органы",
+      "url": "https://meduniver.com/Medical/Anatom/5.html",
+      "articles": [
+        {
+          "title": "Эндокринные железы. Основы эндокринологии. Система обратной связи",
+          "url": "https://meduniver.com/Medical/Anatom/234.html",
+          "id": "234"
+        },
+        {
+          "title": "Общие анатомо-физиологические свойства эндокринных желез",
+          "url": "https://meduniver.com/Medical/Anatom/235.html",
+          "id": "235"
+        },
+        {
+          "title": "Развитие эндокринных желез",
+          "url": "https://meduniver.com/Medical/Anatom/236.html",
+          "id": "236"
+        },
+        {
+          "title": "Щитовидная железа. Функции щитовидной железы.",
+          "url": "https://meduniver.com/Medical/Anatom/237.html",
+          "id": "237"
+        },
+        {
+          "title": "Развитие щитовидной железы. Сосуды ( кровоснабжение ) щитовидной железы. Нервы ( иннервация ) щитовидной железы",
+          "url": "https://meduniver.com/Medical/Anatom/238.html",
+          "id": "238"
+        },
+        {
+          "title": "Вилочковая железа. Тимус. Топография вилочковой железы. Строение вилочковой желеы ( тимуса )",
+          "url": "https://meduniver.com/Medical/Anatom/240.html",
+          "id": "240"
+        },
+        {
+          "title": "Гипофиз. Строение гипофиза.",
+          "url": "https://meduniver.com/Medical/Anatom/242.html",
+          "id": "242"
+        },
+        {
+          "title": "Функция гипофиза. Сосуды ( кровоснабжение ) гипофиза. Нервы ( иннервация ) гипофиза",
+          "url": "https://meduniver.com/Medical/Anatom/243.html",
+          "id": "243"
+        },
+        {
+          "title": "Эпифиз ( шишковидное тело ). Строение эпифиза. Функция эпифиза. Сосуды ( кровоснабжение ) эпифиза",
+          "url": "https://meduniver.com/Medical/Anatom/244.html",
+          "id": "244"
+        },
+        {
+          "title": "Надпочечники. Строение надпочечника. Развитие надпочечника",
+          "url": "https://meduniver.com/Medical/Anatom/245.html",
+          "id": "245"
+        },
+        {
+          "title": "Функция надпочечников. Сосуды ( кровоснабжение ) надпочечников. Нервы ( иннервация ) надпочечников",
+          "url": "https://meduniver.com/Medical/Anatom/246.html",
+          "id": "246"
+        },
+        {
+          "title": "Эндокринные части половых желез. Эндокринная функция яичек. Эндокринная функция желтого тела, яичников",
+          "url": "https://meduniver.com/Medical/Anatom/247.html",
+          "id": "247"
+        },
+        {
+          "title": "Эндокринная часть поджелудочной железы. Панкреатические островки (островки Лангерханса)",
+          "url": "https://meduniver.com/Medical/Anatom/248.html",
+          "id": "248"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Сердце и сосуды",
+      "url": "https://meduniver.com/Medical/Anatom/6.html",
+      "articles": [
+        {
+          "title": "Общая ангиология. Сосудистая система",
+          "url": "https://meduniver.com/Medical/Anatom/249.html",
+          "id": "249"
+        },
+        {
+          "title": "Кровеносная система. Артерии. Стенка артерий. Капилляры. Вены",
+          "url": "https://meduniver.com/Medical/Anatom/250.html",
+          "id": "250"
+        },
+        {
+          "title": "Схема кровообращения. Микроциркуляция. Микроциркуляторное русло",
+          "url": "https://meduniver.com/Medical/Anatom/251.html",
+          "id": "251"
+        },
+        {
+          "title": "Малый круг кровообращения",
+          "url": "https://meduniver.com/Medical/Anatom/252.html",
+          "id": "252"
+        },
+        {
+          "title": "Большой (телесный) круг кровообращения. Регионарное кровообращение",
+          "url": "https://meduniver.com/Medical/Anatom/253.html",
+          "id": "253"
+        },
+        {
+          "title": "Развитие сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/254.html",
+          "id": "254"
+        },
+        {
+          "title": "Развитие артерий.",
+          "url": "https://meduniver.com/Medical/Anatom/255.html",
+          "id": "255"
+        },
+        {
+          "title": "Развитие вен.",
+          "url": "https://meduniver.com/Medical/Anatom/256.html",
+          "id": "256"
+        },
+        {
+          "title": "Плацентарное кровообращение - кровообращение плода",
+          "url": "https://meduniver.com/Medical/Anatom/257.html",
+          "id": "257"
+        },
+        {
+          "title": "Экстраорганные артерии. Закономерности, отражающие строение целостного организма",
+          "url": "https://meduniver.com/Medical/Anatom/305.html",
+          "id": "305"
+        },
+        {
+          "title": "Закономерности хода артерий от материнского ствола к органу",
+          "url": "https://meduniver.com/Medical/Anatom/306.html",
+          "id": "306"
+        },
+        {
+          "title": "Коллатеральное кровообращение. Анастомоз. Коллатераль",
+          "url": "https://meduniver.com/Medical/Anatom/308.html",
+          "id": "308"
+        },
+        {
+          "title": "Сердце. Строение сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/258.html",
+          "id": "258"
+        },
+        {
+          "title": "Камеры сердца. Правое предсердие. Левое предсердие.",
+          "url": "https://meduniver.com/Medical/Anatom/259.html",
+          "id": "259"
+        },
+        {
+          "title": "Правый желудочек. Левый желудочек.",
+          "url": "https://meduniver.com/Medical/Anatom/260.html",
+          "id": "260"
+        },
+        {
+          "title": "Строение стенок сердца. Миокард.",
+          "url": "https://meduniver.com/Medical/Anatom/261.html",
+          "id": "261"
+        },
+        {
+          "title": "Эпикард. Эндокард.",
+          "url": "https://meduniver.com/Medical/Anatom/262.html",
+          "id": "262"
+        },
+        {
+          "title": "Проводящая система сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/263.html",
+          "id": "263"
+        },
+        {
+          "title": "Кровоснабжение сердца. Питание сердца. Венечные артерии сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/264.html",
+          "id": "264"
+        },
+        {
+          "title": "Вены сердца. Лимфатическая система сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/265.html",
+          "id": "265"
+        },
+        {
+          "title": "Нервы сердца. Иннервация сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/266.html",
+          "id": "266"
+        },
+        {
+          "title": "Топография сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/267.html",
+          "id": "267"
+        },
+        {
+          "title": "Рентгеноанатомия сердца. Контуры сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/268.html",
+          "id": "268"
+        },
+        {
+          "title": "Положение сердца. Типы положения сердца. Величина сердца.",
+          "url": "https://meduniver.com/Medical/Anatom/269.html",
+          "id": "269"
+        },
+        {
+          "title": "Перикард. Строение перикарда.",
+          "url": "https://meduniver.com/Medical/Anatom/270.html",
+          "id": "270"
+        },
+        {
+          "title": "Артерии малого (легочного) круга кровообращения. Легочный ствол.",
+          "url": "https://meduniver.com/Medical/Anatom/271.html",
+          "id": "271"
+        },
+        {
+          "title": "Вены малого (легочного) круга кровообращения. Легочные вены.",
+          "url": "https://meduniver.com/Medical/Anatom/272.html",
+          "id": "272"
+        },
+        {
+          "title": "Артерии большого круга кровообращения. Аорта.",
+          "url": "https://meduniver.com/Medical/Anatom/273.html",
+          "id": "273"
+        },
+        {
+          "title": "Ветви восходящей части аорты. Ветви дуги аорты. Плечеголовной ствол.",
+          "url": "https://meduniver.com/Medical/Anatom/274.html",
+          "id": "274"
+        },
+        {
+          "title": "Общая сонная артерия.",
+          "url": "https://meduniver.com/Medical/Anatom/275.html",
+          "id": "275"
+        },
+        {
+          "title": "Наружная сонная артерия, a. carotis externa. Передняя группа ветвей наружной сонной артерии. Треугольник Пирогова.",
+          "url": "https://meduniver.com/Medical/Anatom/276.html",
+          "id": "276"
+        },
+        {
+          "title": "Ветви верхнечелюстной артерии. Отрезки верхнечелюстной артерии ( a. maxillaris ).",
+          "url": "https://meduniver.com/Medical/Anatom/279.html",
+          "id": "279"
+        },
+        {
+          "title": "Внутренняя сонная артерия. A. carotis interna.",
+          "url": "https://meduniver.com/Medical/Anatom/280.html",
+          "id": "280"
+        },
+        {
+          "title": "Ветви внутренней сонной артерии ( a. carotis internae ).",
+          "url": "https://meduniver.com/Medical/Anatom/281.html",
+          "id": "281"
+        },
+        {
+          "title": "Подключичная артерия, a. subclavia. Ветви первого отдела подключичной артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/282.html",
+          "id": "282"
+        },
+        {
+          "title": "Подмышечная артерия, a. axillaris. Ветви подмышечной артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/284.html",
+          "id": "284"
+        },
+        {
+          "title": "Плечевая артерия. Ветви плечевой артерии: глубокая артерия плеча, верхняя и нижняя локтевая коллатеральная артерия.",
+          "url": "https://meduniver.com/Medical/Anatom/285.html",
+          "id": "285"
+        },
+        {
+          "title": "Лучевая артерия, a. radialis. Ветви лучевой артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/286.html",
+          "id": "286"
+        },
+        {
+          "title": "Локтевая артерия, a. ulnaris. Ветви локтевой артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/287.html",
+          "id": "287"
+        },
+        {
+          "title": "Дуги и артерии кисти. Поверхностная ладонная дуга. Глубокая ладонная дуга.",
+          "url": "https://meduniver.com/Medical/Anatom/288.html",
+          "id": "288"
+        },
+        {
+          "title": "Ветви нисходящей части аорты. Ветви грудной части аорты.",
+          "url": "https://meduniver.com/Medical/Anatom/289.html",
+          "id": "289"
+        },
+        {
+          "title": "Ветви брюшной части аорты. Непарные висцеральные ветви: чревный ствол ( truncus coeliacus ).",
+          "url": "https://meduniver.com/Medical/Anatom/290.html",
+          "id": "290"
+        },
+        {
+          "title": "Верхняя брыжеечная артерия ( а. mesenterica superior ).",
+          "url": "https://meduniver.com/Medical/Anatom/291.html",
+          "id": "291"
+        },
+        {
+          "title": "Нижняя брыжеечная артерия ( а. mesenterica inferior ).",
+          "url": "https://meduniver.com/Medical/Anatom/292.html",
+          "id": "292"
+        },
+        {
+          "title": "Парные висцеральные ветви: почечная артерия (a. renalis), средняя надпочечниковая артерия (a. suprarenalis media).",
+          "url": "https://meduniver.com/Medical/Anatom/293.html",
+          "id": "293"
+        },
+        {
+          "title": "Общая подвздошная артерия ( a. iliaca communis ).",
+          "url": "https://meduniver.com/Medical/Anatom/295.html",
+          "id": "295"
+        },
+        {
+          "title": "Внутренняя подвздошная артерия ( a. iliaca interna ). Пристеночные ветви внутренней подвздошной артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/296.html",
+          "id": "296"
+        },
+        {
+          "title": "Висцеральные ветви внутренней подвздошной артерии ( a. iliaca interna ).",
+          "url": "https://meduniver.com/Medical/Anatom/297.html",
+          "id": "297"
+        },
+        {
+          "title": "Артерии свободной нижней конечности. Бедренная артерия ( a. femoralis ). Ветви бедренной артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/299.html",
+          "id": "299"
+        },
+        {
+          "title": "Подколенная артерия ( a. poplitea ). Ветви подколенной артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/300.html",
+          "id": "300"
+        },
+        {
+          "title": "Передняя большеберцовая артерия ( a. tibialis anterior ). Ветви передней большеберцовой артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/301.html",
+          "id": "301"
+        },
+        {
+          "title": "Задняя большеберцовая артерия ( a. tibialis posterior ). Ветви задней большеберцовой артерии.",
+          "url": "https://meduniver.com/Medical/Anatom/302.html",
+          "id": "302"
+        },
+        {
+          "title": "Артерии стопы. Тыльная артерия стопы ( a. dorsalis pedis ). Ветви тыльной артерии стопы.",
+          "url": "https://meduniver.com/Medical/Anatom/303.html",
+          "id": "303"
+        },
+        {
+          "title": "Подошвенные артерии. Медиальная и латеральная подошвенная артерия ( a. plantares medialis, a. plantares lateralis ).",
+          "url": "https://meduniver.com/Medical/Anatom/304.html",
+          "id": "304"
+        },
+        {
+          "title": "Система верхней полой вены ( Vena cava superior ).",
+          "url": "https://meduniver.com/Medical/Anatom/309.html",
+          "id": "309"
+        },
+        {
+          "title": "Плечеголовные вены ( vv. brachiocephalicae dextra et sinistra ).",
+          "url": "https://meduniver.com/Medical/Anatom/310.html",
+          "id": "310"
+        },
+        {
+          "title": "Внутренняя яремная вена ( v. jugularis interna ). Притоки внутренней яремной вены.",
+          "url": "https://meduniver.com/Medical/Anatom/311.html",
+          "id": "311"
+        },
+        {
+          "title": "Наружная яремная вена ( v. jugularis externa ).",
+          "url": "https://meduniver.com/Medical/Anatom/312.html",
+          "id": "312"
+        },
+        {
+          "title": "Передняя яремная вена ( v. jugularis anterior ).",
+          "url": "https://meduniver.com/Medical/Anatom/313.html",
+          "id": "313"
+        },
+        {
+          "title": "Подключичная вена ( v. subclavia ).",
+          "url": "https://meduniver.com/Medical/Anatom/314.html",
+          "id": "314"
+        },
+        {
+          "title": "Вены верхней конечности. Поверхностные ( подкожные ) и глубокие вены руки.",
+          "url": "https://meduniver.com/Medical/Anatom/315.html",
+          "id": "315"
+        },
+        {
+          "title": "Вены непарная ( v. azygos ) и полунепарная ( v. hemiazygos ).",
+          "url": "https://meduniver.com/Medical/Anatom/316.html",
+          "id": "316"
+        },
+        {
+          "title": "Позвоночные сплетения. Наружные и внутренние позвоночные сплетения.",
+          "url": "https://meduniver.com/Medical/Anatom/318.html",
+          "id": "318"
+        },
+        {
+          "title": "Система нижней полой вены. Нижняя полая вена ( v. cava inferior ).",
+          "url": "https://meduniver.com/Medical/Anatom/319.html",
+          "id": "319"
+        },
+        {
+          "title": "Воротная вена ( v. portae ). Вены образующие воротную вену.",
+          "url": "https://meduniver.com/Medical/Anatom/320.html",
+          "id": "320"
+        },
+        {
+          "title": "Общие подвздошные вены ( Vv. iliacae communes ).",
+          "url": "https://meduniver.com/Medical/Anatom/321.html",
+          "id": "321"
+        },
+        {
+          "title": "Внутренняя подвздошная вена ( v. iliaca interna ).",
+          "url": "https://meduniver.com/Medical/Anatom/322.html",
+          "id": "322"
+        },
+        {
+          "title": "Портокавальные и каво-кавальные анастомозы. \"Голова медузы.\"",
+          "url": "https://meduniver.com/Medical/Anatom/323.html",
+          "id": "323"
+        },
+        {
+          "title": "Наружная подвздошная вена ( v. iliaca externa ).",
+          "url": "https://meduniver.com/Medical/Anatom/324.html",
+          "id": "324"
+        },
+        {
+          "title": "Вены нижней конечности ( ноги ). Глубокие и поверхностные вены ноги.",
+          "url": "https://meduniver.com/Medical/Anatom/325.html",
+          "id": "325"
+        },
+        {
+          "title": "Закономерности распределения вен.",
+          "url": "https://meduniver.com/Medical/Anatom/326.html",
+          "id": "326"
+        },
+        {
+          "title": "Особенности кровообращения плода. Плацентарное кровообращение.",
+          "url": "https://meduniver.com/Medical/Anatom/327.html",
+          "id": "327"
+        },
+        {
+          "title": "Рентгенологическое исследование кровеносных сосудов.",
+          "url": "https://meduniver.com/Medical/Anatom/328.html",
+          "id": "328"
+        },
+        {
+          "title": "Лимфатическая система ( systema Lymphaticum ). Функция, строение лимфатической системы.",
+          "url": "https://meduniver.com/Medical/Anatom/329.html",
+          "id": "329"
+        },
+        {
+          "title": "Лимфатические (или лимфоносные) сосуды.",
+          "url": "https://meduniver.com/Medical/Anatom/330.html",
+          "id": "330"
+        },
+        {
+          "title": "Лимфатические узлы (nodi lymphatici).",
+          "url": "https://meduniver.com/Medical/Anatom/331.html",
+          "id": "331"
+        },
+        {
+          "title": "Грудной проток (ductus thoracicus). Топография, строение грудного протока.",
+          "url": "https://meduniver.com/Medical/Anatom/332.html",
+          "id": "332"
+        },
+        {
+          "title": "Правый лимфатический проток ( ductus lymphaticus dexter ). Топография, строение правого лимфатического протока.",
+          "url": "https://meduniver.com/Medical/Anatom/333.html",
+          "id": "333"
+        },
+        {
+          "title": "Лимфатические узлы и сосуды таза. Топография, строение, расположение лимфатических узлов и сосудов таза.",
+          "url": "https://meduniver.com/Medical/Anatom/335.html",
+          "id": "335"
+        },
+        {
+          "title": "Лимфатические узлы и сосуды головы. Топография, строение, расположение лимфатических узлов и сосудов головы.",
+          "url": "https://meduniver.com/Medical/Anatom/339.html",
+          "id": "339"
+        },
+        {
+          "title": "Лимфатические узлы и сосуды шеи. Топография, строение, расположение лимфатических узлов и сосудов шеи.",
+          "url": "https://meduniver.com/Medical/Anatom/340.html",
+          "id": "340"
+        },
+        {
+          "title": "Закономерности распределения лимфатических сосудов и лимфатических узлов.",
+          "url": "https://meduniver.com/Medical/Anatom/341.html",
+          "id": "341"
+        },
+        {
+          "title": "Коллатеральный ток лимфы ( лимфоток ).",
+          "url": "https://meduniver.com/Medical/Anatom/342.html",
+          "id": "342"
+        },
+        {
+          "title": "Органы кроветворения и имунной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/344.html",
+          "id": "344"
+        },
+        {
+          "title": "Селезенка. Величина селезенки. Строение селезенки. Форма селезенки.",
+          "url": "https://meduniver.com/Medical/Anatom/345.html",
+          "id": "345"
+        },
+        {
+          "title": "Топография селезенки. Функция селезенки.",
+          "url": "https://meduniver.com/Medical/Anatom/346.html",
+          "id": "346"
+        },
+        {
+          "title": "Cосуды селезенки. Кровоснабжение селезенки. Нервы и иннервация селезенки.",
+          "url": "https://meduniver.com/Medical/Anatom/347.html",
+          "id": "347"
+        },
+        {
+          "title": "Вилочковая железа. Тимус. Топография вилочковой железы. Строение вилочковой желеы ( тимуса )",
+          "url": "https://meduniver.com/Medical/Anatom/240.html",
+          "id": "240"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Нервная система",
+      "url": "https://meduniver.com/Medical/Anatom/7.html",
+      "articles": [
+        {
+          "title": "Головной мозг, encephalon. Обзор головного мозга. Верхнелатеральная поверхность головного мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/366.html",
+          "id": "366"
+        },
+        {
+          "title": "Нижняя поверхность полушарий большого мозга. Обонятельные луковицы, тракты ( bulbi olfactorii, tractus olfactorii ).",
+          "url": "https://meduniver.com/Medical/Anatom/367.html",
+          "id": "367"
+        },
+        {
+          "title": "Зрительный перекрест, chiasma opticum. Сосцевидные тела, corpora mamillaria. Нервы на нижней поверхности головного мога.",
+          "url": "https://meduniver.com/Medical/Anatom/368.html",
+          "id": "368"
+        },
+        {
+          "title": "Эмбриогенез головного мозга. Задний мозговой пузырь, rhombencephalon. Средний мозговой пузырь, mesencephalon.",
+          "url": "https://meduniver.com/Medical/Anatom/369.html",
+          "id": "369"
+        },
+        {
+          "title": "Передний мозговой пузырь, prosencephalon. Конечный мозг, telencephalon.",
+          "url": "https://meduniver.com/Medical/Anatom/370.html",
+          "id": "370"
+        },
+        {
+          "title": "Рост и развитие борозд, извилин головного мозга. Масса мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/371.html",
+          "id": "371"
+        },
+        {
+          "title": "Ромбовидный мозг. Продолговатый мозг, myelencephalon, medulla oblongata.",
+          "url": "https://meduniver.com/Medical/Anatom/372.html",
+          "id": "372"
+        },
+        {
+          "title": "Белое вещество продолговатого мозга. Длинные и короткие волокна ( пути ) продолговатого мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/374.html",
+          "id": "374"
+        },
+        {
+          "title": "Задний мозг, metencephalon. Мост, pons.",
+          "url": "https://meduniver.com/Medical/Anatom/375.html",
+          "id": "375"
+        },
+        {
+          "title": "Внутреннее строение моста. Вентральная часть моста и дорсальная часть моста.",
+          "url": "https://meduniver.com/Medical/Anatom/376.html",
+          "id": "376"
+        },
+        {
+          "title": "Мозжечок, cerebellum. Строение мозжечка.",
+          "url": "https://meduniver.com/Medical/Anatom/377.html",
+          "id": "377"
+        },
+        {
+          "title": "Внутреннее строение мозжечка. Ядра мозжечка.",
+          "url": "https://meduniver.com/Medical/Anatom/378.html",
+          "id": "378"
+        },
+        {
+          "title": "Белое вещество мозжечка. Ножки мозжечка ( мозжечковые ножки ).",
+          "url": "https://meduniver.com/Medical/Anatom/379.html",
+          "id": "379"
+        },
+        {
+          "title": "Перешеек, isthmus rhombencephali.",
+          "url": "https://meduniver.com/Medical/Anatom/380.html",
+          "id": "380"
+        },
+        {
+          "title": "Четвертый ( IV, 4 ) желудочек, ventriculus qudratus. Стенки четвертого желудочка. Строение четвертого желудочка.",
+          "url": "https://meduniver.com/Medical/Anatom/381.html",
+          "id": "381"
+        },
+        {
+          "title": "Третий (III, 3) желудочек, ventriculus tertius. Стенки третьего желудочка. Топография третьего желудочка.",
+          "url": "https://meduniver.com/Medical/Anatom/399.html",
+          "id": "399"
+        },
+        {
+          "title": "Ромбовидная ямка, fossa rhomboidea. Стенки, топография ромбовидной ямки. Строение ромбовидной ямки.",
+          "url": "https://meduniver.com/Medical/Anatom/382.html",
+          "id": "382"
+        },
+        {
+          "title": "Топография серого вещества ромбовидной ямки.",
+          "url": "https://meduniver.com/Medical/Anatom/383.html",
+          "id": "383"
+        },
+        {
+          "title": "Ядра ромбовидной ямки. Ядра черепных нервов. Проекция ядер черепных нервов на ромбовидную ямку.",
+          "url": "https://meduniver.com/Medical/Anatom/384.html",
+          "id": "384"
+        },
+        {
+          "title": "Средний мозг, mesencephalon. Строение среднего мозга. Топография среднего мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/385.html",
+          "id": "385"
+        },
+        {
+          "title": "Крыша среднего мозга, tectum mesencephali.",
+          "url": "https://meduniver.com/Medical/Anatom/386.html",
+          "id": "386"
+        },
+        {
+          "title": "Ножки мозга, pedunculi cerebri.",
+          "url": "https://meduniver.com/Medical/Anatom/387.html",
+          "id": "387"
+        },
+        {
+          "title": "Водопровод мозга, aqueductus cerebri. Топография водопровода мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/388.html",
+          "id": "388"
+        },
+        {
+          "title": "Внутреннее строение среднего мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/389.html",
+          "id": "389"
+        },
+        {
+          "title": "Покрышка среднего мозга, tegmentum mesencephali.",
+          "url": "https://meduniver.com/Medical/Anatom/390.html",
+          "id": "390"
+        },
+        {
+          "title": "Черное вещество, substantia nigra. Красное ядро, nucleus ruber. Топография черного вещества. Топография красного ядра.",
+          "url": "https://meduniver.com/Medical/Anatom/391.html",
+          "id": "391"
+        },
+        {
+          "title": "Ретикулярная формация, formatio reticularis. Продольный медиальный пучок, fasciculus longitudinalis medialis.",
+          "url": "https://meduniver.com/Medical/Anatom/392.html",
+          "id": "392"
+        },
+        {
+          "title": "Передний мозг, prosencephalon.",
+          "url": "https://meduniver.com/Medical/Anatom/393.html",
+          "id": "393"
+        },
+        {
+          "title": "Промежуточный мозг, diencephalon. Таламический мозг, thalamencephalon.",
+          "url": "https://meduniver.com/Medical/Anatom/394.html",
+          "id": "394"
+        },
+        {
+          "title": "Таламус, thalamus. Строение таламуса. Ядра таламуса. Функции и значение таламуса.",
+          "url": "https://meduniver.com/Medical/Anatom/395.html",
+          "id": "395"
+        },
+        {
+          "title": "Эпиталамус, Epithalamus. Строение эпиталамуса. Шишковидное тело, corpus pineale. Функции и значение эпиталамуса.",
+          "url": "https://meduniver.com/Medical/Anatom/396.html",
+          "id": "396"
+        },
+        {
+          "title": "Метаталамус, metathalamus. Строение метаталамуса. Коленчатые тела. Функции и значение метаталамуса.",
+          "url": "https://meduniver.com/Medical/Anatom/397.html",
+          "id": "397"
+        },
+        {
+          "title": "Конечный мозг, telencephalon. Полушария, hemispheria cerebri.",
+          "url": "https://meduniver.com/Medical/Anatom/400.html",
+          "id": "400"
+        },
+        {
+          "title": "Мозолистое тело, corpus callosum. Колено мозолистого тела.",
+          "url": "https://meduniver.com/Medical/Anatom/401.html",
+          "id": "401"
+        },
+        {
+          "title": "Свод, fornix. Столбы свода. Прозрачная перегородка.",
+          "url": "https://meduniver.com/Medical/Anatom/402.html",
+          "id": "402"
+        },
+        {
+          "title": "Плащ. Поверхность полушария (плащ)",
+          "url": "https://meduniver.com/Medical/Anatom/403.html",
+          "id": "403"
+        },
+        {
+          "title": "Борозды и извилины верхнелатеральной поверхности полушария. Латеральная борозда. Центральная борозда.",
+          "url": "https://meduniver.com/Medical/Anatom/404.html",
+          "id": "404"
+        },
+        {
+          "title": "Борозды и извилины лобной доли. Прецентральная борозда, sulcus precentralis.",
+          "url": "https://meduniver.com/Medical/Anatom/405.html",
+          "id": "405"
+        },
+        {
+          "title": "Борозды и извилины теменной доли. Постцентральная борозда, sulcus postcentralis.",
+          "url": "https://meduniver.com/Medical/Anatom/406.html",
+          "id": "406"
+        },
+        {
+          "title": "Борозды и извилины затылочной доли, островок. Поперечная затылочная борозда.",
+          "url": "https://meduniver.com/Medical/Anatom/408.html",
+          "id": "408"
+        },
+        {
+          "title": "Борозды и извилины медиальной поверхности полушария. Борозда мозолистого тела, sulcus corporis callosi.",
+          "url": "https://meduniver.com/Medical/Anatom/410.html",
+          "id": "410"
+        },
+        {
+          "title": "Проводящий путь зрительного анализатора. Проводящий путь зрения.",
+          "url": "https://meduniver.com/Medical/Anatom/504.html",
+          "id": "504"
+        },
+        {
+          "title": "Проводящий путь слухового анализатора. Проводящий путь cлуха.",
+          "url": "https://meduniver.com/Medical/Anatom/506.html",
+          "id": "506"
+        },
+        {
+          "title": "Ядра слухового анализатора. Признаки поражения слухового пути.",
+          "url": "https://meduniver.com/Medical/Anatom/507.html",
+          "id": "507"
+        },
+        {
+          "title": "Ядра проводящего пути обоняния. Признаки поражения обоняния.",
+          "url": "https://meduniver.com/Medical/Anatom/510.html",
+          "id": "510"
+        },
+        {
+          "title": "Проводящий путь анализатора вкуса. Проводящий путь вкуса ( вкусовой чувствительности ).",
+          "url": "https://meduniver.com/Medical/Anatom/511.html",
+          "id": "511"
+        },
+        {
+          "title": "Ядра проводящего пути вкуса ( вкусовой чувствительности ). Признаки поражения вкуса.",
+          "url": "https://meduniver.com/Medical/Anatom/512.html",
+          "id": "512"
+        },
+        {
+          "title": "Морфологические основы динамической локализации функций в коре полушарий большого мозга (центры мозговой коры).",
+          "url": "https://meduniver.com/Medical/Anatom/421.html",
+          "id": "421"
+        },
+        {
+          "title": "Кора. Корковые концы анализаторов. Ядро двигательного анализатора.",
+          "url": "https://meduniver.com/Medical/Anatom/422.html",
+          "id": "422"
+        },
+        {
+          "title": "Статический анализатор. Ядро анализатора импульсов от внутренних органов.",
+          "url": "https://meduniver.com/Medical/Anatom/423.html",
+          "id": "423"
+        },
+        {
+          "title": "Корковые концы анализаторов внешнего мира. Ядро слухового анализатора. Ядро зрительного анализатора.",
+          "url": "https://meduniver.com/Medical/Anatom/424.html",
+          "id": "424"
+        },
+        {
+          "title": "Ядро обонятельного анализатора. Ядро вкусового анализатора. Ядро кожного анализатора. Чувствительный гомункулус.",
+          "url": "https://meduniver.com/Medical/Anatom/425.html",
+          "id": "425"
+        },
+        {
+          "title": "Стереогнозия. Первая сигнальная система.",
+          "url": "https://meduniver.com/Medical/Anatom/426.html",
+          "id": "426"
+        },
+        {
+          "title": "Вторая сигнальная система.",
+          "url": "https://meduniver.com/Medical/Anatom/427.html",
+          "id": "427"
+        },
+        {
+          "title": "Корковые концы анализаторов речи. Двигательный анализатор артикуляции речи. Слуховой анализатор устной речи.",
+          "url": "https://meduniver.com/Medical/Anatom/428.html",
+          "id": "428"
+        },
+        {
+          "title": "Двигательный анализатор письменной речи. Зрительный анализатор письменной речи.",
+          "url": "https://meduniver.com/Medical/Anatom/429.html",
+          "id": "429"
+        },
+        {
+          "title": "«Человеческие» признаки строения мозга. Признаки человеческого мозга. Признаки мозга человека.",
+          "url": "https://meduniver.com/Medical/Anatom/430.html",
+          "id": "430"
+        },
+        {
+          "title": "Оболочки головного мозга. Твердая оболочка, dura mater encephali.",
+          "url": "https://meduniver.com/Medical/Anatom/431.html",
+          "id": "431"
+        },
+        {
+          "title": "Серп большого мозга, falx cerebri. Намет мозжечка, tentorium cerebelli.",
+          "url": "https://meduniver.com/Medical/Anatom/432.html",
+          "id": "432"
+        },
+        {
+          "title": "Серп мозжечка, falx cerebelli. Диафрагма седла, diaphragma sellae.",
+          "url": "https://meduniver.com/Medical/Anatom/433.html",
+          "id": "433"
+        },
+        {
+          "title": "Синусы твердой оболочки, sinus durae matris. Поперечный синус, sinus transversus.",
+          "url": "https://meduniver.com/Medical/Anatom/435.html",
+          "id": "435"
+        },
+        {
+          "title": "Верхний сагитальный синус. Затылочный синус, sinus occipitalis. Сток синусов, confluens sinuum. Венозное кольцо.",
+          "url": "https://meduniver.com/Medical/Anatom/436.html",
+          "id": "436"
+        },
+        {
+          "title": "Мягкая оболочка, pia mater encephali.",
+          "url": "https://meduniver.com/Medical/Anatom/439.html",
+          "id": "439"
+        },
+        {
+          "title": "Спинномозговая жидкость, liquor cerebrospinalis. Образование ликвора. Отток спинномозговой жидкости.",
+          "url": "https://meduniver.com/Medical/Anatom/440.html",
+          "id": "440"
+        },
+        {
+          "title": "Сосуды головного мозга. Кровоснабжение головного мозга. Артерии головного мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/441.html",
+          "id": "441"
+        },
+        {
+          "title": "Вены большого мозга. Отток из головного мозга.",
+          "url": "https://meduniver.com/Medical/Anatom/442.html",
+          "id": "442"
+        },
+        {
+          "title": "Рентгенологическое исследование центральной нервной системы. Энцефалограмма. Вентрикулограмма.",
+          "url": "https://meduniver.com/Medical/Anatom/443.html",
+          "id": "443"
+        },
+        {
+          "title": "Черепные нервы, nn. craniales (encephalici)",
+          "url": "https://meduniver.com/Medical/Anatom/464.html",
+          "id": "464"
+        },
+        {
+          "title": "Афферентные волокна черепномозговых нервов. Эфферентные волокна черепномозговых нервов.",
+          "url": "https://meduniver.com/Medical/Anatom/465.html",
+          "id": "465"
+        },
+        {
+          "title": "Обонятельные нервы (I пара, 1 пара, первая пара черепных нервов), nn. olfactorii.",
+          "url": "https://meduniver.com/Medical/Anatom/485.html",
+          "id": "485"
+        },
+        {
+          "title": "Зрительный нерв (II пара, 2 пара, вторая пара черепных нервов), n. opticus.",
+          "url": "https://meduniver.com/Medical/Anatom/486.html",
+          "id": "486"
+        },
+        {
+          "title": "Глазодвигательный нерв (III пара, 3 пара, третья пара черепных нервов), n. oculomotorius.",
+          "url": "https://meduniver.com/Medical/Anatom/482.html",
+          "id": "482"
+        },
+        {
+          "title": "Блоковой нерв (IV пара, 4 пара, четвертая пара черепных нервов), n. trochlearis.",
+          "url": "https://meduniver.com/Medical/Anatom/483.html",
+          "id": "483"
+        },
+        {
+          "title": "Тройничный нерв ( V пара ), n. trigeminus. Пятая пара черепных нервов.",
+          "url": "https://meduniver.com/Medical/Anatom/467.html",
+          "id": "467"
+        },
+        {
+          "title": "Отводящий нерв (VI пара, 6 пара, шестая пара черепных нервов), n. abducens.",
+          "url": "https://meduniver.com/Medical/Anatom/484.html",
+          "id": "484"
+        },
+        {
+          "title": "Лицевой нерв (VII пара, 7 пара черепных нервов), n. facialis (n. intermediofacialis).",
+          "url": "https://meduniver.com/Medical/Anatom/472.html",
+          "id": "472"
+        },
+        {
+          "title": "Преддверно-улитковый нерв (VIII пара, 8 пара черепных нервов), n. vestibulocochlearis. Части предверноулиткового нерва.",
+          "url": "https://meduniver.com/Medical/Anatom/475.html",
+          "id": "475"
+        },
+        {
+          "title": "Языкоглоточный нерв (IX пара, 9 пара черепных нервов), n. glossopharyngeus. Ядра языкоглоточного нерва.",
+          "url": "https://meduniver.com/Medical/Anatom/476.html",
+          "id": "476"
+        },
+        {
+          "title": "Блуждающий нерв ( X пара, 10 пара черепных нервов ), n. vagus.",
+          "url": "https://meduniver.com/Medical/Anatom/478.html",
+          "id": "478"
+        },
+        {
+          "title": "Добавочный нерв (XI пара, 11 пара черепных нервов), n. accessorius.",
+          "url": "https://meduniver.com/Medical/Anatom/481.html",
+          "id": "481"
+        },
+        {
+          "title": "Подъязычный нерв, n. hypoglossus ( XII пара ). 12 пара черепных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/466.html",
+          "id": "466"
+        },
+        {
+          "title": "Переферическая нервная система. Аномальные или соматические нервы. Спинномозговые нервы, nn. spinales.",
+          "url": "https://meduniver.com/Medical/Anatom/444.html",
+          "id": "444"
+        },
+        {
+          "title": "Задние ветви спинномозговых нервов, rami dorsales.",
+          "url": "https://meduniver.com/Medical/Anatom/445.html",
+          "id": "445"
+        },
+        {
+          "title": "Передние ветви спинномозговых нервов, rami ventrales.",
+          "url": "https://meduniver.com/Medical/Anatom/446.html",
+          "id": "446"
+        },
+        {
+          "title": "Шейное сплетение, plexus cervicalis. Кожные ветви шейного сплетения.",
+          "url": "https://meduniver.com/Medical/Anatom/447.html",
+          "id": "447"
+        },
+        {
+          "title": "Плечевое сплетение, plexus brachialis. Короткие ветви плечевого сплетения.",
+          "url": "https://meduniver.com/Medical/Anatom/450.html",
+          "id": "450"
+        },
+        {
+          "title": "Длинные ветви плечевого сплетения: n. musculocutaneus, мышечно-кожный нерв, n. medianus, срединный нерв.",
+          "url": "https://meduniver.com/Medical/Anatom/451.html",
+          "id": "451"
+        },
+        {
+          "title": "Локтевой нерв, n. ulnaris. Ветви локтевого нерва. Медиальный плечевой кожный нерв, n. cutaneus brachii medialis.",
+          "url": "https://meduniver.com/Medical/Anatom/452.html",
+          "id": "452"
+        },
+        {
+          "title": "Лучевой нерв, n. radialis. Медиальный кожный нерв предплечья, n. cutaneus antebrachii medialis.",
+          "url": "https://meduniver.com/Medical/Anatom/453.html",
+          "id": "453"
+        },
+        {
+          "title": "Передние ветви грудных нервов, rami ventrales nn. intercostales. Межреберные нервы, nn. intercostales.",
+          "url": "https://meduniver.com/Medical/Anatom/454.html",
+          "id": "454"
+        },
+        {
+          "title": "Копчиковое сплетение, plexus coccygeus",
+          "url": "https://meduniver.com/Medical/Anatom/463.html",
+          "id": "463"
+        },
+        {
+          "title": "Вегетативная ( автономная ) нервная система. Функции вегетативной нервной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/487.html",
+          "id": "487"
+        },
+        {
+          "title": "Рефлекторная дуга вегетативной нервной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/489.html",
+          "id": "489"
+        },
+        {
+          "title": "Развитие вегетативной нервной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/490.html",
+          "id": "490"
+        },
+        {
+          "title": "Cимпатическая нервная система. Центральный и переферический отдел симпатической нервной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/491.html",
+          "id": "491"
+        },
+        {
+          "title": "Парасимпатическая нервная система. Центральная часть ( отдел ) парасимпатической нервной системы.",
+          "url": "https://meduniver.com/Medical/Anatom/494.html",
+          "id": "494"
+        },
+        {
+          "title": "Иннервация глаза. Иннервация глазного яблока.",
+          "url": "https://meduniver.com/Medical/Anatom/496.html",
+          "id": "496"
+        },
+        {
+          "title": "Иннервация желез. Иннервация слезной и слюных желез.",
+          "url": "https://meduniver.com/Medical/Anatom/497.html",
+          "id": "497"
+        },
+        {
+          "title": "Иннервация сердца. Иннервация сердечной мышцы. Иннервация миокарда.",
+          "url": "https://meduniver.com/Medical/Anatom/498.html",
+          "id": "498"
+        },
+        {
+          "title": "Иннервация легких. Иннервация бронхов.",
+          "url": "https://meduniver.com/Medical/Anatom/499.html",
+          "id": "499"
+        },
+        {
+          "title": "Иннервация сигмовидной кишки. Иннервация прямой кишки. Иннервация мочевого пузыря.",
+          "url": "https://meduniver.com/Medical/Anatom/501.html",
+          "id": "501"
+        },
+        {
+          "title": "Иннервация кровеносных сосудов. Иннервация сосудов.",
+          "url": "https://meduniver.com/Medical/Anatom/502.html",
+          "id": "502"
+        },
+        {
+          "title": "Единство вегетативной и центральной нервной системы. Зоны Захарьина — Геда.",
+          "url": "https://meduniver.com/Medical/Anatom/503.html",
+          "id": "503"
+        },
+        {
+          "title": "Первая пара черепных нервов. Семиотика поражения обонятельного пути",
+          "url": "https://meduniver.com/Medical/Anatom/611.html",
+          "id": "611"
+        },
+        {
+          "title": "Исследование обонятельных нервов. Синдромы поражения обоняния",
+          "url": "https://meduniver.com/Medical/Anatom/612.html",
+          "id": "612"
+        },
+        {
+          "title": "Синдром Фостера-Кеннеди. Синдромы корковых поражения обонятельного пути",
+          "url": "https://meduniver.com/Medical/Anatom/613.html",
+          "id": "613"
+        },
+        {
+          "title": "Анатомия зрительного пути. Центральный нейрон зрительного пути",
+          "url": "https://meduniver.com/Medical/Anatom/614.html",
+          "id": "614"
+        },
+        {
+          "title": "Исследование зрительного пути. Методы обследования зрительных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/615.html",
+          "id": "615"
+        },
+        {
+          "title": "Поражение зрительного нерва. Ретробульбарный неврит",
+          "url": "https://meduniver.com/Medical/Anatom/616.html",
+          "id": "616"
+        },
+        {
+          "title": "Хиазмальный синдром. Признаки хиазмального синдрома",
+          "url": "https://meduniver.com/Medical/Anatom/617.html",
+          "id": "617"
+        },
+        {
+          "title": "Трактусовый синдром. Поражение центрального зрительного пути от коленчатого тела и выше",
+          "url": "https://meduniver.com/Medical/Anatom/618.html",
+          "id": "618"
+        },
+        {
+          "title": "Поражение области шпорной борозды. Поражение полей 18, 19 головного мозга",
+          "url": "https://meduniver.com/Medical/Anatom/619.html",
+          "id": "619"
+        },
+        {
+          "title": "Варианты зрительной агнозии. Апрактические нарушения при поражении теменно-затылочных отделов коры",
+          "url": "https://meduniver.com/Medical/Anatom/620.html",
+          "id": "620"
+        },
+        {
+          "title": "Синдромы раздражения 18,19 полей. Глазодвигательный нерв",
+          "url": "https://meduniver.com/Medical/Anatom/621.html",
+          "id": "621"
+        },
+        {
+          "title": "Обследование глазодвигательного нерва. Описание функции III, IV, VI пар черепных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/622.html",
+          "id": "622"
+        },
+        {
+          "title": "Термины поражения глазодвигательных нервов. Семиотика поражения пути глазодвигательного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/623.html",
+          "id": "623"
+        },
+        {
+          "title": "Псевдоопухоль орбиты. Синдром Толоза-Ханта",
+          "url": "https://meduniver.com/Medical/Anatom/624.html",
+          "id": "624"
+        },
+        {
+          "title": "Синдром верхушки орбиты. Синдром пещеристой пазухи - кавернозного синуса",
+          "url": "https://meduniver.com/Medical/Anatom/625.html",
+          "id": "625"
+        },
+        {
+          "title": "Ядерное поражение глазодвигательного нерва. Синдромы Вебера, Нотнагеля, Клода и Бенедикта",
+          "url": "https://meduniver.com/Medical/Anatom/626.html",
+          "id": "626"
+        },
+        {
+          "title": "Блоковый нерв. Патология четвертой пары черепных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/627.html",
+          "id": "627"
+        },
+        {
+          "title": "Отводящий нерв. Синдром Гаспарини",
+          "url": "https://meduniver.com/Medical/Anatom/628.html",
+          "id": "628"
+        },
+        {
+          "title": "Параличи взора. Дифференциальная диагностика надъядерных и стволовых параличей взора",
+          "url": "https://meduniver.com/Medical/Anatom/629.html",
+          "id": "629"
+        },
+        {
+          "title": "Стволовой паралич взора. Синдром Раймона-Сестана, Парино и Грунера-Бертолотти",
+          "url": "https://meduniver.com/Medical/Anatom/630.html",
+          "id": "630"
+        },
+        {
+          "title": "Болезнь Грефе. Врожденная окулярная апраксия или синдром Когана",
+          "url": "https://meduniver.com/Medical/Anatom/631.html",
+          "id": "631"
+        },
+        {
+          "title": "Тотальная офтальмоплегия. Нарушение взора при поражении экстрапирамидной системы",
+          "url": "https://meduniver.com/Medical/Anatom/632.html",
+          "id": "632"
+        },
+        {
+          "title": "Зрачок. Патология и семиотика заболеваний зрачка",
+          "url": "https://meduniver.com/Medical/Anatom/633.html",
+          "id": "633"
+        },
+        {
+          "title": "Синдром Кнаппа, Тарини. Синдром Арджилл-Робертсона и Клод-Бернара-Горнера",
+          "url": "https://meduniver.com/Medical/Anatom/634.html",
+          "id": "634"
+        },
+        {
+          "title": "Синдром Панкоста, Фегелера. Синдром Валленберга-Захарченко",
+          "url": "https://meduniver.com/Medical/Anatom/635.html",
+          "id": "635"
+        },
+        {
+          "title": "Синдром Эдди",
+          "url": "https://meduniver.com/Medical/Anatom/636.html",
+          "id": "636"
+        },
+        {
+          "title": "I ветвь тройничного нерва. II ветвь тройничного нерва - верхнечелюстной нерв",
+          "url": "https://meduniver.com/Medical/Anatom/637.html",
+          "id": "637"
+        },
+        {
+          "title": "III ветвь тройничного нерва. Узлы имеющие отношение к нижнечелюстному нерву",
+          "url": "https://meduniver.com/Medical/Anatom/638.html",
+          "id": "638"
+        },
+        {
+          "title": "Методика исследования функций тройничного нерва. Точки Балле",
+          "url": "https://meduniver.com/Medical/Anatom/639.html",
+          "id": "639"
+        },
+        {
+          "title": "Рефлексы тройничного нерва. Невралгия тройничного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/640.html",
+          "id": "640"
+        },
+        {
+          "title": "Признаки невралгии ветвей тройничного нерва. Синдром Годфредсена",
+          "url": "https://meduniver.com/Medical/Anatom/641.html",
+          "id": "641"
+        },
+        {
+          "title": "Поражение корешка тройничного нерва. Признаки поражения корешков 5 пары черепных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/642.html",
+          "id": "642"
+        },
+        {
+          "title": "Ахейро-оральный синдром. Поражение ядер тройничного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/643.html",
+          "id": "643"
+        },
+        {
+          "title": "Синдром мозжечкового намета. Синдром Бурденко-Крамера",
+          "url": "https://meduniver.com/Medical/Anatom/644.html",
+          "id": "644"
+        },
+        {
+          "title": "Болезни вегетативных узлов лица. Невралгия ресничного узла",
+          "url": "https://meduniver.com/Medical/Anatom/645.html",
+          "id": "645"
+        },
+        {
+          "title": "Дифференциация поражений тройничного нерва. Похожие на тройничную невралгию синдромы",
+          "url": "https://meduniver.com/Medical/Anatom/646.html",
+          "id": "646"
+        },
+        {
+          "title": "Двигательный корешок тройничного нерва. Симптомы поражения двигательных ветвей тройничного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/647.html",
+          "id": "647"
+        },
+        {
+          "title": "Лицевой нерв. Промежуточный нерв",
+          "url": "https://meduniver.com/Medical/Anatom/648.html",
+          "id": "648"
+        },
+        {
+          "title": "Методы исследования функции лицевого нерва. Осмотр при патологии лицевого нерва",
+          "url": "https://meduniver.com/Medical/Anatom/649.html",
+          "id": "649"
+        },
+        {
+          "title": "Диагностика стороны прозопареза. Методы выявления пареза лицевого нерва",
+          "url": "https://meduniver.com/Medical/Anatom/650.html",
+          "id": "650"
+        },
+        {
+          "title": "Нарушения вкуса. Семиотика поражения пути лицевого нерва",
+          "url": "https://meduniver.com/Medical/Anatom/651.html",
+          "id": "651"
+        },
+        {
+          "title": "Центральный прозопарез. Изолированное ядерное поражение лицевого нерва",
+          "url": "https://meduniver.com/Medical/Anatom/652.html",
+          "id": "652"
+        },
+        {
+          "title": "Поражение экстрамедуллярной части лицевого нерва. Диагностика интракраниального поражения лицевого нерва",
+          "url": "https://meduniver.com/Medical/Anatom/653.html",
+          "id": "653"
+        },
+        {
+          "title": "Поражение лицевого нерва в области коленчатого узла - невралгия Ханта. Синдром Мебиуса",
+          "url": "https://meduniver.com/Medical/Anatom/654.html",
+          "id": "654"
+        },
+        {
+          "title": "Синдром Мелькерсон-Розенталя. Симптомы и синдромы нарушения вкуса",
+          "url": "https://meduniver.com/Medical/Anatom/655.html",
+          "id": "655"
+        },
+        {
+          "title": "Поражение барабанной струны. Нарушение вкуса при поражении полушарий головного мозга",
+          "url": "https://meduniver.com/Medical/Anatom/656.html",
+          "id": "656"
+        },
+        {
+          "title": "Слуховой нерв. Неврологический путь слухового нерва",
+          "url": "https://meduniver.com/Medical/Anatom/657.html",
+          "id": "657"
+        },
+        {
+          "title": "Обследование слухового нерва. Изучение остроты слуха",
+          "url": "https://meduniver.com/Medical/Anatom/658.html",
+          "id": "658"
+        },
+        {
+          "title": "Семиотика поражения слухового пути. Поражения звукопроводящего аппарата",
+          "url": "https://meduniver.com/Medical/Anatom/659.html",
+          "id": "659"
+        },
+        {
+          "title": "Слух при интракраниальной гипертензии. Корковые расстройства слуха",
+          "url": "https://meduniver.com/Medical/Anatom/660.html",
+          "id": "660"
+        },
+        {
+          "title": "Вестибулярный нерв. Опрос больного при поражении вестибулярного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/661.html",
+          "id": "661"
+        },
+        {
+          "title": "Методика исследования спонтанного нистагма. Проверка тоногенных реакций",
+          "url": "https://meduniver.com/Medical/Anatom/662.html",
+          "id": "662"
+        },
+        {
+          "title": "Вращательная проба. Поражение лабиринта - лабиринтиты",
+          "url": "https://meduniver.com/Medical/Anatom/663.html",
+          "id": "663"
+        },
+        {
+          "title": "Поражение корешка вестибулярного нерва. Поражение вестибулярного пути на стволовом уровне",
+          "url": "https://meduniver.com/Medical/Anatom/664.html",
+          "id": "664"
+        },
+        {
+          "title": "Надъядерный вестибулярный синдром. Вестибулярный синдром при патологии в супратенториальном пространстве",
+          "url": "https://meduniver.com/Medical/Anatom/665.html",
+          "id": "665"
+        },
+        {
+          "title": "Локальный подкорковый вестибулярный синдром. Языкоглоточный нерв",
+          "url": "https://meduniver.com/Medical/Anatom/666.html",
+          "id": "666"
+        },
+        {
+          "title": "Семиотика поражения пути языкоглоточного нерва. Блуждающий нерв",
+          "url": "https://meduniver.com/Medical/Anatom/667.html",
+          "id": "667"
+        },
+        {
+          "title": "Семиотика поражения блуждающего нерва. Синдром Арнольда",
+          "url": "https://meduniver.com/Medical/Anatom/668.html",
+          "id": "668"
+        },
+        {
+          "title": "Диафрагмальный нерв. Синдромы поражения черепных нервов",
+          "url": "https://meduniver.com/Medical/Anatom/669.html",
+          "id": "669"
+        },
+        {
+          "title": "Добавочный нерв. Оценка функции добавочного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/670.html",
+          "id": "670"
+        },
+        {
+          "title": "Проверка функции мышц иннервируемых добавочным нервом. Семиотика поражения пути XI пары",
+          "url": "https://meduniver.com/Medical/Anatom/671.html",
+          "id": "671"
+        },
+        {
+          "title": "Подъязычный нерв. Обследование подъязычного нерва",
+          "url": "https://meduniver.com/Medical/Anatom/672.html",
+          "id": "672"
+        },
+        {
+          "title": "Синдром Джексона, Эйзенлора. Бульбарный синдром",
+          "url": "https://meduniver.com/Medical/Anatom/673.html",
+          "id": "673"
+        },
+        {
+          "title": "Синдром псевдобульбарной дизартрии. Характеристика бульбарного синдрома",
+          "url": "https://meduniver.com/Medical/Anatom/674.html",
+          "id": "674"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Органы чувств",
+      "url": "https://meduniver.com/Medical/Anatom/8.html",
+      "articles": [
+        {
+          "title": "Органы чувств. Анализаторы. Анализатор.",
+          "url": "https://meduniver.com/Medical/Anatom/513.html",
+          "id": "513"
+        },
+        {
+          "title": "Ощущения. Строение анализаторов ( органов чувств ).",
+          "url": "https://meduniver.com/Medical/Anatom/514.html",
+          "id": "514"
+        },
+        {
+          "title": "Кожа, cutis. Функции кожи. Строение кожи. Эпидермис, epidermis.",
+          "url": "https://meduniver.com/Medical/Anatom/515.html",
+          "id": "515"
+        },
+        {
+          "title": "Собственно кожа, corium ( dermis, derma ). Подкожную основа, tela subcutanea. Подкожная жировая клетчатка.",
+          "url": "https://meduniver.com/Medical/Anatom/516.html",
+          "id": "516"
+        },
+        {
+          "title": "Цвет кожи. Волосы. Строение волос. Ногти. Строение ногтей.",
+          "url": "https://meduniver.com/Medical/Anatom/517.html",
+          "id": "517"
+        },
+        {
+          "title": "Cосуды и нервы кожи. Кровоснабжение кожи. Иннервация кожи.",
+          "url": "https://meduniver.com/Medical/Anatom/518.html",
+          "id": "518"
+        },
+        {
+          "title": "Молочная железа, mammae. Сосок, papilla mammae. Дольки молочной железы.",
+          "url": "https://meduniver.com/Medical/Anatom/519.html",
+          "id": "519"
+        },
+        {
+          "title": "Орган зрения, organum visus. Глаз. Глаза.",
+          "url": "https://meduniver.com/Medical/Anatom/534.html",
+          "id": "534"
+        },
+        {
+          "title": "Эмбриогенез глаза. Развитие оболочек глаза.",
+          "url": "https://meduniver.com/Medical/Anatom/535.html",
+          "id": "535"
+        },
+        {
+          "title": "Глаз, oculus. Глазное яблоко, bulbus oculi.",
+          "url": "https://meduniver.com/Medical/Anatom/536.html",
+          "id": "536"
+        },
+        {
+          "title": "Вспомогательные органы глаза. Мышцы глазного яблока. Мышцы глаза.",
+          "url": "https://meduniver.com/Medical/Anatom/544.html",
+          "id": "544"
+        },
+        {
+          "title": "Клетчатка глазницы и влагалище глазного яблока. Веки, palpebrae.",
+          "url": "https://meduniver.com/Medical/Anatom/545.html",
+          "id": "545"
+        },
+        {
+          "title": "Соединительная оболочка глаза, tunica conjunctiva. Конъюктива глаза.",
+          "url": "https://meduniver.com/Medical/Anatom/546.html",
+          "id": "546"
+        },
+        {
+          "title": "Слезный аппарат. Слезная железа, glandula lacrimalis. Слезный мешок, saccus lacrimalis.",
+          "url": "https://meduniver.com/Medical/Anatom/548.html",
+          "id": "548"
+        },
+        {
+          "title": "Проводящие пути. Проводящий путь зрительного анализатора. Проводящий путь зрения.",
+          "url": "https://meduniver.com/Medical/Anatom/504.html",
+          "id": "504"
+        },
+        {
+          "title": "Проводящий путь анализатора обоняния. Проводящий путь обоняния.",
+          "url": "https://meduniver.com/Medical/Anatom/509.html",
+          "id": "509"
+        },
+        {
+          "title": "Проводящий путь анализатора вкуса. Проводящий путь вкуса ( вкусовой чувствительности ).",
+          "url": "https://meduniver.com/Medical/Anatom/511.html",
+          "id": "511"
+        },
+        {
+          "title": "Преддверно-улитковый орган, organum vestibulocochleare. Cтроение органа равновесия (предверно - улиткового органа).",
+          "url": "https://meduniver.com/Medical/Anatom/521.html",
+          "id": "521"
+        },
+        {
+          "title": "Эмбриогенез органа слуха и гравитации ( равновесия ) у человека.",
+          "url": "https://meduniver.com/Medical/Anatom/522.html",
+          "id": "522"
+        },
+        {
+          "title": "Наружное ухо, auris externa. Ушная раковина, auricula. Наружный слуховой проход, meatus асusticus externus.",
+          "url": "https://meduniver.com/Medical/Anatom/523.html",
+          "id": "523"
+        },
+        {
+          "title": "Барабанная перепонка, membrana tympani. Сосуды и нервы наружного уха. Кровоснабжение наружного уха.",
+          "url": "https://meduniver.com/Medical/Anatom/524.html",
+          "id": "524"
+        },
+        {
+          "title": "Среднее ухо, auris media. Барабанная полость, cavitas tympanica. Стенки барабанной полости.",
+          "url": "https://meduniver.com/Medical/Anatom/525.html",
+          "id": "525"
+        },
+        {
+          "title": "Внутреннее ухо, лабиринт. Костный лабиринт, labyrinthus osseus. Преддверие, vestibulum.",
+          "url": "https://meduniver.com/Medical/Anatom/529.html",
+          "id": "529"
+        },
+        {
+          "title": "Проводящий путь слухового анализатора. Проводящий путь cлуха.",
+          "url": "https://meduniver.com/Medical/Anatom/506.html",
+          "id": "506"
+        },
+        {
+          "title": "Развитие и формирование уха. Формирование лабиринта",
+          "url": "https://meduniver.com/Medical/Anatom/675.html",
+          "id": "675"
+        },
+        {
+          "title": "Развитие среднего уха. Закладка наружного уха",
+          "url": "https://meduniver.com/Medical/Anatom/676.html",
+          "id": "676"
+        },
+        {
+          "title": "Пневматизация височной кости. Антрум и барабанная полость уха",
+          "url": "https://meduniver.com/Medical/Anatom/677.html",
+          "id": "677"
+        },
+        {
+          "title": "Конституция слизистой антрума. Височная кость новорожденного",
+          "url": "https://meduniver.com/Medical/Anatom/678.html",
+          "id": "678"
+        },
+        {
+          "title": "Особенности височной кости новорожденного. Формирование наружного слухового прохода",
+          "url": "https://meduniver.com/Medical/Anatom/679.html",
+          "id": "679"
+        },
+        {
+          "title": "Строение височной кости. Наружная поверхность височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/680.html",
+          "id": "680"
+        },
+        {
+          "title": "Нижняя поверхность височной кости. Отверстия нижней поверхности височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/681.html",
+          "id": "681"
+        },
+        {
+          "title": "Пирамида височной кости. Топография височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/682.html",
+          "id": "682"
+        },
+        {
+          "title": "Топография сигмовидной пазухи. Анатомия сигмовидной пазухи",
+          "url": "https://meduniver.com/Medical/Anatom/683.html",
+          "id": "683"
+        },
+        {
+          "title": "Височная кость и венозные пазухи. Взаимоотношения головного мозга и височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/684.html",
+          "id": "684"
+        },
+        {
+          "title": "Ушная раковина. Наружный слуховой проход",
+          "url": "https://meduniver.com/Medical/Anatom/685.html",
+          "id": "685"
+        },
+        {
+          "title": "Костный слуховой проход. Стенки костного слухового прохода",
+          "url": "https://meduniver.com/Medical/Anatom/686.html",
+          "id": "686"
+        },
+        {
+          "title": "Кровоснабжение наружного уха. Иннервация наружного уха",
+          "url": "https://meduniver.com/Medical/Anatom/687.html",
+          "id": "687"
+        },
+        {
+          "title": "Среднее ухо. Барабанная перепонка",
+          "url": "https://meduniver.com/Medical/Anatom/688.html",
+          "id": "688"
+        },
+        {
+          "title": "Отоскопия барабанной перепонки. Строение барабанной перепонки в норме",
+          "url": "https://meduniver.com/Medical/Anatom/689.html",
+          "id": "689"
+        },
+        {
+          "title": "Квадранты барабанной перепонки. Слизистая барабанной перепонки",
+          "url": "https://meduniver.com/Medical/Anatom/690.html",
+          "id": "690"
+        },
+        {
+          "title": "Кровоснабжение барабанной перепонки. Иннервация барабанной перепонки",
+          "url": "https://meduniver.com/Medical/Anatom/691.html",
+          "id": "691"
+        },
+        {
+          "title": "Этажи барабанной полости. Наружная и внутренняя стенки барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/692.html",
+          "id": "692"
+        },
+        {
+          "title": "Канал лицевого нерва. Нижняя стенка барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/693.html",
+          "id": "693"
+        },
+        {
+          "title": "Задняя стенка барабанной полости. Топография передней стенки барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/694.html",
+          "id": "694"
+        },
+        {
+          "title": "Верхняя стенка барабанной полости. Нижняя стенка барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/695.html",
+          "id": "695"
+        },
+        {
+          "title": "Латеральная стенка аттика. Передняя стенка аттика",
+          "url": "https://meduniver.com/Medical/Anatom/696.html",
+          "id": "696"
+        },
+        {
+          "title": "Слизистая оболочка барабанной полости. Слуховые косточки",
+          "url": "https://meduniver.com/Medical/Anatom/697.html",
+          "id": "697"
+        },
+        {
+          "title": "Стремя. Сочленения между слуховыми косточками",
+          "url": "https://meduniver.com/Medical/Anatom/698.html",
+          "id": "698"
+        },
+        {
+          "title": "Стапедо-вестибулярное соединение. Мышцы барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/699.html",
+          "id": "699"
+        },
+        {
+          "title": "Внутриушные мышцы. Кровоснабжение барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/700.html",
+          "id": "700"
+        },
+        {
+          "title": "Артерии барабанной полости. Вены барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/701.html",
+          "id": "701"
+        },
+        {
+          "title": "Иннервация барабанной полости. Нервы и сплетение барабанной полости",
+          "url": "https://meduniver.com/Medical/Anatom/702.html",
+          "id": "702"
+        },
+        {
+          "title": "Сосцевидный отросток. Полости сосцевидного отростка",
+          "url": "https://meduniver.com/Medical/Anatom/703.html",
+          "id": "703"
+        },
+        {
+          "title": "Воздухоносные ячейки сосцевидного отростка. Типы строения сосцевидного отростка",
+          "url": "https://meduniver.com/Medical/Anatom/704.html",
+          "id": "704"
+        },
+        {
+          "title": "Виды ячеек сосцевидного отростка. Пороговые ячейки сосцевидного отростка",
+          "url": "https://meduniver.com/Medical/Anatom/705.html",
+          "id": "705"
+        },
+        {
+          "title": "Скуловые ячейки сосцевидного отростка. Ячейки пирамиды по Муре",
+          "url": "https://meduniver.com/Medical/Anatom/706.html",
+          "id": "706"
+        },
+        {
+          "title": "Анатомические связи среднего уха. Ветви и кровоснабжение лицевого нерва в височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/707.html",
+          "id": "707"
+        },
+        {
+          "title": "Глоточно-барабанная труба. Строение и топография евстахиевой трубы",
+          "url": "https://meduniver.com/Medical/Anatom/708.html",
+          "id": "708"
+        },
+        {
+          "title": "Мышцы глоточно-барабанной трубы. Кровоснабжение и иннервация евстахиевой трубы",
+          "url": "https://meduniver.com/Medical/Anatom/709.html",
+          "id": "709"
+        },
+        {
+          "title": "Внутреннее ухо. Костный лабиринт и его топография",
+          "url": "https://meduniver.com/Medical/Anatom/710.html",
+          "id": "710"
+        },
+        {
+          "title": "Сообщение внутреннего уха. Преддверие костного лабиринта",
+          "url": "https://meduniver.com/Medical/Anatom/711.html",
+          "id": "711"
+        },
+        {
+          "title": "Полукружные каналы костного лабиринта. Улитка внутренннего уха",
+          "url": "https://meduniver.com/Medical/Anatom/712.html",
+          "id": "712"
+        },
+        {
+          "title": "Внутренний слуховой проход. Водопровод преддверия и улитки",
+          "url": "https://meduniver.com/Medical/Anatom/713.html",
+          "id": "713"
+        },
+        {
+          "title": "Взаимосвязь внутреннего уха. Сообщения среднего уха с лабиринтом",
+          "url": "https://meduniver.com/Medical/Anatom/714.html",
+          "id": "714"
+        },
+        {
+          "title": "Топография лабиринта. Топография пирамиды височной кости",
+          "url": "https://meduniver.com/Medical/Anatom/715.html",
+          "id": "715"
+        },
+        {
+          "title": "Хирургическая анатомия пирамиды височной кости. Перепончатый лабиринт",
+          "url": "https://meduniver.com/Medical/Anatom/716.html",
+          "id": "716"
+        },
+        {
+          "title": "Перепончатое преддверие лабиринта. Строение преддверия перепончатого лабиринта",
+          "url": "https://meduniver.com/Medical/Anatom/717.html",
+          "id": "717"
+        },
+        {
+          "title": "Волосковые клетки лабиринта. Перепончатые полукружные каналы лабиринта",
+          "url": "https://meduniver.com/Medical/Anatom/718.html",
+          "id": "718"
+        },
+        {
+          "title": "Перепончатая улитка. Основная мембрана улитки",
+          "url": "https://meduniver.com/Medical/Anatom/719.html",
+          "id": "719"
+        },
+        {
+          "title": "Рейсснерова мембрана улитки. Спиральная связка и сосудистая полоска улитки",
+          "url": "https://meduniver.com/Medical/Anatom/720.html",
+          "id": "720"
+        },
+        {
+          "title": "Кровоснабжение внутреннего уха. Кортиев орган",
+          "url": "https://meduniver.com/Medical/Anatom/721.html",
+          "id": "721"
+        },
+        {
+          "title": "Слуховые волосатые клетки кортиева органа. Чувствительные клетки кортиева органа",
+          "url": "https://meduniver.com/Medical/Anatom/722.html",
+          "id": "722"
+        },
+        {
+          "title": "Покрышечная мембрана кортиева органа. Иннервация внутреннего уха",
+          "url": "https://meduniver.com/Medical/Anatom/723.html",
+          "id": "723"
+        },
+        {
+          "title": "Кохлеарный или слуховой нерв. Афферентные волокна внутреннего уха",
+          "url": "https://meduniver.com/Medical/Anatom/724.html",
+          "id": "724"
+        },
+        {
+          "title": "Эфферентные волокна внутреннего уха. Кровоснабжение внутреннего уха",
+          "url": "https://meduniver.com/Medical/Anatom/725.html",
+          "id": "725"
+        },
+        {
+          "title": "Венозный отток лабиринта. Вены внутреннего уха",
+          "url": "https://meduniver.com/Medical/Anatom/726.html",
+          "id": "726"
+        },
+        {
+          "title": "Функция среднего уха. Трансформация и передача звуков в ухе",
+          "url": "https://meduniver.com/Medical/Anatom/727.html",
+          "id": "727"
+        },
+        {
+          "title": "Костная проводимость. Функции улитки",
+          "url": "https://meduniver.com/Medical/Anatom/728.html",
+          "id": "728"
+        },
+        {
+          "title": "Теория Гельмгольца. Теории функционирования улитки",
+          "url": "https://meduniver.com/Medical/Anatom/729.html",
+          "id": "729"
+        },
+        {
+          "title": "Теория Флетчера—Роафа. Пространственная теория звуков",
+          "url": "https://meduniver.com/Medical/Anatom/730.html",
+          "id": "730"
+        },
+        {
+          "title": "Биотоки улитки. Потенциал покоя и возбуждения улитки",
+          "url": "https://meduniver.com/Medical/Anatom/731.html",
+          "id": "731"
+        },
+        {
+          "title": "Слуховые волосатые клетки кортиева органа. Чувствительные клетки кортиева органа",
+          "url": "https://meduniver.com/Medical/Anatom/732.html",
+          "id": "732"
+        },
+        {
+          "title": "Физиология вестибулярного анализатора. Рецепторы тела",
+          "url": "https://meduniver.com/Medical/Anatom/733.html",
+          "id": "733"
+        },
+        {
+          "title": "Отолитовы рефлексы. Значение вестибулярного анализатора",
+          "url": "https://meduniver.com/Medical/Anatom/734.html",
+          "id": "734"
+        },
+        {
+          "title": "Рефлексы положения. Методы изучения вестибулярного аппарата",
+          "url": "https://meduniver.com/Medical/Anatom/735.html",
+          "id": "735"
+        },
+        {
+          "title": "Ампулярный отдел вестибулярного аппарата. Физиология полукружных каналов",
+          "url": "https://meduniver.com/Medical/Anatom/736.html",
+          "id": "736"
+        },
+        {
+          "title": "Направленность рефлексов вестибулярного аппарата. Вестибулярный нистагм",
+          "url": "https://meduniver.com/Medical/Anatom/737.html",
+          "id": "737"
+        },
+        {
+          "title": "Раздражение ампулярного аппарата. Ядро Бехтерева",
+          "url": "https://meduniver.com/Medical/Anatom/738.html",
+          "id": "738"
+        },
+        {
+          "title": "Двигательные рефлексы глаз. Взаимосвязь мозжечка и вестибулярного аппарата",
+          "url": "https://meduniver.com/Medical/Anatom/739.html",
+          "id": "739"
+        },
+        {
+          "title": "Законы вестибулярного нистагма. Значимость определения нистагма",
+          "url": "https://meduniver.com/Medical/Anatom/740.html",
+          "id": "740"
+        },
+        {
+          "title": "Характеристика нистагма. Нистагмография",
+          "url": "https://meduniver.com/Medical/Anatom/741.html",
+          "id": "741"
+        },
+        {
+          "title": "Исследование вертикальных полукружных каналов. Купула полукружных каналов",
+          "url": "https://meduniver.com/Medical/Anatom/742.html",
+          "id": "742"
+        },
+        {
+          "title": "Недостатки гипотезы Брейера. Центральные влияния на вестибулярный анализатор",
+          "url": "https://meduniver.com/Medical/Anatom/743.html",
+          "id": "743"
+        },
+        {
+          "title": "Опыт В. М. Бехтерева - односторонняя лабиринтэктомия. Вестибулярно-вегетативные реакции",
+          "url": "https://meduniver.com/Medical/Anatom/744.html",
+          "id": "744"
+        },
+        {
+          "title": "Вегетативные рефлексы вестибулярного аппарата. Сенсорные реакции вестибулярной системы",
+          "url": "https://meduniver.com/Medical/Anatom/745.html",
+          "id": "745"
+        },
+        {
+          "title": "Порог ощущения вестибулярного аппарата. Калорический раздражитель вестибулярного анализатора",
+          "url": "https://meduniver.com/Medical/Anatom/746.html",
+          "id": "746"
+        },
+        {
+          "title": "Калорический нистагм. Характеристика калорической пробы",
+          "url": "https://meduniver.com/Medical/Anatom/747.html",
+          "id": "747"
+        },
+        {
+          "title": "Механический раздражитель вестибулярного аппарата. Фистула вестибулярного аппарата",
+          "url": "https://meduniver.com/Medical/Anatom/748.html",
+          "id": "748"
+        },
+        {
+          "title": "Электрический раздражитель вестибулярного аппарата. Отолитовый анализатор",
+          "url": "https://meduniver.com/Medical/Anatom/749.html",
+          "id": "749"
+        },
+        {
+          "title": "Тонические лабиринтные рефлексы. Рефлексы положения",
+          "url": "https://meduniver.com/Medical/Anatom/750.html",
+          "id": "750"
+        },
+        {
+          "title": "Компенсаторное движение глаз. Лабиринтные установочные рефлексы",
+          "url": "https://meduniver.com/Medical/Anatom/751.html",
+          "id": "751"
+        },
+        {
+          "title": "Отолитовы мембраны. Функции отолитовой мембраны",
+          "url": "https://meduniver.com/Medical/Anatom/752.html",
+          "id": "752"
+        },
+        {
+          "title": "Теория Квикса. Раздражители отолитового анализатора",
+          "url": "https://meduniver.com/Medical/Anatom/753.html",
+          "id": "753"
+        },
+        {
+          "title": "Нистагм положения. Отолитовая реакция В.И. Воячека",
+          "url": "https://meduniver.com/Medical/Anatom/754.html",
+          "id": "754"
+        },
+        {
+          "title": "Обеспыливание воздуха носом. Всасывание веществ в полости носа",
+          "url": "https://meduniver.com/Medical/Anatom/775.html",
+          "id": "775"
+        },
+        {
+          "title": "Полость носа и организм. Взаимосвязи полости носа с другими органами и системами",
+          "url": "https://meduniver.com/Medical/Anatom/776.html",
+          "id": "776"
+        },
+        {
+          "title": "Обонятельная функция носа. Вкусовая роль обоняния",
+          "url": "https://meduniver.com/Medical/Anatom/777.html",
+          "id": "777"
+        },
+        {
+          "title": "Классификация запаховых веществ. Теории происхождения пахучих веществ",
+          "url": "https://meduniver.com/Medical/Anatom/778.html",
+          "id": "778"
+        },
+        {
+          "title": "Физические теории обоняния. Химические основы обоняния",
+          "url": "https://meduniver.com/Medical/Anatom/779.html",
+          "id": "779"
+        },
+        {
+          "title": "Физико-химическая теория обоняния. Чувствительность обонятельного прибора",
+          "url": "https://meduniver.com/Medical/Anatom/780.html",
+          "id": "780"
+        },
+        {
+          "title": "Лабильность обоняния. Адаптация и маскировка обоняния",
+          "url": "https://meduniver.com/Medical/Anatom/781.html",
+          "id": "781"
+        },
+        {
+          "title": "Связь между обонянием и вестибулярной функцией. Функции глотки - сосание и глотание",
+          "url": "https://meduniver.com/Medical/Anatom/782.html",
+          "id": "782"
+        },
+        {
+          "title": "Фазы акта глотания. Последовательность актов при глотании",
+          "url": "https://meduniver.com/Medical/Anatom/783.html",
+          "id": "783"
+        },
+        {
+          "title": "Акт еды. Роль глотки в голосообразовании",
+          "url": "https://meduniver.com/Medical/Anatom/784.html",
+          "id": "784"
+        },
+        {
+          "title": "Пирамида височной кости. Элементы пирамиды височной кости.",
+          "url": "https://meduniver.com/Medical/Anatom/549.html",
+          "id": "549"
+        },
+        {
+          "title": "Синдром сфеноидальной щели. Синдром Редера.",
+          "url": "https://meduniver.com/Medical/Anatom/550.html",
+          "id": "550"
+        },
+        {
+          "title": "Синдромы поражения пирамиды височной кости. Среднее ухо.",
+          "url": "https://meduniver.com/Medical/Anatom/551.html",
+          "id": "551"
+        },
+        {
+          "title": "Особенности барабанной перепонки. Дефекты барабанной перепонки.",
+          "url": "https://meduniver.com/Medical/Anatom/552.html",
+          "id": "552"
+        },
+        {
+          "title": "Расстояния между барабанной перепонкой. Слуховые косточки.",
+          "url": "https://meduniver.com/Medical/Anatom/553.html",
+          "id": "553"
+        },
+        {
+          "title": "Этажи и пространства барабанной полости. Эпитимпанум — наружный и внутренний аттик.",
+          "url": "https://meduniver.com/Medical/Anatom/554.html",
+          "id": "554"
+        },
+        {
+          "title": "Внутренний аттик. Анатомические связи внутреннего аттика.",
+          "url": "https://meduniver.com/Medical/Anatom/555.html",
+          "id": "555"
+        },
+        {
+          "title": "Клиническое значение тимпанальной диафрагмы. Функциональная блокада тимпанальных соустий.",
+          "url": "https://meduniver.com/Medical/Anatom/556.html",
+          "id": "556"
+        },
+        {
+          "title": "Механическая блокада тимпанальных соустий. Значение аттика при холестеатомном процессе.",
+          "url": "https://meduniver.com/Medical/Anatom/557.html",
+          "id": "557"
+        },
+        {
+          "title": "Мезотимпанум. Границы и стенки мыса.",
+          "url": "https://meduniver.com/Medical/Anatom/558.html",
+          "id": "558"
+        },
+        {
+          "title": "Ямка ниши окна преддверия. Синусы ямки окна преддверия.",
+          "url": "https://meduniver.com/Medical/Anatom/559.html",
+          "id": "559"
+        },
+        {
+          "title": "Ямка ниши окна улитки. Вершина мыса.",
+          "url": "https://meduniver.com/Medical/Anatom/560.html",
+          "id": "560"
+        },
+        {
+          "title": "Костные каркасы (валлекулы) барабанного нерва. Промежуточный нерв.",
+          "url": "https://meduniver.com/Medical/Anatom/561.html",
+          "id": "561"
+        },
+        {
+          "title": "Нейропатия ветвей барабанного сплетения. Теникулит.",
+          "url": "https://meduniver.com/Medical/Anatom/562.html",
+          "id": "562"
+        },
+        {
+          "title": "Стенки гипотимпанума. Гипотимпанальный карман.",
+          "url": "https://meduniver.com/Medical/Anatom/563.html",
+          "id": "563"
+        },
+        {
+          "title": "Значение высоты купола яремной вены в гипотимпануме. Ретротимпанум.",
+          "url": "https://meduniver.com/Medical/Anatom/564.html",
+          "id": "564"
+        },
+        {
+          "title": "Вход в пещеру — адитус. Комплекс пирамидального возвышения - пирамиды.",
+          "url": "https://meduniver.com/Medical/Anatom/565.html",
+          "id": "565"
+        },
+        {
+          "title": "Внутреннее пространство вокруг пирамидального возвышения. Клиническое значение синусов ретротимпанума.",
+          "url": "https://meduniver.com/Medical/Anatom/566.html",
+          "id": "566"
+        },
+        {
+          "title": "Канал лицевого нерва. Топография канала лицевого нерва.",
+          "url": "https://meduniver.com/Medical/Anatom/567.html",
+          "id": "567"
+        },
+        {
+          "title": "Патология лицевого канала. Особенности лицевого канала при холестеатомном процессе.",
+          "url": "https://meduniver.com/Medical/Anatom/568.html",
+          "id": "568"
+        },
+        {
+          "title": "Варианты расположения канала лицевого нерва. Индивидуальные особенности лицевого канала.",
+          "url": "https://meduniver.com/Medical/Anatom/569.html",
+          "id": "569"
+        },
+        {
+          "title": "Клиника поражения лицевого нерва. Протимпанум.",
+          "url": "https://meduniver.com/Medical/Anatom/570.html",
+          "id": "570"
+        },
+        {
+          "title": "Синусы протимпанума. Клиническое значение анатомических особенностей протимпанума.",
+          "url": "https://meduniver.com/Medical/Anatom/571.html",
+          "id": "571"
+        },
+        {
+          "title": "Функциональные элементы слуховой трубы. Функции слуховой трубы.",
+          "url": "https://meduniver.com/Medical/Anatom/572.html",
+          "id": "572"
+        },
+        {
+          "title": "Особенности хрящевого отдела слуховой трубы. Перитубарная область.",
+          "url": "https://meduniver.com/Medical/Anatom/573.html",
+          "id": "573"
+        },
+        {
+          "title": "Сосцевидный отросток. Типы сосцевидного отростка.",
+          "url": "https://meduniver.com/Medical/Anatom/574.html",
+          "id": "574"
+        },
+        {
+          "title": "Виды клеток в сосцевидных отростках. Позиция сигмовидного синуса и купола яремной вены.",
+          "url": "https://meduniver.com/Medical/Anatom/575.html",
+          "id": "575"
+        },
+        {
+          "title": "Предлежание сигмовидного синуса. Размеры луковицы яремной вены и дистанция до сигмовидного синуса.",
+          "url": "https://meduniver.com/Medical/Anatom/576.html",
+          "id": "576"
+        },
+        {
+          "title": "Функциональные элементы слуховой трубы. Функции слуховой трубы.",
+          "url": "https://meduniver.com/Medical/Anatom/577.html",
+          "id": "577"
+        },
+        {
+          "title": "Сосудистое обеспечение стенок барабанной полости. Особенности сосудистого русла слизистой оболочки среднего уха.",
+          "url": "https://meduniver.com/Medical/Anatom/578.html",
+          "id": "578"
+        },
+        {
+          "title": "Связи артерий среднего уха. Связи артерий пирамиды.",
+          "url": "https://meduniver.com/Medical/Anatom/579.html",
+          "id": "579"
+        },
+        {
+          "title": "Клиническое значение анастомозов уха. Значение условий кровоснабжения структур уха.",
+          "url": "https://meduniver.com/Medical/Anatom/580.html",
+          "id": "580"
+        },
+        {
+          "title": "Структуры внутреннего уха. Анатомические связи лабиринта.",
+          "url": "https://meduniver.com/Medical/Anatom/581.html",
+          "id": "581"
+        },
+        {
+          "title": "Преддверие. Стенки преддверия внутреннего уха.",
+          "url": "https://meduniver.com/Medical/Anatom/582.html",
+          "id": "582"
+        },
+        {
+          "title": "Полукружные каналы. Улитка и ее строение.",
+          "url": "https://meduniver.com/Medical/Anatom/583.html",
+          "id": "583"
+        },
+        {
+          "title": "Перепончатый лабиринт. Строение перепончатого лабиринта.",
+          "url": "https://meduniver.com/Medical/Anatom/584.html",
+          "id": "584"
+        },
+        {
+          "title": "Сферический мешочек. Перепончатые полукружные протоки. Вестибулярный анализатор.",
+          "url": "https://meduniver.com/Medical/Anatom/585.html",
+          "id": "585"
+        },
+        {
+          "title": "Периферический вестибулярный анализатор. Клетки вестибулярного анализатора.",
+          "url": "https://meduniver.com/Medical/Anatom/586.html",
+          "id": "586"
+        },
+        {
+          "title": "Статолитовый аппарат. Роль киноцилий вестибулярного анализатора.",
+          "url": "https://meduniver.com/Medical/Anatom/587.html",
+          "id": "587"
+        },
+        {
+          "title": "Промежуточный вестибулярный анализатор. Центральный вестибулярный анализатор.",
+          "url": "https://meduniver.com/Medical/Anatom/588.html",
+          "id": "588"
+        },
+        {
+          "title": "Вестибулоокулярный рефлекс. Механизмы вестибулоокулярного рефлекса.",
+          "url": "https://meduniver.com/Medical/Anatom/589.html",
+          "id": "589"
+        },
+        {
+          "title": "Вестибулоспинальный рефлекс. Вестибулярный синдром.",
+          "url": "https://meduniver.com/Medical/Anatom/590.html",
+          "id": "590"
+        },
+        {
+          "title": "Нистагм. Реакция отклонения рук и нарушение равновесия.",
+          "url": "https://meduniver.com/Medical/Anatom/591.html",
+          "id": "591"
+        },
+        {
+          "title": "Центральный вестибулярный синдром. Перепончатый проток улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/592.html",
+          "id": "592"
+        },
+        {
+          "title": "Орган Корти. Аппарат слуха.",
+          "url": "https://meduniver.com/Medical/Anatom/593.html",
+          "id": "593"
+        },
+        {
+          "title": "Путь звуковой волны. Афферентная иннервация улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/594.html",
+          "id": "594"
+        },
+        {
+          "title": "Эфферентная иннервация улитки. Автономные нервные волокна улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/595.html",
+          "id": "595"
+        },
+        {
+          "title": "Водопровод преддверия. Эндолимфатический проток и мешок.",
+          "url": "https://meduniver.com/Medical/Anatom/596.html",
+          "id": "596"
+        },
+        {
+          "title": "Топография эндолимфатического протока и мешка. Водопровод улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/597.html",
+          "id": "597"
+        },
+        {
+          "title": "Статистика аномалий лабиринта. Сужение водопровода преддверия.",
+          "url": "https://meduniver.com/Medical/Anatom/598.html",
+          "id": "598"
+        },
+        {
+          "title": "Признаки широкого водопровода преддверия. Диагностика широкого водопровода преддверия.",
+          "url": "https://meduniver.com/Medical/Anatom/599.html",
+          "id": "599"
+        },
+        {
+          "title": "Синдром широкого водопровода улитки. Диагностика широкого водопровода улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/600.html",
+          "id": "600"
+        },
+        {
+          "title": "Синдром узкого водопровода улитки. Диагностика узкого водопровода улитки.",
+          "url": "https://meduniver.com/Medical/Anatom/601.html",
+          "id": "601"
+        },
+        {
+          "title": "Лабиринтный тракт. Что такое лабиринтный тракт?",
+          "url": "https://meduniver.com/Medical/Anatom/602.html",
+          "id": "602"
+        },
+        {
+          "title": "Перилабиринтные клетки. Виды пневматизации перилабиринтных клеток.",
+          "url": "https://meduniver.com/Medical/Anatom/603.html",
+          "id": "603"
+        },
+        {
+          "title": "Периостит в лабиринтных клетках. Дегисценцин полукружных каналов.",
+          "url": "https://meduniver.com/Medical/Anatom/604.html",
+          "id": "604"
+        },
+        {
+          "title": "Внутренний слуховой проход. Анатомия внутреннего слухового прохода.",
+          "url": "https://meduniver.com/Medical/Anatom/605.html",
+          "id": "605"
+        },
+        {
+          "title": "Синдром узкого внутреннего слухового прохода. Синдром широкого внутреннего слухового прохода.",
+          "url": "https://meduniver.com/Medical/Anatom/606.html",
+          "id": "606"
+        },
+        {
+          "title": "Кровоснабжение лабиринта. Сосуды лабиринта.",
+          "url": "https://meduniver.com/Medical/Anatom/607.html",
+          "id": "607"
+        },
+        {
+          "title": "Компьютерная томография уха. Плоскости сканирования пирамиды височной кости.",
+          "url": "https://meduniver.com/Medical/Anatom/608.html",
+          "id": "608"
+        },
+        {
+          "title": "Выбор плоскости пирамиды височной кости. Показания к плоскостям сканирования пирамиды височной кости.",
+          "url": "https://meduniver.com/Medical/Anatom/609.html",
+          "id": "609"
+        },
+        {
+          "title": "КТ анатомия структур пирамиды височной кости в норме. КТ анатомия пирамиды височной кости.",
+          "url": "https://meduniver.com/Medical/Anatom/610.html",
+          "id": "610"
+        }
+      ]
+    }
+  ]
+}
