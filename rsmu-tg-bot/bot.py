@@ -221,12 +221,91 @@ def parse_article(url: str) -> dict:
             continue
         paragraphs.append(plain)
 
-    excerpt = (title + "\n\n" if title else "") + "\n\n".join(paragraphs)
-    excerpt = excerpt.strip()
-    if len(excerpt) > 3200:
-        excerpt = excerpt[:3200].rsplit(" ", 1)[0] + "…"
+    # полный текст статьи (постранично покажем в хендлере)
+    body_text = "\n\n".join(paragraphs).strip()
+    return {
+        "title": title,
+        "text": body_text,
+        "paragraphs": paragraphs,
+        "images": imgs,
+        "url": url,
+    }
 
-    return {"title": title, "excerpt": excerpt, "images": imgs, "url": url}
+
+# Кэш статей для листания страниц в одном сообщении
+ARTICLE_CACHE: dict[str, dict] = {}
+PAGE_SIZE = 3500  # запас под HTML и «стр. N/M»
+
+
+def _cache_key(sid: str, idx: int) -> str:
+    return f"{sid}:{idx}"
+
+
+def split_pages(text: str, size: int = PAGE_SIZE) -> list[str]:
+    """Делим текст на страницы, стараясь резать по абзацам."""
+    text = (text or "").strip()
+    if not text:
+        return ["(пустая статья)"]
+    if len(text) <= size:
+        return [text]
+    parts = text.split("\n\n")
+    pages: list[str] = []
+    cur = ""
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        # слишком длинный абзац — режем жёстко
+        while len(p) > size:
+            if cur:
+                pages.append(cur.strip())
+                cur = ""
+            pages.append(p[:size].rsplit(" ", 1)[0] + "…")
+            p = p[size:].lstrip(" …")
+        trial = (cur + "\n\n" + p).strip() if cur else p
+        if len(trial) <= size:
+            cur = trial
+        else:
+            if cur:
+                pages.append(cur.strip())
+            cur = p
+    if cur:
+        pages.append(cur.strip())
+    return pages or [text[:size]]
+
+
+def format_article_page(data: dict, page: int) -> tuple[str, int]:
+    pages = data["pages"]
+    total = len(pages)
+    page = max(0, min(page, total - 1))
+    body = pages[page]
+    header = f"<b>{html_lib.escape(data['title'])}</b>"
+    if data.get("sec_name"):
+        header += f"\n<i>{html_lib.escape(data['sec_name'])}</i>"
+    footer = f"\n\nстр. {page + 1}/{total}"
+    if total == 1:
+        footer = ""
+    text = f"{header}\n\n{html_lib.escape(body)}{footer}"
+    # на всякий случай уложиться в лимит
+    if len(text) > 4090:
+        text = text[:4085] + "…"
+    return text, page
+
+
+def article_nav_kb(sid: str, idx: int, page: int, total: int, url: str) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"apg:{sid}:{idx}:{page-1}"))
+    if page < total - 1:
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"apg:{sid}:{idx}:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="Открыть на сайте", url=url))
+    kb.row(InlineKeyboardButton(text="« К списку", callback_data=f"as:{sid}"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
 
 def main_menu_kb():
     kb = InlineKeyboardBuilder()
@@ -379,37 +458,83 @@ async def cb_anat_article(call: CallbackQuery):
         logger.exception("article fetch failed")
         await call.message.answer(f"Не удалось загрузить статью.\n{art['url']}\n\n({e})")
         return
-    caption = (
-        f"<b>{html_lib.escape(data['title'])}</b>\n"
-        f"<i>{html_lib.escape(sec['name'])}</i>\n\n"
-        f"{html_lib.escape(data['excerpt'])}\n\n"
-        f'<a href="{data["url"]}">Читать полностью на MedUniver</a>'
-    )
-    if len(caption) > 1000:
-        caption = caption[:990] + "…\n" + f'<a href="{data["url"]}">Читать полностью</a>'
-    kb = InlineKeyboardBuilder()
-    kb.button(text="Открыть на сайте", url=data["url"])
-    kb.button(text="« К списку", callback_data=f"as:{sid}")
-    kb.button(text="« Меню", callback_data="menu")
-    kb.adjust(1)
-    imgs = data["images"][:5]
+
+    pages = split_pages(data.get("text") or "")
+    cached = {
+        "title": data["title"],
+        "sec_name": sec["name"],
+        "url": data["url"],
+        "images": data.get("images") or [],
+        "pages": pages,
+    }
+    ARTICLE_CACHE[_cache_key(sid, idx)] = cached
+
+    # картинки отдельным сообщением (без длинного caption)
+    imgs = cached["images"][:5]
     if imgs:
         try:
             if len(imgs) == 1:
-                await call.message.answer_photo(URLInputFile(imgs[0]), caption=caption, reply_markup=kb.as_markup())
+                await call.message.answer_photo(URLInputFile(imgs[0]))
             else:
-                media = []
-                for i, img in enumerate(imgs):
-                    if i == 0:
-                        media.append(InputMediaPhoto(media=URLInputFile(img), caption=caption, parse_mode="HTML"))
-                    else:
-                        media.append(InputMediaPhoto(media=URLInputFile(img)))
+                media = [InputMediaPhoto(media=URLInputFile(img)) for img in imgs]
                 await call.message.answer_media_group(media)
-                await call.message.answer("Навигация:", reply_markup=kb.as_markup())
-            return
         except Exception as e:
             logger.warning("photo send failed: %s", e)
-    await call.message.answer(caption, reply_markup=kb.as_markup(), disable_web_page_preview=True)
+
+    page_text, page = format_article_page(cached, 0)
+    await call.message.answer(
+        page_text,
+        reply_markup=article_nav_kb(sid, idx, page, len(pages), cached["url"]),
+        disable_web_page_preview=True,
+    )
+
+
+@dp.callback_query(F.data.startswith("apg:"))
+async def cb_article_page(call: CallbackQuery):
+    """Листание страниц статьи в том же сообщении."""
+    try:
+        _, sid, idx_s, page_s = call.data.split(":")
+        idx, page = int(idx_s), int(page_s)
+    except Exception:
+        await call.answer("Ошибка", show_alert=True)
+        return
+
+    key = _cache_key(sid, idx)
+    cached = ARTICLE_CACHE.get(key)
+    if not cached:
+        # кэш потерялся (рестарт) — перезагрузим
+        sec = next((s for s in ANATOMY["sections"] if s["id"] == sid), None)
+        if not sec or idx >= len(sec.get("articles") or []):
+            await call.answer("Статья не найдена", show_alert=True)
+            return
+        try:
+            data = parse_article(sec["articles"][idx]["url"])
+        except Exception:
+            await call.answer("Не удалось загрузить", show_alert=True)
+            return
+        cached = {
+            "title": data["title"],
+            "sec_name": sec["name"],
+            "url": data["url"],
+            "images": data.get("images") or [],
+            "pages": split_pages(data.get("text") or ""),
+        }
+        ARTICLE_CACHE[key] = cached
+
+    page_text, page = format_article_page(cached, page)
+    total = len(cached["pages"])
+    try:
+        await call.message.edit_text(
+            page_text,
+            reply_markup=article_nav_kb(sid, idx, page, total, cached["url"]),
+            disable_web_page_preview=True,
+        )
+    except Exception as e:
+        # «message is not modified» и т.п.
+        logger.info("edit_text: %s", e)
+    await call.answer(f"стр. {page + 1}/{total}")
+
+
 
 @dp.message(Command("search"))
 async def cmd_search(message: Message):
