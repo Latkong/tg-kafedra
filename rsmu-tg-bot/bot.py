@@ -150,39 +150,82 @@ def fetch_html(url: str) -> str:
     return raw.decode("utf-8", errors="replace")
 
 def parse_article(url: str) -> dict:
+    """Достаём заголовок h3 + текст из <p> (без шапки/оглавления сайта)."""
     page = fetch_html(url)
+
     title_m = re.search(r"<title>([^<]+)</title>", page, re.I)
     title = re.sub(r"\s+", " ", title_m.group(1)).strip() if title_m else "Статья"
     title = re.sub(r"^Анатомия\s*:\s*", "", title, flags=re.I).strip(" .")
+
+    # Убрать скрипты/стили заранее
+    page = re.sub(r"(?is)<script[^>]*>.*?</script>", "", page)
+    page = re.sub(r"(?is)<style[^>]*>.*?</style>", "", page)
+    page = re.sub(r"(?is)<!--.*?-->", "", page)
+
+    # Основной контент: с первого <h3>…</h3> (у MedUniver так размечены статьи)
+    h3 = re.search(r"(?is)<h3[^>]*>.*?</h3>", page)
+    if h3:
+        body = page[h3.start():]
+        # обрезать хвост: навигация «далее», футер, меню
+        cut = re.search(
+            r'(?is)id=["\']count_place["\']|'
+            r"<h2[^>]*>\s*Связь с нами|"
+            r'class=["\']menu_2["\']|'
+            r">>></a>|"
+            r"<div id=[\"\']footer",
+            body,
+        )
+        if cut:
+            body = body[: cut.start()]
+    else:
+        # запасной вариант: с первого «содержательного» h2
+        h2 = re.search(r"(?is)<h2[^>]*>((?!Связь с нами).){3,}?</h2>", page)
+        body = page[h2.start() :] if h2 else page
+
+    # Заголовок из h3, если есть
+    h3_title = re.search(r"(?is)<h3[^>]*>(.*?)</h3>", body)
+    if h3_title:
+        t = re.sub(r"(?is)<[^>]+>", "", h3_title.group(1))
+        t = re.sub(r"\s+", " ", html_lib.unescape(t)).strip(" .")
+        if t:
+            title = t
+
+    # Картинки только из тела статьи
     imgs = []
-    for m in re.finditer(r'src="((?:Img/|/images/[^"]*Anatom|/Medical/[^"]+)[^"]+\.(?:jpg|jpeg|png|gif|webp))"', page, re.I):
+    for m in re.finditer(
+        r'(?is)<img[^>]+src=["\']([^"\']+\.(?:jpg|jpeg|png|gif|webp))["\']',
+        body,
+    ):
         src = m.group(1)
-        if any(x in src.lower() for x in ("menu", "logo", "line", "bot_", "hd_", "banner", "ads")):
+        if any(x in src.lower() for x in ("menu", "logo", "line", "bot_", "hd_", "banner", "ads", "metrika")):
             continue
         full = urljoin(url, src)
         if full not in imgs:
             imgs.append(full)
         if len(imgs) >= 6:
             break
-    text = re.sub(r"(?is)<script[^>]*>.*?</script>", " ", page)
-    text = re.sub(r"(?is)<style[^>]*>.*?</style>", " ", text)
-    text = re.sub(r"(?is)<!--.*?-->", " ", text)
-    text = re.sub(r"(?is)<br\s*/?>", "\n", text)
-    text = re.sub(r"(?is)</p>", "\n\n", text)
-    text = re.sub(r"(?is)<[^>]+>", " ", text)
-    text = html_lib.unescape(text)
-    text = re.sub(r"[ \t]+", " ", text)
-    text = re.sub(r"\n{3,}", "\n\n", text).strip()
-    excerpt = text
-    low = excerpt.lower()
-    for marker in (title.lower()[:20],):
-        pos = low.find(marker)
-        if pos > 50:
-            excerpt = excerpt[pos:]
-            break
-    excerpt = excerpt[:1800].strip()
-    if len(text) > 1800:
-        excerpt = excerpt.rsplit(" ", 1)[0] + "…"
+
+    # Текст: все <p> после h3 (и сам заголовок)
+    paragraphs = []
+    for m in re.finditer(r"(?is)<p[^>]*>(.*?)</p>", body):
+        raw_p = m.group(1)
+        # пропустить явные ссылки «далее» / оглавление
+        plain = re.sub(r"(?is)<[^>]+>", " ", raw_p)
+        plain = html_lib.unescape(plain)
+        plain = re.sub(r"\s+", " ", plain).strip()
+        if not plain or len(plain) < 20:
+            continue
+        if plain.startswith("-") and ">>>" in plain:
+            continue
+        if re.fullmatch(r"\d+\.\s*.{0,80}", plain) and "href" in raw_p.lower():
+            continue
+        paragraphs.append(plain)
+
+    excerpt = (title + "\n\n" if title else "") + "\n\n".join(paragraphs)
+    excerpt = excerpt.strip()
+    if len(excerpt) > 3200:
+        excerpt = excerpt[:3200].rsplit(" ", 1)[0] + "…"
+
     return {"title": title, "excerpt": excerpt, "images": imgs, "url": url}
 
 def main_menu_kb():
