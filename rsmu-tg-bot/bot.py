@@ -12,8 +12,15 @@ from urllib.request import Request, urlopen
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import (
-    CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup,
-    InputMediaPhoto, Message, URLInputFile,
+    BotCommand,
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InputMediaPhoto,
+    KeyboardButton,
+    Message,
+    ReplyKeyboardMarkup,
+    URLInputFile,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -185,6 +192,19 @@ def main_menu_kb():
     kb.adjust(1)
     return kb.as_markup()
 
+
+def main_reply_kb() -> ReplyKeyboardMarkup:
+    """Постоянная клавиатура внизу чата."""
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="🦴 Анатомия")],
+            [KeyboardButton(text="📋 Меню")],
+        ],
+        resize_keyboard=True,
+        is_persistent=True,
+        input_field_placeholder="Поиск или выберите раздел…",
+    )
+
 dp = Dispatcher()
 
 @dp.message(CommandStart())
@@ -193,10 +213,14 @@ async def cmd_start(message: Message):
     text = (
         f"<b>Кафедры РНИМУ + Анатомия</b>\n\n"
         f"Кафедр: {CATALOG.get('kafedraCount', '?')} · Статей анатомии: {n_anat}\n\n"
-        "Выберите раздел или напишите запрос\n"
-        "(например: <i>терапия</i> или <i>плечевая кость</i>)."
+        "Выберите раздел кнопками ниже или напишите запрос\n"
+        "(например: <i>терапия</i> или <i>плечевая кость</i>).\n\n"
+        "Команды также в меню слева от поля ввода: /kafedry · /anatom"
     )
-    await message.answer(text, reply_markup=main_menu_kb())
+    # сначала постоянная клавиатура внизу
+    await message.answer(text, reply_markup=main_reply_kb())
+    # затем inline-выбор
+    await message.answer("Куда зайти?", reply_markup=main_menu_kb())
 
 @dp.message(Command("help"))
 async def cmd_help(message: Message):
@@ -352,6 +376,25 @@ async def cmd_search(message: Message):
         return
     await do_search(message, parts[1].strip())
 
+@dp.message(F.text.in_({"🏛 Кафедры", "Кафедры", "/kafedry"}))
+async def btn_kafedry(message: Message):
+    await message.answer("Выберите институт:", reply_markup=institutes_keyboard())
+
+
+@dp.message(F.text.in_({"🦴 Анатомия", "Анатомия", "/anatom"}))
+async def btn_anatom(message: Message):
+    await message.answer(
+        'Анатомия (<a href="https://meduniver.com/Medical/Anatom/">MedUniver</a>). Выберите раздел:',
+        reply_markup=anatomy_sections_kb(),
+        disable_web_page_preview=True,
+    )
+
+
+@dp.message(F.text.in_({"📋 Меню", "Меню"}))
+async def btn_menu(message: Message):
+    await message.answer("Выберите раздел:", reply_markup=main_menu_kb())
+
+
 @dp.message(F.text)
 async def on_text(message: Message):
     q = (message.text or "").strip()
@@ -393,6 +436,15 @@ async def main():
         raise SystemExit("Укажите BOT_TOKEN")
     bot = Bot(token=token)
     await bot.delete_webhook(drop_pending_updates=True)
+    # Команды в меню Telegram (кнопка рядом с полем ввода)
+    await bot.set_my_commands(
+        [
+            BotCommand(command="start", description="Главное меню"),
+            BotCommand(command="kafedry", description="Кафедры РНИМУ"),
+            BotCommand(command="anatom", description="Анатомия (MedUniver)"),
+            BotCommand(command="help", description="Справка"),
+        ]
+    )
     logger.info("Bot started. anatomy=%s", sum(len(s.get("articles") or []) for s in ANATOMY["sections"]))
     await dp.start_polling(bot)
 
