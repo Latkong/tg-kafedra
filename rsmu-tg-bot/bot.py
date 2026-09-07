@@ -10,6 +10,8 @@ from pathlib import Path
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 from aiogram import Bot, Dispatcher, F
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandStart
 from aiogram.types import (
     BotCommand,
@@ -282,7 +284,7 @@ def format_article_page(data: dict, page: int) -> tuple[str, int]:
     body = pages[page]
     header = f"<b>{html_lib.escape(data['title'])}</b>"
     if data.get("sec_name"):
-        header += f"\n<i>{html_lib.escape(data['sec_name'])}</i>"
+        header += f"\n<u>{html_lib.escape(data['sec_name'])}</u>"
     footer = f"\n\nстр. {page + 1}/{total}"
     if total == 1:
         footer = ""
@@ -344,7 +346,7 @@ def schedule_days_kb(group: str) -> InlineKeyboardMarkup:
 def format_day_schedule(group: str, day_id: str) -> str:
     day_name = next((d["name"] for d in SCHEDULE["days"] if d["id"] == day_id), day_id)
     items = (SCHEDULE["schedule"].get(group) or {}).get(day_id) or []
-    lines = [f"<b>{group}</b> · {day_name}", f"<i>{SCHEDULE['meta'].get('stream', '')}</i>", ""]
+    lines = [f"<b>{group}</b> · {day_name}", f"<u>{SCHEDULE['meta'].get('stream', '')}</u>", ""]
     if not items:
         lines.append("На этот день пар нет (или не удалось разобрать ячейку).")
     else:
@@ -352,12 +354,12 @@ def format_day_schedule(group: str, day_id: str) -> str:
             t = it.get("time") or "—"
             title = html_lib.escape(it.get("title") or "")
             weeks = it.get("weeks") or ""
-            w = f"\n   <i>нед.: {html_lib.escape(weeks)}</i>" if weeks else ""
+            w = f"\n   <u>нед.: {html_lib.escape(weeks)}</u>" if weeks else ""
             lines.append(f"🕐 <b>{t}</b>\n   {title}{w}")
             lines.append("")
     note = SCHEDULE["meta"].get("note")
     if note:
-        lines.append(f"<i>{html_lib.escape(note)}</i>")
+        lines.append(f"<u>{html_lib.escape(note)}</u>")
     return "\n".join(lines).strip()
 
 
@@ -388,11 +390,13 @@ dp = Dispatcher()
 async def cmd_start(message: Message):
     n_anat = sum(len(s.get("articles") or []) for s in ANATOMY["sections"])
     text = (
-        f"<b>Кафедры РНИМУ + Анатомия</b>\n\n"
-        f"Кафедр: {CATALOG.get('kafedraCount', '?')} · Статей анатомии: {n_anat}\n\n"
+        f"<b>Кафедры · Анатомия · Расписание</b>\n\n"
+        f"Кафедр: {CATALOG.get('kafedraCount', '?')} · "
+        f"Статей анатомии: {n_anat} · "
+        f"Групп в расписании: {len(SCHEDULE.get('groups', []))}\n\n"
         "Выберите раздел кнопками ниже или напишите запрос\n"
-        "(например: <i>терапия</i> или <i>плечевая кость</i>).\n\n"
-        "Команды также в меню слева от поля ввода: /kafedry · /anatom"
+        "(например: <u>терапия</u> или <u>плечевая кость</u>).\n\n"
+        "Команды: /kafedry · /anatom · /schedule"
     )
     # сначала постоянная клавиатура внизу
     await message.answer(text, reply_markup=main_reply_kb())
@@ -618,6 +622,25 @@ async def btn_menu(message: Message):
     await message.answer("Выберите раздел:", reply_markup=main_menu_kb())
 
 
+@dp.message(Command("schedule"))
+@dp.message(Command("rasp"))
+async def cmd_schedule(message: Message):
+    meta = SCHEDULE["meta"]
+    await message.answer(
+        f"📅 <b>{html_lib.escape(meta['title'])}</b>\n"
+        f"{html_lib.escape(meta.get('semester', ''))}\n"
+        f"{html_lib.escape(meta.get('period', ''))}\n\n"
+        "Выберите группу:",
+        reply_markup=schedule_groups_kb(0),
+    )
+
+
+@dp.message(F.text.in_({"📅 Расписание", "Расписание"}))
+async def btn_schedule(message: Message):
+    await cmd_schedule(message)
+
+
+
 @dp.message(F.text)
 async def on_text(message: Message):
     q = (message.text or "").strip()
@@ -653,18 +676,6 @@ async def do_search(message: Message, query: str):
     kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     await message.answer("\n".join(lines), reply_markup=kb.as_markup(), disable_web_page_preview=True)
 
-
-@dp.message(Command("schedule"))
-@dp.message(Command("rasp"))
-async def cmd_schedule(message: Message):
-    meta = SCHEDULE["meta"]
-    await message.answer(
-        f"📅 <b>{html_lib.escape(meta['title'])}</b>\n"
-        f"{html_lib.escape(meta.get('semester', ''))}\n"
-        f"{html_lib.escape(meta.get('period', ''))}\n\n"
-        "Выберите группу:",
-        reply_markup=schedule_groups_kb(0),
-    )
 
 
 @dp.callback_query(F.data == "sch_home")
@@ -712,17 +723,12 @@ async def cb_sch_day(call: CallbackQuery):
     await call.answer()
 
 
-@dp.message(F.text.in_({"📅 Расписание", "Расписание"}))
-async def btn_schedule(message: Message):
-    await cmd_schedule(message)
-
-
 
 async def main():
     token = os.environ.get("BOT_TOKEN")
     if not token:
         raise SystemExit("Укажите BOT_TOKEN")
-    bot = Bot(token=token)
+    bot = Bot(token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await bot.delete_webhook(drop_pending_updates=True)
     # Команды в меню Telegram (кнопка рядом с полем ввода)
     await bot.set_my_commands(
