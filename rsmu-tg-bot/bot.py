@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 BASE = Path(__file__).resolve().parent
 CATALOG = json.loads((BASE / "departments.json").read_text(encoding="utf-8"))
 ANATOMY = json.loads((BASE / "anatomy_catalog.json").read_text(encoding="utf-8"))
+SCHEDULE = json.loads((BASE / "schedule_ped1v.json").read_text(encoding="utf-8"))
 KIND_LABEL = {"kafedra": "Кафедра", "lab": "Лаборатория", "otdel": "Отдел", "upr": "Подразделение", "faculty": "Подразделение"}
 UA = "Mozilla/5.0 (compatible; rsmu-bot/1.1)"
 
@@ -307,10 +308,64 @@ def article_nav_kb(sid: str, idx: int, page: int, total: int, url: str) -> Inlin
     return kb.as_markup()
 
 
+
+# ---------- schedule ----------
+
+def schedule_groups_kb(page: int = 0) -> InlineKeyboardMarkup:
+    groups = SCHEDULE["groups"]
+    per = 8
+    start = page * per
+    chunk = groups[start : start + per]
+    kb = InlineKeyboardBuilder()
+    for g in chunk:
+        kb.button(text=g, callback_data=f"sch_g:{g}")
+    kb.adjust(4)
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"sch_gp:{page-1}"))
+    if start + per < len(groups):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"sch_gp:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
+def schedule_days_kb(group: str) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    for d in SCHEDULE["days"]:
+        kb.button(text=d["name"], callback_data=f"sch_d:{group}:{d['id']}")
+    kb.adjust(2)
+    kb.row(InlineKeyboardButton(text="« К группам", callback_data="sch_home"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
+def format_day_schedule(group: str, day_id: str) -> str:
+    day_name = next((d["name"] for d in SCHEDULE["days"] if d["id"] == day_id), day_id)
+    items = (SCHEDULE["schedule"].get(group) or {}).get(day_id) or []
+    lines = [f"<b>{group}</b> · {day_name}", f"<i>{SCHEDULE['meta'].get('stream', '')}</i>", ""]
+    if not items:
+        lines.append("На этот день пар нет (или не удалось разобрать ячейку).")
+    else:
+        for it in items:
+            t = it.get("time") or "—"
+            title = html_lib.escape(it.get("title") or "")
+            weeks = it.get("weeks") or ""
+            w = f"\n   <i>нед.: {html_lib.escape(weeks)}</i>" if weeks else ""
+            lines.append(f"🕐 <b>{t}</b>\n   {title}{w}")
+            lines.append("")
+    note = SCHEDULE["meta"].get("note")
+    if note:
+        lines.append(f"<i>{html_lib.escape(note)}</i>")
+    return "\n".join(lines).strip()
+
+
 def main_menu_kb():
     kb = InlineKeyboardBuilder()
     kb.button(text="🏛 Кафедры РНИМУ", callback_data="kaf_home")
     kb.button(text="🦴 Анатомия (MedUniver)", callback_data="anat_home")
+    kb.button(text="📅 Расписание ПЕД 1В", callback_data="sch_home")
     kb.adjust(1)
     return kb.as_markup()
 
@@ -320,7 +375,7 @@ def main_reply_kb() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="🦴 Анатомия")],
-            [KeyboardButton(text="📋 Меню")],
+            [KeyboardButton(text="📅 Расписание"), KeyboardButton(text="📋 Меню")],
         ],
         resize_keyboard=True,
         is_persistent=True,
@@ -346,7 +401,7 @@ async def cmd_start(message: Message):
 
 @dp.message(Command("help"))
 async def cmd_help(message: Message):
-    await message.answer("/start — меню\n/kafedry — кафедры\n/anatom — анатомия\n\nИли просто напишите название.")
+    await message.answer("/start — меню\n/kafedry — кафедры\n/anatom — анатомия\n/schedule — расписание ПЕД 1В\n\nИли просто напишите название.")
 
 @dp.message(Command("kafedry"))
 async def cmd_kaf(message: Message):
@@ -598,6 +653,71 @@ async def do_search(message: Message, query: str):
     kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     await message.answer("\n".join(lines), reply_markup=kb.as_markup(), disable_web_page_preview=True)
 
+
+@dp.message(Command("schedule"))
+@dp.message(Command("rasp"))
+async def cmd_schedule(message: Message):
+    meta = SCHEDULE["meta"]
+    await message.answer(
+        f"📅 <b>{html_lib.escape(meta['title'])}</b>\n"
+        f"{html_lib.escape(meta.get('semester', ''))}\n"
+        f"{html_lib.escape(meta.get('period', ''))}\n\n"
+        "Выберите группу:",
+        reply_markup=schedule_groups_kb(0),
+    )
+
+
+@dp.callback_query(F.data == "sch_home")
+async def cb_sch_home(call: CallbackQuery):
+    meta = SCHEDULE["meta"]
+    await call.message.edit_text(
+        f"📅 <b>{html_lib.escape(meta['title'])}</b>\nВыберите группу:",
+        reply_markup=schedule_groups_kb(0),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("sch_gp:"))
+async def cb_sch_groups_page(call: CallbackQuery):
+    page = int(call.data.split(":")[1])
+    await call.message.edit_reply_markup(reply_markup=schedule_groups_kb(page))
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("sch_g:"))
+async def cb_sch_group(call: CallbackQuery):
+    group = call.data.split(":", 1)[1]
+    await call.message.edit_text(
+        f"Группа <b>{html_lib.escape(group)}</b>\nВыберите день:",
+        reply_markup=schedule_days_kb(group),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("sch_d:"))
+async def cb_sch_day(call: CallbackQuery):
+    # sch_d:2.1.53:monday
+    parts = call.data.split(":")
+    # group may contain dots: sch_d + group parts + day
+    # format: sch_d:{group}:{day_id} where group is like 2.1.53
+    _, rest = call.data.split(":", 1)
+    group, day_id = rest.rsplit(":", 1)
+    text = format_day_schedule(group, day_id)
+    kb = InlineKeyboardBuilder()
+    kb.button(text="« Дни", callback_data=f"sch_g:{group}")
+    kb.button(text="« Группы", callback_data="sch_home")
+    kb.button(text="« Меню", callback_data="menu")
+    kb.adjust(2)
+    await call.message.edit_text(text, reply_markup=kb.as_markup())
+    await call.answer()
+
+
+@dp.message(F.text.in_({"📅 Расписание", "Расписание"}))
+async def btn_schedule(message: Message):
+    await cmd_schedule(message)
+
+
+
 async def main():
     token = os.environ.get("BOT_TOKEN")
     if not token:
@@ -610,6 +730,7 @@ async def main():
             BotCommand(command="start", description="Главное меню"),
             BotCommand(command="kafedry", description="Кафедры РНИМУ"),
             BotCommand(command="anatom", description="Анатомия (MedUniver)"),
+            BotCommand(command="schedule", description="Расписание ПЕД 1 курс В"),
             BotCommand(command="help", description="Справка"),
         ]
     )
