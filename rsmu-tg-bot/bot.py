@@ -41,7 +41,7 @@ SCHEDULE = json.loads((BASE / "schedule_ped1v.json").read_text(encoding="utf-8")
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 GROQ_STT_MODEL = os.environ.get("GROQ_STT_MODEL", "whisper-large-v3-turbo")
-GROQ_LLM_MODEL = os.environ.get("GROQ_LLM_MODEL", "llama-3.3-70b-versatile")
+GROQ_LLM_MODEL = os.environ.get("GROQ_LLM_MODEL", "llama-3.1-8b-instant")
 MAX_AUDIO_BYTES = 24 * 1024 * 1024  # Groq upload ~25MB
 # Telegram Bot API: getFile обычно до ~20 МБ
 TG_DOWNLOAD_LIMIT = 19 * 1024 * 1024
@@ -190,30 +190,52 @@ async def groq_konspekt(transcript: str) -> str:
     }
 
     async def ask(prompt: str, max_tokens: int = 2500) -> str:
-        payload = {
-            "model": GROQ_LLM_MODEL,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": "Ты делаешь учебные конспекты по медицине. Отвечай только на русском.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            "temperature": 0.2,
-            "max_tokens": max_tokens,
-        }
+        # несколько моделей: если одна недоступна на free-ключе — пробуем следующую
+        models = []
+        for m in (
+            GROQ_LLM_MODEL,
+            "llama-3.1-8b-instant",
+            "llama-3.3-70b-versatile",
+            "openai/gpt-oss-20b",
+            "gemma2-9b-it",
+            "llama3-8b-8192",
+        ):
+            if m and m not in models:
+                models.append(m)
+        last_err = None
         async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                json=payload,
-                headers=headers,
-                timeout=aiohttp.ClientTimeout(total=120),
-            ) as resp:
-                body = await resp.text()
-                if resp.status >= 400:
-                    raise RuntimeError(f"Groq LLM {resp.status}: {body[:400]}")
-                data = json.loads(body)
-                return data["choices"][0]["message"]["content"].strip()
+            for model in models:
+                payload = {
+                    "model": model,
+                    "messages": [
+                        {
+                            "role": "system",
+                            "content": "Ты делаешь учебные конспекты по медицине. Отвечай только на русском.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    "temperature": 0.2,
+                    "max_tokens": max_tokens,
+                }
+                async with session.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    json=payload,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=120),
+                ) as resp:
+                    body = await resp.text()
+                    if resp.status < 400:
+                        data = json.loads(body)
+                        return data["choices"][0]["message"]["content"].strip()
+                    last_err = f"Groq LLM {resp.status} [{model}]: {body[:300]}"
+                    # model_not_found / access → следующая модель
+                    if resp.status in (400, 403, 404) and (
+                        "model" in body.lower() or "not found" in body.lower() or "access" in body.lower()
+                    ):
+                        logger.warning("LLM model failed, try next: %s", last_err)
+                        continue
+                    raise RuntimeError(last_err)
+        raise RuntimeError(last_err or "Нет доступных LLM-моделей на Groq")
 
     if len(chunks_text) == 1:
         prompt = (
