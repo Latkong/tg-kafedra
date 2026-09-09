@@ -1,23 +1,25 @@
 # Бот: Кафедры + Анатомия + Расписание + Конспект из аудио
 
-## Аудио → конспект
-Пользователь просто присылает **голосовое** или **аудиофайл**.
-Бот сам:
-1. скачивает
-2. при длинной записи **нарезает на куски** (ffmpeg)
-3. распознаёт речь (Groq Whisper)
-4. собирает **один конспект**
+## Конспект (голос / аудио)
+1. **Groq** (Whisper + LLM) — основной  
+2. При лимите/ошибке → **Gemini** автоматически  
 
-Резать вручную не нужно.
+Резать аудио вручную не нужно.
 
-### Ограничение Telegram
-Бот может скачать файл только до **~20 МБ**. Если запись больше — сожмите в mp3 или пришлите несколькими сообщениями (каждое обработается само).
+## Variables (Railway)
+| Имя | Зачем |
+|-----|--------|
+| `BOT_TOKEN` | Telegram |
+| `GROQ_API_KEY` | основной STT/LLM — https://console.groq.com/keys |
+| `GEMINI_API_KEY` | запасной — https://aistudio.google.com/apikey |
 
-## Variables
-- `BOT_TOKEN`
-- `GROQ_API_KEY` — https://console.groq.com/keys
+Опционально: `GROQ_STT_MODEL`, `GROQ_LLM_MODEL`, `GEMINI_MODEL` (по умолчанию `gemini-2.0-flash`).
+
+## Лимиты
+- Telegram download ~20 МБ  
+- Free tier Groq / Gemini — свои дневные квоты  
 
 ## Deploy
-Нужен **ffmpeg** на сервере (`Aptfile` / `nixpacks.toml` уже в архиве).
+Нужен ffmpeg (`Aptfile` / `nixpacks.toml`).
 
-Start: `python bot.py`
+`python bot.py`

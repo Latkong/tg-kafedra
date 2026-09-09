@@ -8,6 +8,7 @@ import os
 import re
 from pathlib import Path
 from io import BytesIO
+import base64
 import subprocess
 import tempfile
 import shutil
@@ -42,6 +43,8 @@ SCHEDULE = json.loads((BASE / "schedule_ped1v.json").read_text(encoding="utf-8")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 GROQ_STT_MODEL = os.environ.get("GROQ_STT_MODEL", "whisper-large-v3-turbo")
 GROQ_LLM_MODEL = os.environ.get("GROQ_LLM_MODEL", "llama-3.1-8b-instant")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 MAX_AUDIO_BYTES = 24 * 1024 * 1024  # Groq upload ~25MB
 # Telegram Bot API: getFile обычно до ~20 МБ
 TG_DOWNLOAD_LIMIT = 19 * 1024 * 1024
@@ -158,6 +161,182 @@ def md_lite_to_html(text: str) -> str:
     t = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<i>\1</i>", t, flags=re.S)
     return t
 
+
+
+def is_quota_error(exc: BaseException | str) -> bool:
+    s = str(exc).lower()
+    keys = (
+        "429", "rate_limit", "rate limit", "quota", "resource_exhausted",
+        "too many requests", "tokens per day", "request too large",
+        "limit", "overloaded", "capacity",
+    )
+    return any(k in s for k in keys)
+
+
+async def gemini_generate(parts: list[dict], model: str | None = None) -> str:
+    """generateContent (текст и/или аудио)."""
+    if not GEMINI_API_KEY:
+        raise RuntimeError("Не задан GEMINI_API_KEY")
+    models_try = []
+    for m in (
+        model or GEMINI_MODEL,
+        "gemini-2.0-flash",
+        "gemini-2.5-flash",
+        "gemini-1.5-flash",
+        "gemini-1.5-flash-latest",
+    ):
+        if m and m not in models_try:
+            models_try.append(m)
+    last_err = None
+    payload = {"contents": [{"role": "user", "parts": parts}]}
+    async with aiohttp.ClientSession() as session:
+        for m in models_try:
+            url = (
+                f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent"
+                f"?key={GEMINI_API_KEY}"
+            )
+            async with session.post(
+                url,
+                json=payload,
+                timeout=aiohttp.ClientTimeout(total=300),
+            ) as resp:
+                body = await resp.text()
+                if resp.status >= 400:
+                    last_err = f"Gemini {resp.status} [{m}]: {body[:400]}"
+                    if resp.status in (400, 403, 404) and "model" in body.lower():
+                        logger.warning(last_err)
+                        continue
+                    raise RuntimeError(last_err)
+                data = json.loads(body)
+                cands = data.get("candidates") or []
+                if not cands:
+                    raise RuntimeError(f"Gemini пустой ответ: {body[:300]}")
+                parts_out = (cands[0].get("content") or {}).get("parts") or []
+                text_out = "".join(p.get("text", "") for p in parts_out).strip()
+                if not text_out:
+                    raise RuntimeError("Gemini вернул пустой текст")
+                return text_out
+    raise RuntimeError(last_err or "Gemini: нет доступных моделей")
+
+
+def _audio_mime(filename: str) -> str:
+    ext = Path(filename).suffix.lower()
+    return {
+        ".mp3": "audio/mp3",
+        ".mpeg": "audio/mpeg",
+        ".mpga": "audio/mpeg",
+        ".wav": "audio/wav",
+        ".ogg": "audio/ogg",
+        ".oga": "audio/ogg",
+        ".opus": "audio/ogg",
+        ".m4a": "audio/mp4",
+        ".mp4": "audio/mp4",
+        ".webm": "audio/webm",
+        ".flac": "audio/flac",
+    }.get(ext, "audio/mp3")
+
+
+async def gemini_transcribe(audio_bytes: bytes, filename: str = "audio.mp3") -> str:
+    prompt = (
+        "Сделай точную расшифровку речи на русском языке. "
+        "Только текст речи, без комментариев и без таймкодов."
+    )
+    parts = [
+        {"text": prompt},
+        {
+            "inline_data": {
+                "mime_type": _audio_mime(filename),
+                "data": base64.b64encode(audio_bytes).decode("ascii"),
+            }
+        },
+    ]
+    return await gemini_generate(parts)
+
+
+async def gemini_konspekt(transcript: str) -> str:
+    prompt = (
+        "Ты помощник студента-медика. По расшифровке устной речи составь краткий "
+        "структурированный конспект на русском.\n"
+        "Формат:\n"
+        "1) Заголовок\n"
+        "2) Ключевые тезисы\n"
+        "3) Важные термины / определения (важные слова выделяй **так**)\n"
+        "Не выдумывай факты. Только содержание расшифровки.\n\n"
+        f"Расшифровка:\n{transcript[:20000]}"
+    )
+    return await gemini_generate([{"text": prompt}])
+
+
+async def gemini_notes_from_audio(audio_bytes: bytes, filename: str = "audio.mp3") -> tuple[str, str]:
+    """Один запрос: конспект + расшифровка из аудио."""
+    prompt = (
+        "Ты помощник студента-медика. По аудиозаписи:\n"
+        "1) Составь структурированный КОНСПЕКТ на русском "
+        "(заголовок, тезисы, термины; важные слова выделяй **двойными звёздочками**).\n"
+        "2) Затем дай полную РАСШИФРОВКУ речи.\n\n"
+        "Формат ответа строго:\n"
+        "===КОНСПЕКТ===\n...\n===РАСШИФРОВКА===\n...\n"
+        "Не выдумывай факты, которых нет в записи."
+    )
+    parts = [
+        {"text": prompt},
+        {
+            "inline_data": {
+                "mime_type": _audio_mime(filename),
+                "data": base64.b64encode(audio_bytes).decode("ascii"),
+            }
+        },
+    ]
+    raw = await gemini_generate(parts)
+    notes, transcript = raw, ""
+    if "===РАСШИФРОВКА===" in raw:
+        a, b = raw.split("===РАСШИФРОВКА===", 1)
+        notes = a.replace("===КОНСПЕКТ===", "").strip()
+        transcript = b.strip()
+    elif "===КОНСПЕКТ===" in raw:
+        notes = raw.replace("===КОНСПЕКТ===", "").strip()
+    return notes, transcript
+
+
+async def transcribe_with_fallback(audio_bytes: bytes, filename: str) -> tuple[str, str]:
+    """Возвращает (text, provider)."""
+    errors = []
+    if GROQ_API_KEY:
+        try:
+            return await groq_transcribe(audio_bytes, filename), "groq"
+        except Exception as e:
+            errors.append(f"Groq STT: {e}")
+            logger.warning("Groq STT failed: %s", e)
+            if not is_quota_error(e) and GEMINI_API_KEY:
+                # всё равно пробуем Gemini как запасной
+                pass
+            elif not GEMINI_API_KEY:
+                raise
+    if GEMINI_API_KEY:
+        try:
+            return await gemini_transcribe(audio_bytes, filename), "gemini"
+        except Exception as e:
+            errors.append(f"Gemini STT: {e}")
+            logger.warning("Gemini STT failed: %s", e)
+    raise RuntimeError("Не удалось распознать речь. " + " | ".join(errors[:2]))
+
+
+async def konspekt_with_fallback(transcript: str) -> tuple[str, str]:
+    errors = []
+    if GROQ_API_KEY:
+        try:
+            return await groq_konspekt(transcript), "groq"
+        except Exception as e:
+            errors.append(f"Groq LLM: {e}")
+            logger.warning("Groq LLM failed: %s", e)
+            if not GEMINI_API_KEY:
+                raise
+    if GEMINI_API_KEY:
+        try:
+            return await gemini_konspekt(transcript), "gemini"
+        except Exception as e:
+            errors.append(f"Gemini LLM: {e}")
+    raise RuntimeError("Не удалось сделать конспект. " + " | ".join(errors[:2]))
 
 async def groq_transcribe(audio_bytes: bytes, filename: str = "audio.ogg") -> str:
     """Speech-to-text via Groq Whisper."""
@@ -279,18 +458,21 @@ async def groq_konspekt(transcript: str) -> str:
 
 
 async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filename: str) -> None:
-    """Скачать → (при необходимости нарезать) → расшифровать → конспект.
-    Пользователю резать аудио не нужно.
-    """
+    """Скачать → (нарезка) → STT → конспект. Groq → при лимите Gemini."""
+    if not GROQ_API_KEY and not GEMINI_API_KEY:
+        await message.answer(
+            "Нет ключей для расшифровки.\n"
+            "Нужен <code>GROQ_API_KEY</code> и/или <code>GEMINI_API_KEY</code> на сервере."
+        )
+        return
+
     status = await message.answer("⏳ Скачиваю аудио…")
     try:
         file = await bot.get_file(file_id)
-        # лимит Telegram getFile
         if file.file_size and file.file_size > TG_DOWNLOAD_LIMIT:
             await status.edit_text(
                 "Telegram не отдаёт боту файлы больше ~20 МБ.\n"
-                "Сожми аудио (например в .mp3 потише) или пришли запись частями — "
-                "каждую часть обработаю отдельно, резать «вручную по смыслу» не нужно."
+                "Сожми в mp3 или пришли несколькими сообщениями."
             )
             return
 
@@ -298,24 +480,61 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         await bot.download_file(file.file_path, buf)
         audio_bytes = buf.getvalue()
 
-        await status.edit_text("🔧 Готовлю аудио (если длинное — нарежу сам)…")
+        await status.edit_text("🔧 Готовлю аудио…")
         chunks = prepare_and_chunk_audio(audio_bytes, filename)
         n = len(chunks)
+        provider_used = []
 
-        texts: list[str] = []
-        for i, (cname, cbytes) in enumerate(chunks, 1):
-            await status.edit_text(f"🎙 Распознаю речь… часть {i}/{n}")
-            part = await groq_transcribe(cbytes, filename=cname)
-            if part:
-                texts.append(part)
+        # Если только Gemini и один небольшой кусок — можно одним запросом
+        only_gemini = bool(GEMINI_API_KEY) and not GROQ_API_KEY
+        if only_gemini and n == 1 and len(chunks[0][1]) < 15 * 1024 * 1024:
+            await status.edit_text("🤖 Gemini: конспект из аудио…")
+            notes, transcript = await gemini_notes_from_audio(chunks[0][1], chunks[0][0])
+            provider_used.append("gemini")
+        else:
+            texts: list[str] = []
+            use_gemini_stt = False
+            for i, (cname, cbytes) in enumerate(chunks, 1):
+                label = "Gemini" if use_gemini_stt else "Groq/auto"
+                await status.edit_text(f"🎙 Распознаю речь ({label})… {i}/{n}")
+                try:
+                    if use_gemini_stt:
+                        if not GEMINI_API_KEY:
+                            raise RuntimeError("Gemini недоступен")
+                        part = await gemini_transcribe(cbytes, cname)
+                        provider_used.append("gemini")
+                    else:
+                        part, prov = await transcribe_with_fallback(cbytes, cname)
+                        provider_used.append(prov)
+                        if prov == "gemini":
+                            use_gemini_stt = True  # дальше сразу Gemini
+                except Exception as e:
+                    if not use_gemini_stt and GEMINI_API_KEY and is_quota_error(e):
+                        use_gemini_stt = True
+                        await status.edit_text(f"🎙 Лимит Groq → Gemini… {i}/{n}")
+                        part = await gemini_transcribe(cbytes, cname)
+                        provider_used.append("gemini")
+                    else:
+                        raise
+                if part:
+                    texts.append(part)
 
-        transcript = "\n".join(texts).strip()
-        if not transcript:
-            await status.edit_text("Не удалось разобрать речь (пустая расшифровка).")
-            return
+            transcript = "\n".join(texts).strip()
+            if not transcript:
+                await status.edit_text("Не удалось разобрать речь (пустая расшифровка).")
+                return
 
-        await status.edit_text("📝 Делаю конспект…")
-        notes = await groq_konspekt(transcript)
+            await status.edit_text("📝 Делаю конспект…")
+            try:
+                notes, prov = await konspekt_with_fallback(transcript)
+                provider_used.append(prov)
+            except Exception as e:
+                if GEMINI_API_KEY and is_quota_error(e):
+                    await status.edit_text("📝 Лимит Groq → конспект через Gemini…")
+                    notes = await gemini_konspekt(transcript)
+                    provider_used.append("gemini")
+                else:
+                    raise
 
         header = "<b>Конспект</b>\n\n"
         body = md_lite_to_html(notes)
@@ -329,15 +548,17 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         else:
             await status.edit_text(text_out)
 
-        # расшифровка — кратко или начало
-        if len(transcript) < 3500:
-            await message.answer("<b>Расшифровка</b>\n\n" + html_lib.escape(transcript))
-        else:
-            await message.answer(
-                "<b>Расшифровка (начало)</b>\n\n"
-                + html_lib.escape(transcript[:3500])
-                + "…"
-            )
+        if transcript:
+            if len(transcript) < 3500:
+                await message.answer("<b>Расшифровка</b>\n\n" + html_lib.escape(transcript))
+            else:
+                await message.answer(
+                    "<b>Расшифровка (начало)</b>\n\n"
+                    + html_lib.escape(transcript[:3500])
+                    + "…"
+                )
+        # тихо: какой движок (для отладки можно включить)
+        logger.info("notes providers=%s", provider_used)
     except Exception as e:
         logger.exception("audio notes failed")
         err = html_lib.escape(str(e)[:500])
@@ -700,7 +921,16 @@ def main_reply_kb() -> ReplyKeyboardMarkup:
 
 
 def notes_section_text() -> str:
-    status = "✅ готово к приёму аудио" if GROQ_API_KEY else "⚠️ на сервере нет GROQ_API_KEY"
+    parts = []
+    if GROQ_API_KEY:
+        parts.append("Groq✅")
+    else:
+        parts.append("Groq❌")
+    if GEMINI_API_KEY:
+        parts.append("Gemini✅ (запасной)")
+    else:
+        parts.append("Gemini❌")
+    status = " · ".join(parts)
     return (
         "<b>🎙 Конспект из аудио</b>\n\n"
         "Пришлите в этот чат:\n"
@@ -1010,8 +1240,8 @@ async def cb_notes_home(call: CallbackQuery):
 async def on_voice(message: Message, bot: Bot):
     if not GROQ_API_KEY:
         await message.answer(
-            "Голосовые пока не подключены: нет <code>GROQ_API_KEY</code>.\n"
-            "Ключ бесплатно: https://console.groq.com/"
+            "Нужен хотя бы один ключ: <code>GROQ_API_KEY</code> и/или <code>GEMINI_API_KEY</code>.\n"
+            "Groq: https://console.groq.com/ · Gemini: https://aistudio.google.com/apikey"
         )
         return
     await process_audio_to_notes(message, bot, message.voice.file_id, "voice.ogg")
@@ -1149,9 +1379,10 @@ async def main():
         ]
     )
     logger.info(
-        "Bot started. anatomy=%s groq=%s",
+        "Bot started. anatomy=%s groq=%s gemini=%s",
         sum(len(s.get("articles") or []) for s in ANATOMY["sections"]),
         bool(GROQ_API_KEY),
+        bool(GEMINI_API_KEY),
     )
     await dp.start_polling(bot)
 
