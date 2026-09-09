@@ -648,6 +648,7 @@ def main_menu_kb():
     kb.button(text="🏛 Кафедры РНИМУ", callback_data="kaf_home")
     kb.button(text="🦴 Анатомия (MedUniver)", callback_data="anat_home")
     kb.button(text="📅 Расписание ПЕД 1В", callback_data="sch_home")
+    kb.button(text="🎙 Конспект из аудио", callback_data="notes_home")
     kb.adjust(1)
     return kb.as_markup()
 
@@ -656,11 +657,27 @@ def main_reply_kb() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="🦴 Анатомия")],
-            [KeyboardButton(text="📅 Расписание"), KeyboardButton(text="📋 Меню")],
+            [KeyboardButton(text="📅 Расписание"), KeyboardButton(text="🎙 Конспект")],
+            [KeyboardButton(text="📋 Меню")],
         ],
         resize_keyboard=True,
         is_persistent=True,
-        input_field_placeholder="Поиск или выберите раздел…",
+        input_field_placeholder="Поиск, меню или голосовое…",
+    )
+
+
+def notes_section_text() -> str:
+    status = "✅ готово к приёму аудио" if GROQ_API_KEY else "⚠️ на сервере нет GROQ_API_KEY"
+    return (
+        "<b>🎙 Конспект из аудио</b>\n\n"
+        "Пришлите в этот чат:\n"
+        "• голосовое сообщение\n"
+        "• audio\n"
+        "• файл <code>.mp3 .ogg .wav .m4a</code>\n\n"
+        "Бот сам распознает речь и сделает структурированный конспект.\n"
+        "Длинные записи нарезает автоматически — вручную резать не нужно.\n\n"
+        f"Статус: {status}\n\n"
+        "<u>Лимит Telegram</u>: файл до ~20 МБ. Если больше — сожмите mp3 или пришлите несколькими сообщениями."
     )
 
 
@@ -678,8 +695,8 @@ async def cmd_start(message: Message):
         f"Групп в расписании: {len(SCHEDULE.get('groups', []))}\n\n"
         "Выберите раздел кнопками ниже или напишите запрос\n"
         "(например: <u>терапия</u> или <u>плечевая кость</u>).\n\n"
-        "Команды: /kafedry · /anatom · /schedule\n\n"
-        "🎙 Можно прислать <b>голосовое</b> или <b>аудиофайл</b> — бот сделает конспект."
+        "Команды: /kafedry · /anatom · /schedule · /notes\n\n"
+        "Раздел <b>🎙 Конспект</b> — голосовые и аудио в учебный конспект."
     )
     await message.answer(text, reply_markup=main_reply_kb())
     await message.answer("Куда зайти?", reply_markup=main_menu_kb())
@@ -691,8 +708,9 @@ async def cmd_help(message: Message):
         "/start — меню\n"
         "/kafedry — кафедры\n"
         "/anatom — анатомия\n"
-        "/schedule — расписание\n\n"
-        "🎙 Пришлите голосовое или аудио — сделаю конспект.\n\n"
+        "/schedule — расписание\n"
+        "/notes — конспект из аудио\n\n"
+        "В разделе «Конспект» пришлите голосовое или аудиофайл.\n"
         "Или напишите название кафедры / темы."
     )
 
@@ -933,6 +951,28 @@ async def btn_schedule(message: Message):
 
 
 
+
+@dp.message(Command("notes"))
+@dp.message(Command("konspekt"))
+async def cmd_notes(message: Message):
+    kb = InlineKeyboardBuilder()
+    kb.button(text="« Меню", callback_data="menu")
+    await message.answer(notes_section_text(), reply_markup=kb.as_markup())
+
+
+@dp.message(F.text.in_({"🎙 Конспект", "Конспект"}))
+async def btn_notes(message: Message):
+    await cmd_notes(message)
+
+
+@dp.callback_query(F.data == "notes_home")
+async def cb_notes_home(call: CallbackQuery):
+    kb = InlineKeyboardBuilder()
+    kb.button(text="« Меню", callback_data="menu")
+    await call.message.edit_text(notes_section_text(), reply_markup=kb.as_markup())
+    await call.answer()
+
+
 @dp.message(F.voice)
 async def on_voice(message: Message, bot: Bot):
     if not GROQ_API_KEY:
@@ -1071,6 +1111,7 @@ async def main():
             BotCommand(command="kafedry", description="Кафедры РНИМУ"),
             BotCommand(command="anatom", description="Анатомия (MedUniver)"),
             BotCommand(command="schedule", description="Расписание ПЕД 1 курс В"),
+            BotCommand(command="notes", description="Конспект из голосового/аудио"),
             BotCommand(command="help", description="Справка"),
         ]
     )
