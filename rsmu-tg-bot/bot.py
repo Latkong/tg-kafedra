@@ -7,6 +7,10 @@ import logging
 import os
 import re
 from pathlib import Path
+from io import BytesIO
+import subprocess
+import tempfile
+import shutil
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 from aiogram import Bot, Dispatcher, F
@@ -25,6 +29,8 @@ from aiogram.types import (
     URLInputFile,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+import aiohttp
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,8 +38,282 @@ BASE = Path(__file__).resolve().parent
 CATALOG = json.loads((BASE / "departments.json").read_text(encoding="utf-8"))
 ANATOMY = json.loads((BASE / "anatomy_catalog.json").read_text(encoding="utf-8"))
 SCHEDULE = json.loads((BASE / "schedule_ped1v.json").read_text(encoding="utf-8"))
-KIND_LABEL = {"kafedra": "Кафедра", "lab": "Лаборатория", "otdel": "Отдел", "upr": "Подразделение", "faculty": "Подразделение"}
-UA = "Mozilla/5.0 (compatible; rsmu-bot/1.1)"
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
+GROQ_STT_MODEL = os.environ.get("GROQ_STT_MODEL", "whisper-large-v3-turbo")
+GROQ_LLM_MODEL = os.environ.get("GROQ_LLM_MODEL", "llama-3.3-70b-versatile")
+MAX_AUDIO_BYTES = 24 * 1024 * 1024  # Groq upload ~25MB
+# Telegram Bot API: getFile обычно до ~20 МБ
+TG_DOWNLOAD_LIMIT = 19 * 1024 * 1024
+CHUNK_SECONDS = 480  # 8 минут — куски для Whisper, пользователю резать не нужно
+
+
+def _run_ffmpeg(args: list[str]) -> None:
+    r = subprocess.run(
+        ["ffmpeg", "-y", *args],
+        capture_output=True,
+        timeout=600,
+    )
+    if r.returncode != 0:
+        err = (r.stderr or b"").decode("utf-8", errors="replace")[-500:]
+        raise RuntimeError(f"ffmpeg failed: {err}")
+
+
+def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str, bytes]]:
+    """
+    Нормализует аудио и при необходимости режет на куски.
+    Возвращает список (chunk_name, bytes) уже готовых для Groq.
+    Пользователю ничего резать не нужно.
+    """
+    suffix = Path(filename).suffix.lower() or ".ogg"
+    if suffix not in {".ogg", ".mp3", ".wav", ".m4a", ".webm", ".mpeg", ".mpga", ".oga", ".opus", ".flac", ".mp4"}:
+        suffix = ".ogg"
+
+    with tempfile.TemporaryDirectory(prefix="bot_audio_") as tmp:
+        tmp_path = Path(tmp)
+        src = tmp_path / f"input{suffix}"
+        src.write_bytes(audio_bytes)
+
+        # единый формат: mp3 mono 16k — меньше размер, стабильнее для STT
+        normalized = tmp_path / "norm.mp3"
+        try:
+            _run_ffmpeg(
+                [
+                    "-i", str(src),
+                    "-vn",
+                    "-ac", "1",
+                    "-ar", "16000",
+                    "-b:a", "32k",
+                    str(normalized),
+                ]
+            )
+        except Exception:
+            # если ffmpeg не смог — шлём оригинал одним куском
+            return [(filename, audio_bytes)]
+
+        norm_size = normalized.stat().st_size
+        # длительность через ffprobe
+        duration = 0.0
+        try:
+            p = subprocess.run(
+                [
+                    "ffprobe", "-v", "error",
+                    "-show_entries", "format=duration",
+                    "-of", "default=noprint_wrappers=1:nokey=1",
+                    str(normalized),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            duration = float((p.stdout or "0").strip() or 0)
+        except Exception:
+            duration = 0.0
+
+        need_split = norm_size > MAX_AUDIO_BYTES or (duration > CHUNK_SECONDS + 30)
+        if not need_split:
+            return [("chunk0.mp3", normalized.read_bytes())]
+
+        # сегменты по CHUNK_SECONDS
+        pattern = str(tmp_path / "seg_%03d.mp3")
+        _run_ffmpeg(
+            [
+                "-i", str(normalized),
+                "-f", "segment",
+                "-segment_time", str(CHUNK_SECONDS),
+                "-reset_timestamps", "1",
+                "-c", "copy",
+                pattern,
+            ]
+        )
+        segs = sorted(tmp_path.glob("seg_*.mp3"))
+        if not segs:
+            return [("chunk0.mp3", normalized.read_bytes())]
+
+        out: list[tuple[str, bytes]] = []
+        for i, seg in enumerate(segs):
+            data = seg.read_bytes()
+            # если сегмент всё ещё огромный — пережимаем сильнее
+            if len(data) > MAX_AUDIO_BYTES:
+                tiny = tmp_path / f"tiny_{i}.mp3"
+                _run_ffmpeg(
+                    [
+                        "-i", str(seg),
+                        "-ac", "1", "-ar", "16000", "-b:a", "24k",
+                        str(tiny),
+                    ]
+                )
+                data = tiny.read_bytes()
+            out.append((f"chunk{i}.mp3", data))
+        return out
+
+
+async def groq_transcribe(audio_bytes: bytes, filename: str = "audio.ogg") -> str:
+    """Speech-to-text via Groq Whisper."""
+    if not GROQ_API_KEY:
+        raise RuntimeError("Не задан GROQ_API_KEY")
+    form = aiohttp.FormData()
+    form.add_field("file", audio_bytes, filename=filename, content_type="application/octet-stream")
+    form.add_field("model", GROQ_STT_MODEL)
+    form.add_field("language", "ru")
+    form.add_field("response_format", "json")
+    headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
+    async with aiohttp.ClientSession() as session:
+        async with session.post(
+            "https://api.groq.com/openai/v1/audio/transcriptions",
+            data=form,
+            headers=headers,
+            timeout=aiohttp.ClientTimeout(total=180),
+        ) as resp:
+            body = await resp.text()
+            if resp.status >= 400:
+                raise RuntimeError(f"Groq STT {resp.status}: {body[:400]}")
+            data = json.loads(body)
+            return (data.get("text") or "").strip()
+
+
+async def groq_konspekt(transcript: str) -> str:
+    """Сделать конспект из расшифровки."""
+    if not GROQ_API_KEY:
+        raise RuntimeError("Не задан GROQ_API_KEY")
+    # если текст очень длинный — сначала сжимаем кусками, потом финальный конспект
+    pieces = []
+    step = 10000
+    if len(transcript) <= step:
+        chunks_text = [transcript]
+    else:
+        chunks_text = [transcript[i : i + step] for i in range(0, len(transcript), step)]
+
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    async def ask(prompt: str, max_tokens: int = 2500) -> str:
+        payload = {
+            "model": GROQ_LLM_MODEL,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "Ты делаешь учебные конспекты по медицине. Отвечай только на русском.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0.2,
+            "max_tokens": max_tokens,
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                json=payload,
+                headers=headers,
+                timeout=aiohttp.ClientTimeout(total=120),
+            ) as resp:
+                body = await resp.text()
+                if resp.status >= 400:
+                    raise RuntimeError(f"Groq LLM {resp.status}: {body[:400]}")
+                data = json.loads(body)
+                return data["choices"][0]["message"]["content"].strip()
+
+    if len(chunks_text) == 1:
+        prompt = (
+            "Ты помощник студента-медика. По расшифровке устной речи составь краткий структурированный конспект на русском.\n"
+            "Формат:\n"
+            "1) Заголовок (если понятна тема)\n"
+            "2) Ключевые тезисы маркированным списком\n"
+            "3) Важные термины / определения\n"
+            "4) Если есть — перечисления, классификации, цифры\n"
+            "Не выдумывай факты, которых нет в тексте. Если речь неразборчива — отметь это.\n\n"
+            f"Расшифровка:\n{chunks_text[0]}"
+        )
+        return await ask(prompt)
+
+    # длинная лекция: конспект по частям + сборка
+    partials = []
+    for i, ch in enumerate(chunks_text, 1):
+        prompt = (
+            f"Это часть {i}/{len(chunks_text)} расшифровки лекции. "
+            "Выпиши только ключевые тезисы и термины из этой части, кратко, без воды.\n\n"
+            f"{ch}"
+        )
+        partials.append(await ask(prompt, max_tokens=1200))
+    prompt = (
+        "Объедини частичные конспекты лекции в один цельный структурированный конспект на русском.\n"
+        "Формат: заголовок, тезисы, термины. Убери повторы.\n\n"
+        + "\n\n---\n\n".join(partials)
+    )
+    return await ask(prompt, max_tokens=3000)
+
+
+async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filename: str) -> None:
+    """Скачать → (при необходимости нарезать) → расшифровать → конспект.
+    Пользователю резать аудио не нужно.
+    """
+    status = await message.answer("⏳ Скачиваю аудио…")
+    try:
+        file = await bot.get_file(file_id)
+        # лимит Telegram getFile
+        if file.file_size and file.file_size > TG_DOWNLOAD_LIMIT:
+            await status.edit_text(
+                "Telegram не отдаёт боту файлы больше ~20 МБ.\n"
+                "Сожми аудио (например в .mp3 потише) или пришли запись частями — "
+                "каждую часть обработаю отдельно, резать «вручную по смыслу» не нужно."
+            )
+            return
+
+        buf = BytesIO()
+        await bot.download_file(file.file_path, buf)
+        audio_bytes = buf.getvalue()
+
+        await status.edit_text("🔧 Готовлю аудио (если длинное — нарежу сам)…")
+        chunks = prepare_and_chunk_audio(audio_bytes, filename)
+        n = len(chunks)
+
+        texts: list[str] = []
+        for i, (cname, cbytes) in enumerate(chunks, 1):
+            await status.edit_text(f"🎙 Распознаю речь… часть {i}/{n}")
+            part = await groq_transcribe(cbytes, filename=cname)
+            if part:
+                texts.append(part)
+
+        transcript = "\n".join(texts).strip()
+        if not transcript:
+            await status.edit_text("Не удалось разобрать речь (пустая расшифровка).")
+            return
+
+        await status.edit_text("📝 Делаю конспект…")
+        notes = await groq_konspekt(transcript)
+
+        header = "<b>Конспект</b>\n\n"
+        body = html_lib.escape(notes)
+        text_out = header + body
+        if len(text_out) > 4000:
+            await status.edit_text(text_out[:4000] + "…")
+            rest = text_out[4000:]
+            while rest:
+                await message.answer(rest[:4000])
+                rest = rest[4000:]
+        else:
+            await status.edit_text(text_out)
+
+        # расшифровка — кратко или начало
+        if len(transcript) < 3500:
+            await message.answer("<b>Расшифровка</b>\n\n" + html_lib.escape(transcript))
+        else:
+            await message.answer(
+                "<b>Расшифровка (начало)</b>\n\n"
+                + html_lib.escape(transcript[:3500])
+                + "…"
+            )
+    except Exception as e:
+        logger.exception("audio notes failed")
+        err = html_lib.escape(str(e)[:500])
+        try:
+            await status.edit_text(f"Ошибка: {err}")
+        except Exception:
+            await message.answer(f"Ошибка: {err}")
+
+
 
 def normalize(text: str) -> str:
     return text.lower().replace("ё", "е")
@@ -373,7 +653,6 @@ def main_menu_kb():
 
 
 def main_reply_kb() -> ReplyKeyboardMarkup:
-    """Постоянная клавиатура внизу чата."""
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="🦴 Анатомия")],
@@ -384,28 +663,38 @@ def main_reply_kb() -> ReplyKeyboardMarkup:
         input_field_placeholder="Поиск или выберите раздел…",
     )
 
+
 dp = Dispatcher()
+
+
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
     n_anat = sum(len(s.get("articles") or []) for s in ANATOMY["sections"])
     text = (
-        f"<b>Кафедры · Анатомия · Расписание</b>\n\n"
+        "<b>Кафедры · Анатомия · Расписание</b>\n\n"
         f"Кафедр: {CATALOG.get('kafedraCount', '?')} · "
         f"Статей анатомии: {n_anat} · "
         f"Групп в расписании: {len(SCHEDULE.get('groups', []))}\n\n"
         "Выберите раздел кнопками ниже или напишите запрос\n"
         "(например: <u>терапия</u> или <u>плечевая кость</u>).\n\n"
-        "Команды: /kafedry · /anatom · /schedule"
+        "Команды: /kafedry · /anatom · /schedule\n\n"
+        "🎙 Можно прислать <b>голосовое</b> или <b>аудиофайл</b> — бот сделает конспект."
     )
-    # сначала постоянная клавиатура внизу
     await message.answer(text, reply_markup=main_reply_kb())
-    # затем inline-выбор
     await message.answer("Куда зайти?", reply_markup=main_menu_kb())
+
 
 @dp.message(Command("help"))
 async def cmd_help(message: Message):
-    await message.answer("/start — меню\n/kafedry — кафедры\n/anatom — анатомия\n/schedule — расписание ПЕД 1В\n\nИли просто напишите название.")
+    await message.answer(
+        "/start — меню\n"
+        "/kafedry — кафедры\n"
+        "/anatom — анатомия\n"
+        "/schedule — расписание\n\n"
+        "🎙 Пришлите голосовое или аудио — сделаю конспект.\n\n"
+        "Или напишите название кафедры / темы."
+    )
 
 @dp.message(Command("kafedry"))
 async def cmd_kaf(message: Message):
@@ -641,6 +930,49 @@ async def btn_schedule(message: Message):
 
 
 
+
+
+
+@dp.message(F.voice)
+async def on_voice(message: Message, bot: Bot):
+    if not GROQ_API_KEY:
+        await message.answer(
+            "Голосовые пока не подключены: нет <code>GROQ_API_KEY</code>.\n"
+            "Ключ бесплатно: https://console.groq.com/"
+        )
+        return
+    await process_audio_to_notes(message, bot, message.voice.file_id, "voice.ogg")
+
+
+@dp.message(F.audio)
+async def on_audio(message: Message, bot: Bot):
+    if not GROQ_API_KEY:
+        await message.answer("Нужен <code>GROQ_API_KEY</code> (https://console.groq.com/).")
+        return
+    name = message.audio.file_name or "audio.mp3"
+    await process_audio_to_notes(message, bot, message.audio.file_id, name)
+
+
+@dp.message(F.document)
+async def on_document_audio(message: Message, bot: Bot):
+    doc = message.document
+    if not doc:
+        return
+    mime = (doc.mime_type or "").lower()
+    name = (doc.file_name or "").lower()
+    audio_ext = (".ogg", ".mp3", ".wav", ".m4a", ".webm", ".flac", ".mpeg", ".mpga", ".oga", ".opus")
+    is_audio = mime.startswith("audio/") or any(name.endswith(e) for e in audio_ext)
+    if not is_audio:
+        await message.answer("Пришлите голосовое, audio или файл .mp3/.ogg/.wav/.m4a")
+        return
+    if not GROQ_API_KEY:
+        await message.answer("Нужен <code>GROQ_API_KEY</code> (https://console.groq.com/).")
+        return
+    fname = doc.file_name or "audio.ogg"
+    await process_audio_to_notes(message, bot, doc.file_id, fname)
+
+
+
 @dp.message(F.text)
 async def on_text(message: Message):
     q = (message.text or "").strip()
@@ -724,13 +1056,15 @@ async def cb_sch_day(call: CallbackQuery):
 
 
 
+
+
+
 async def main():
     token = os.environ.get("BOT_TOKEN")
     if not token:
         raise SystemExit("Укажите BOT_TOKEN")
     bot = Bot(token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await bot.delete_webhook(drop_pending_updates=True)
-    # Команды в меню Telegram (кнопка рядом с полем ввода)
     await bot.set_my_commands(
         [
             BotCommand(command="start", description="Главное меню"),
@@ -740,8 +1074,13 @@ async def main():
             BotCommand(command="help", description="Справка"),
         ]
     )
-    logger.info("Bot started. anatomy=%s", sum(len(s.get("articles") or []) for s in ANATOMY["sections"]))
+    logger.info(
+        "Bot started. anatomy=%s groq=%s",
+        sum(len(s.get("articles") or []) for s in ANATOMY["sections"]),
+        bool(GROQ_API_KEY),
+    )
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     import asyncio
