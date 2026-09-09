@@ -148,6 +148,17 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
         return out
 
 
+
+def md_lite_to_html(text: str) -> str:
+    """Простой Markdown → HTML для Telegram: **жирный**, *курсив*, списки."""
+    t = html_lib.escape(text or "")
+    # bold **...**
+    t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t, flags=re.S)
+    # italic *...* (не трогаем уже обработанное)
+    t = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<i>\1</i>", t, flags=re.S)
+    return t
+
+
 async def groq_transcribe(audio_bytes: bytes, filename: str = "audio.ogg") -> str:
     """Speech-to-text via Groq Whisper."""
     if not GROQ_API_KEY:
@@ -307,7 +318,7 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         notes = await groq_konspekt(transcript)
 
         header = "<b>Конспект</b>\n\n"
-        body = html_lib.escape(notes)
+        body = md_lite_to_html(notes)
         text_out = header + body
         if len(text_out) > 4000:
             await status.edit_text(text_out[:4000] + "…")
