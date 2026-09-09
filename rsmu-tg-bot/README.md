@@ -1,25 +1,20 @@
-# Бот: Кафедры + Анатомия + Расписание + Конспект из аудио
+# Бот РНИМУ: кафедры, анатомия, расписание, конспекты
 
-## Конспект (голос / аудио)
-1. **Groq** (Whisper + LLM) — основной  
-2. При лимите/ошибке → **Gemini** автоматически  
+## Функции
+- Кафедры, анатомия (MedUniver), расписание ПЕД 1В
+- 🎙 Конспект из голоса/аудио (Groq → fallback Gemini)
+- ⭐ Избранное (кафедры, статьи, дни)
+- 🔔 Напоминания за ~15 мин до пары (группа + МСК)
+- 📝 История конспектов + экспорт TXT/HTML
+- 🎙 Сессия: /session → несколько ГС → /session_done
+- 💬 /feedback — сообщение разработчику
 
-Резать аудио вручную не нужно.
-
-## Variables (Railway)
-| Имя | Зачем |
-|-----|--------|
-| `BOT_TOKEN` | Telegram |
-| `GROQ_API_KEY` | основной STT/LLM — https://console.groq.com/keys |
-| `GEMINI_API_KEY` | запасной — https://aistudio.google.com/apikey |
-
-Опционально: `GROQ_STT_MODEL`, `GROQ_LLM_MODEL`, `GEMINI_MODEL` (по умолчанию `gemini-2.0-flash`).
-
-## Лимиты
-- Telegram download ~20 МБ  
-- Free tier Groq / Gemini — свои дневные квоты  
+## Variables
+- `BOT_TOKEN`
+- `GROQ_API_KEY`
+- `GEMINI_API_KEY` (запасной)
+- `ADMIN_ID` (по умолчанию 435494037) — куда слать фидбек
 
 ## Deploy
-Нужен ffmpeg (`Aptfile` / `nixpacks.toml`).
-
+ffmpeg через Aptfile/nixpacks.toml  
 `python bot.py`

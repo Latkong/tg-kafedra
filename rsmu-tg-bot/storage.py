@@ -1,6 +1,7 @@
-"""SQLite storage: users + message log for admin."""
+"""Локальное хранилище: избранное, настройки, конспекты, сессии ГС, фидбек."""
 from __future__ import annotations
 
+import json
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -28,120 +29,228 @@ def init_db() -> None:
     with connect() as conn:
         conn.executescript(
             """
-            CREATE TABLE IF NOT EXISTS users (
-                user_id INTEGER PRIMARY KEY,
-                username TEXT,
-                full_name TEXT,
-                first_seen TEXT,
-                last_seen TEXT,
-                msg_count INTEGER DEFAULT 0
-            );
-            CREATE TABLE IF NOT EXISTS messages (
+            CREATE TABLE IF NOT EXISTS favorites (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
-                direction TEXT NOT NULL,
-                content_type TEXT DEFAULT 'text',
-                text TEXT,
-                file_id TEXT,
+                kind TEXT NOT NULL,
+                ref TEXT NOT NULL,
+                title TEXT NOT NULL,
+                payload TEXT,
+                created_at TEXT NOT NULL,
+                UNIQUE(user_id, kind, ref)
+            );
+            CREATE TABLE IF NOT EXISTS user_settings (
+                user_id INTEGER PRIMARY KEY,
+                group_id TEXT,
+                reminders INTEGER DEFAULT 0,
+                updated_at TEXT
+            );
+            CREATE TABLE IF NOT EXISTS notes_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT,
+                notes TEXT NOT NULL,
+                transcript TEXT,
                 created_at TEXT NOT NULL
             );
-            CREATE INDEX IF NOT EXISTS idx_messages_user ON messages(user_id, id);
+            CREATE TABLE IF NOT EXISTS voice_sessions (
+                user_id INTEGER PRIMARY KEY,
+                active INTEGER DEFAULT 0,
+                chunks TEXT,
+                started_at TEXT
+            );
+            CREATE TABLE IF NOT EXISTS feedback_wait (
+                user_id INTEGER PRIMARY KEY,
+                waiting INTEGER DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS reminder_sent (
+                user_id INTEGER NOT NULL,
+                group_id TEXT NOT NULL,
+                day_id TEXT NOT NULL,
+                time_key TEXT NOT NULL,
+                date_key TEXT NOT NULL,
+                PRIMARY KEY (user_id, group_id, day_id, time_key, date_key)
+            );
             """
         )
 
 
-def upsert_user(user_id: int, username: str | None, full_name: str) -> None:
-    now = _now()
-    with connect() as conn:
-        row = conn.execute("SELECT user_id FROM users WHERE user_id=?", (user_id,)).fetchone()
-        if row:
-            conn.execute(
-                "UPDATE users SET username=?, full_name=?, last_seen=?, msg_count=msg_count+1 WHERE user_id=?",
-                (username, full_name, now, user_id),
-            )
-        else:
-            conn.execute(
-                "INSERT INTO users (user_id, username, full_name, first_seen, last_seen, msg_count) VALUES (?,?,?,?,?,1)",
-                (user_id, username, full_name, now, now),
-            )
-
-
-def log_message(
-    user_id: int,
-    direction: str,
-    text: str | None = None,
-    content_type: str = "text",
-    file_id: str | None = None,
-) -> None:
+# ---- favorites ----
+def fav_add(user_id: int, kind: str, ref: str, title: str, payload: dict | None = None) -> None:
     with connect() as conn:
         conn.execute(
-            "INSERT INTO messages (user_id, direction, content_type, text, file_id, created_at) VALUES (?,?,?,?,?,?)",
-            (user_id, direction, content_type, text, file_id, _now()),
+            "INSERT OR REPLACE INTO favorites (user_id, kind, ref, title, payload, created_at) VALUES (?,?,?,?,?,?)",
+            (user_id, kind, ref, title, json.dumps(payload or {}, ensure_ascii=False), _now()),
         )
 
 
-def list_users(limit: int = 50, offset: int = 0) -> list[dict]:
+def fav_remove(user_id: int, kind: str, ref: str) -> None:
+    with connect() as conn:
+        conn.execute("DELETE FROM favorites WHERE user_id=? AND kind=? AND ref=?", (user_id, kind, ref))
+
+
+def fav_has(user_id: int, kind: str, ref: str) -> bool:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM favorites WHERE user_id=? AND kind=? AND ref=?",
+            (user_id, kind, ref),
+        ).fetchone()
+        return bool(row)
+
+
+def fav_list(user_id: int, limit: int = 50) -> list[dict]:
     with connect() as conn:
         rows = conn.execute(
-            "SELECT * FROM users ORDER BY last_seen DESC LIMIT ? OFFSET ?",
-            (limit, offset),
+            "SELECT * FROM favorites WHERE user_id=? ORDER BY id DESC LIMIT ?",
+            (user_id, limit),
+        ).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            try:
+                d["payload"] = json.loads(d.get("payload") or "{}")
+            except Exception:
+                d["payload"] = {}
+            out.append(d)
+        return out
+
+
+# ---- settings / reminders ----
+def set_group(user_id: int, group_id: str | None) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO user_settings (user_id, group_id, reminders, updated_at)
+            VALUES (?, ?, COALESCE((SELECT reminders FROM user_settings WHERE user_id=?), 0), ?)
+            ON CONFLICT(user_id) DO UPDATE SET group_id=excluded.group_id, updated_at=excluded.updated_at
+            """,
+            (user_id, group_id, user_id, _now()),
+        )
+
+
+def set_reminders(user_id: int, on: bool) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO user_settings (user_id, group_id, reminders, updated_at)
+            VALUES (?, NULL, ?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET reminders=excluded.reminders, updated_at=excluded.updated_at
+            """,
+            (user_id, 1 if on else 0, _now()),
+        )
+
+
+def get_settings(user_id: int) -> dict:
+    with connect() as conn:
+        row = conn.execute("SELECT * FROM user_settings WHERE user_id=?", (user_id,)).fetchone()
+        return dict(row) if row else {"user_id": user_id, "group_id": None, "reminders": 0}
+
+
+def users_with_reminders() -> list[dict]:
+    with connect() as conn:
+        rows = conn.execute(
+            "SELECT * FROM user_settings WHERE reminders=1 AND group_id IS NOT NULL AND group_id != ''"
         ).fetchall()
         return [dict(r) for r in rows]
 
 
-def count_users() -> int:
+def reminder_was_sent(user_id: int, group_id: str, day_id: str, time_key: str, date_key: str) -> bool:
     with connect() as conn:
-        return int(conn.execute("SELECT COUNT(*) FROM users").fetchone()[0])
+        row = conn.execute(
+            "SELECT 1 FROM reminder_sent WHERE user_id=? AND group_id=? AND day_id=? AND time_key=? AND date_key=?",
+            (user_id, group_id, day_id, time_key, date_key),
+        ).fetchone()
+        return bool(row)
 
 
-def get_user(user_id: int) -> dict | None:
+def reminder_mark_sent(user_id: int, group_id: str, day_id: str, time_key: str, date_key: str) -> None:
     with connect() as conn:
-        row = conn.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchone()
+        conn.execute(
+            "INSERT OR IGNORE INTO reminder_sent (user_id, group_id, day_id, time_key, date_key) VALUES (?,?,?,?,?)",
+            (user_id, group_id, day_id, time_key, date_key),
+        )
+
+
+# ---- notes history ----
+def notes_save(user_id: int, notes: str, transcript: str | None = None, title: str | None = None) -> int:
+    with connect() as conn:
+        cur = conn.execute(
+            "INSERT INTO notes_history (user_id, title, notes, transcript, created_at) VALUES (?,?,?,?,?)",
+            (user_id, title or "Конспект", notes, transcript, _now()),
+        )
+        return int(cur.lastrowid)
+
+
+def notes_list(user_id: int, limit: int = 15) -> list[dict]:
+    with connect() as conn:
+        rows = conn.execute(
+            "SELECT id, title, created_at, substr(notes,1,120) AS preview FROM notes_history WHERE user_id=? ORDER BY id DESC LIMIT ?",
+            (user_id, limit),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def notes_get(user_id: int, note_id: int) -> dict | None:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM notes_history WHERE user_id=? AND id=?",
+            (user_id, note_id),
+        ).fetchone()
         return dict(row) if row else None
 
 
-def get_messages(user_id: int, limit: int = 200) -> list[dict]:
+# ---- voice session ----
+def session_start(user_id: int) -> None:
     with connect() as conn:
-        rows = conn.execute(
-            "SELECT * FROM messages WHERE user_id=? ORDER BY id DESC LIMIT ?",
-            (user_id, limit),
-        ).fetchall()
-        # chronological
-        return [dict(r) for r in reversed(rows)]
-
-
-def export_html(user_id: int) -> str:
-    user = get_user(user_id) or {"user_id": user_id, "full_name": "?", "username": ""}
-    msgs = get_messages(user_id, limit=1000)
-    uname = f"@{user['username']}" if user.get("username") else "—"
-    parts = [
-        "<!DOCTYPE html><html><head><meta charset='utf-8'>",
-        f"<title>Chat {user_id}</title>",
-        "<style>body{font-family:sans-serif;max-width:800px;margin:20px auto;background:#1a1a1a;color:#eee}"
-        ".in{background:#2a2a2a;padding:8px 12px;margin:6px 0;border-radius:8px;border-left:3px solid #4af}"
-        ".out{background:#1e3a2f;padding:8px 12px;margin:6px 0;border-radius:8px;border-left:3px solid #4f4}"
-        ".admin{background:#3a2a1e;padding:8px 12px;margin:6px 0;border-radius:8px;border-left:3px solid #fa4}"
-        ".meta{font-size:12px;color:#888}</style></head><body>",
-        f"<h1>Переписка с ботом</h1>",
-        f"<p><b>{_esc(user.get('full_name'))}</b> { _esc(uname) } · id <code>{user_id}</code></p>",
-        f"<p class='meta'>Сообщений в логе: {len(msgs)}</p><hr>",
-    ]
-    for m in msgs:
-        cls = m["direction"] if m["direction"] in ("in", "out", "admin") else "in"
-        label = {"in": "Пользователь", "out": "Бот", "admin": "Админ"}.get(cls, cls)
-        body = _esc(m.get("text") or "")
-        extra = ""
-        if m.get("file_id"):
-            extra = f"<div class='meta'>[{_esc(m.get('content_type') or 'media')}] file_id: {_esc(m['file_id'])}</div>"
-        parts.append(
-            f"<div class='{cls}'><div class='meta'>{label} · {_esc(m.get('created_at') or '')}</div>"
-            f"<div>{body or '<i>(медиа)</i>'}</div>{extra}</div>"
+        conn.execute(
+            "INSERT OR REPLACE INTO voice_sessions (user_id, active, chunks, started_at) VALUES (?,?,?,?)",
+            (user_id, 1, "[]", _now()),
         )
-    parts.append("</body></html>")
-    return "\n".join(parts)
 
 
-def _esc(s) -> str:
-    import html as h
+def session_stop(user_id: int) -> None:
+    with connect() as conn:
+        conn.execute(
+            "UPDATE voice_sessions SET active=0, chunks=? WHERE user_id=?",
+            ("[]", user_id),
+        )
 
-    return h.escape(str(s) if s is not None else "")
+
+def session_is_active(user_id: int) -> bool:
+    with connect() as conn:
+        row = conn.execute("SELECT active FROM voice_sessions WHERE user_id=?", (user_id,)).fetchone()
+        return bool(row and row["active"])
+
+
+def session_add_transcript(user_id: int, text: str) -> int:
+    with connect() as conn:
+        row = conn.execute("SELECT chunks, active FROM voice_sessions WHERE user_id=?", (user_id,)).fetchone()
+        if not row or not row["active"]:
+            return 0
+        chunks = json.loads(row["chunks"] or "[]")
+        chunks.append(text)
+        conn.execute("UPDATE voice_sessions SET chunks=? WHERE user_id=?", (json.dumps(chunks, ensure_ascii=False), user_id))
+        return len(chunks)
+
+
+def session_get_chunks(user_id: int) -> list[str]:
+    with connect() as conn:
+        row = conn.execute("SELECT chunks FROM voice_sessions WHERE user_id=?", (user_id,)).fetchone()
+        if not row:
+            return []
+        return json.loads(row["chunks"] or "[]")
+
+
+# ---- feedback ----
+def feedback_set_waiting(user_id: int, waiting: bool) -> None:
+    with connect() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO feedback_wait (user_id, waiting) VALUES (?,?)",
+            (user_id, 1 if waiting else 0),
+        )
+
+
+def feedback_is_waiting(user_id: int) -> bool:
+    with connect() as conn:
+        row = conn.execute("SELECT waiting FROM feedback_wait WHERE user_id=?", (user_id,)).fetchone()
+        return bool(row and row["waiting"])
