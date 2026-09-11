@@ -87,6 +87,14 @@ def init_db() -> None:
                 user_id INTEGER PRIMARY KEY,
                 waiting INTEGER DEFAULT 0
             );
+            CREATE TABLE IF NOT EXISTS medu_search_wait (
+                user_id INTEGER PRIMARY KEY,
+                waiting INTEGER DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS kaf_search_wait (
+                user_id INTEGER PRIMARY KEY,
+                waiting INTEGER DEFAULT 0
+            );
             CREATE TABLE IF NOT EXISTS reminder_sent (
                 user_id INTEGER NOT NULL,
                 group_id TEXT NOT NULL,
@@ -277,4 +285,36 @@ def feedback_set_waiting(user_id: int, waiting: bool) -> None:
 def feedback_is_waiting(user_id: int) -> bool:
     with connect() as conn:
         row = conn.execute("SELECT waiting FROM feedback_wait WHERE user_id=?", (user_id,)).fetchone()
+        return bool(row and row["waiting"])
+
+
+def medu_search_set_waiting(user_id: int, waiting: bool) -> None:
+    with connect() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO medu_search_wait (user_id, waiting) VALUES (?,?)",
+            (user_id, 1 if waiting else 0),
+        )
+
+
+def medu_search_is_waiting(user_id: int) -> bool:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT waiting FROM medu_search_wait WHERE user_id=?", (user_id,)
+        ).fetchone()
+        return bool(row and row["waiting"])
+
+
+def kaf_search_set_waiting(user_id: int, waiting: bool) -> None:
+    with connect() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO kaf_search_wait (user_id, waiting) VALUES (?,?)",
+            (user_id, 1 if waiting else 0),
+        )
+
+
+def kaf_search_is_waiting(user_id: int) -> bool:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT waiting FROM kaf_search_wait WHERE user_id=?", (user_id,)
+        ).fetchone()
         return bool(row and row["waiting"])

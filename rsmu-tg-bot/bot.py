@@ -883,16 +883,34 @@ def matches(haystack: str, query: str) -> bool:
     return all(normalize(w) in hay for w in needle.split() if len(w) > 1)
 
 def search_units(query: str, only_kafedra: bool = False, limit: int = 30):
-    results = []
+    """Поиск кафедр/подразделений с ранжированием."""
+    needle = normalize(query.strip())
+    if not needle:
+        return []
+    words = [w for w in needle.split() if len(w) > 1]
+    scored = []
     for inst in CATALOG["institutes"]:
         for unit in inst["units"]:
             if only_kafedra and unit.get("kind") != "kafedra":
                 continue
-            if matches(unit["name"], query) or matches(inst["name"], query) or matches(inst.get("abbr", ""), query):
-                results.append((inst, unit))
-                if len(results) >= limit:
-                    return results
-    return results
+            name = unit.get("name") or ""
+            n = normalize(name)
+            abbr = normalize(inst.get("abbr") or "")
+            iname = normalize(inst.get("name") or "")
+            hay = f"{n} {iname} {abbr}"
+            if needle in n:
+                score = 100
+            elif needle == abbr or needle in abbr:
+                score = 90
+            elif needle in hay:
+                score = 60
+            elif words and all(w in hay for w in words):
+                score = 40 + sum(10 for w in words if w in n)
+            else:
+                continue
+            scored.append((score, inst, unit))
+    scored.sort(key=lambda x: (-x[0], x[2].get("name") or ""))
+    return [(inst, unit) for score, inst, unit in scored[:limit]]
 
 
 def all_kafedry_list():
@@ -933,6 +951,7 @@ def kafedry_keyboard(page: int = 0) -> InlineKeyboardMarkup:
         nav.append(InlineKeyboardButton(text="➡️", callback_data=f"kafp:{page+1}"))
     if nav:
         kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="🔍 Поиск по кафедрам", callback_data="kaf_search"))
     kb.row(InlineKeyboardButton(text="🏛 По институтам", callback_data="kaf_by_inst"))
     kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     return kb.as_markup()
@@ -1008,6 +1027,7 @@ def medu_subjects_kb(page: int = 0) -> InlineKeyboardMarkup:
         nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_sp:{page+1}"))
     if nav:
         kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="🔍 Поиск по MedUniver", callback_data="mu_search"))
     kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     return kb.as_markup()
 
@@ -1105,17 +1125,33 @@ def medu_articles_kb(subj_id: str, sec_id: str, sub_id: str, page: int = 0) -> I
 
 
 def search_medu(query: str, limit: int = 25):
-    results = []
+    """Поиск по MedUniver: сначала точные совпадения в заголовке статьи."""
+    needle = normalize(query.strip())
+    if not needle:
+        return []
+    words = [w for w in needle.split() if len(w) > 1]
+    scored = []
     for subj in MEDU.get("subjects") or []:
         for sec in subj.get("sections") or []:
             for ss in sec.get("subsections") or []:
                 for idx, art in enumerate(ss.get("articles") or []):
-                    hay = f"{subj['name']} {sec['name']} {ss.get('name','')} {art.get('title','')}"
-                    if matches(hay, query):
-                        results.append((subj, sec, ss, idx, art))
-                        if len(results) >= limit:
-                            return results
-    return results
+                    title = art.get("title") or ""
+                    t = normalize(title)
+                    path = normalize(
+                        f"{subj.get('name','')} {sec.get('name','')} {ss.get('name','')}"
+                    )
+                    hay = f"{t} {path}"
+                    if needle in t:
+                        score = 100
+                    elif needle in hay:
+                        score = 60
+                    elif words and all(w in hay for w in words):
+                        score = 40 + sum(10 for w in words if w in t)
+                    else:
+                        continue
+                    scored.append((score, subj, sec, ss, idx, art))
+    scored.sort(key=lambda x: (-x[0], x[5].get("title") or ""))
+    return [(s, sec, ss, idx, a) for score, s, sec, ss, idx, a in scored[:limit]]
 
 
 def anatomy_sections_kb():
@@ -1447,7 +1483,7 @@ async def cmd_help(message: Message):
 @dp.message(Command("kafedry"))
 async def cmd_kaf(message: Message):
     await message.answer(
-        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру или 🔍 Поиск:",
         reply_markup=kafedry_keyboard(0),
     )
 
@@ -1470,7 +1506,7 @@ async def cb_menu(call: CallbackQuery):
 @dp.callback_query(F.data == "kaf_home")
 async def cb_kaf_home(call: CallbackQuery):
     await call.message.edit_text(
-        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру или 🔍 Поиск:",
         reply_markup=kafedry_keyboard(0),
     )
     await call.answer()
@@ -1480,7 +1516,7 @@ async def cb_kaf_home(call: CallbackQuery):
 async def cb_kaf_page(call: CallbackQuery):
     page = int(call.data.split(":")[1])
     await call.message.edit_text(
-        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру или 🔍 Поиск:",
         reply_markup=kafedry_keyboard(page),
     )
     await call.answer()
@@ -1493,6 +1529,80 @@ async def cb_kaf_by_inst(call: CallbackQuery):
         reply_markup=institutes_keyboard(),
     )
     await call.answer()
+
+
+@dp.callback_query(F.data == "kaf_search")
+async def cb_kaf_search(call: CallbackQuery):
+    storage.kaf_search_set_waiting(call.from_user.id, True)
+    storage.medu_search_set_waiting(call.from_user.id, False)
+    await call.answer()
+    await call.message.answer(
+        "🔍 <b>Поиск по кафедрам РНИМУ</b>\n\n"
+        "Напишите запрос <b>одним сообщением</b>, например:\n"
+        "• терапия\n"
+        "• неврология\n"
+        "• ИНН\n"
+        "• патофизиология\n\n"
+        "Отмена: /cancel_search"
+    )
+
+
+@dp.message(Command("kafsearch"))
+async def cmd_kafsearch(message: Message):
+    parts = (message.text or "").split(maxsplit=1)
+    if len(parts) < 2 or not parts[1].strip():
+        storage.kaf_search_set_waiting(message.from_user.id, True)
+        storage.medu_search_set_waiting(message.from_user.id, False)
+        await message.answer(
+            "🔍 Напишите запрос для поиска кафедр\n"
+            "(или: <code>/kafsearch терапия</code>)\n\n"
+            "Отмена: /cancel_search"
+        )
+        return
+    await do_kaf_search(message, parts[1].strip())
+
+
+async def do_kaf_search(message: Message, query: str):
+    wait = await message.answer("🔍 Ищу…")
+    results = search_units(query, only_kafedra=False, limit=20)
+    if not results:
+        try:
+            await wait.edit_text(
+                f"По «{html_lib.escape(query)}» кафедры не найдены.\n"
+                "Попробуйте другое слово или откройте список."
+            )
+        except Exception:
+            await message.answer(f"По «{html_lib.escape(query)}» ничего не найдено.")
+        return
+    lines = [f"🏛 Кафедры · «<b>{html_lib.escape(query)}</b>» · найдено {len(results)}:"]
+    kb = InlineKeyboardBuilder()
+    for inst, unit in results:
+        name = unit.get("name") or "Кафедра"
+        short = name[:40] + "…" if len(name) > 42 else name
+        abbr = inst.get("abbr") or ""
+        lines.append(f"• {html_lib.escape(short)} <i>({html_lib.escape(abbr)})</i>")
+        try:
+            idx = inst["units"].index(unit)
+        except ValueError:
+            idx = 0
+        btn = f"{abbr}: {short[:28]}" if abbr else short[:36]
+        kb.button(text=btn[:64], callback_data=f"u:{inst['id']}:{idx}")
+    kb.adjust(1)
+    kb.row(InlineKeyboardButton(text="🔍 Новый поиск", callback_data="kaf_search"))
+    kb.row(InlineKeyboardButton(text="« К кафедрам", callback_data="kaf_home"))
+    try:
+        await wait.edit_text(
+            "\n".join(lines),
+            reply_markup=kb.as_markup(),
+            disable_web_page_preview=True,
+        )
+    except Exception:
+        await message.answer(
+            "\n".join(lines),
+            reply_markup=kb.as_markup(),
+            disable_web_page_preview=True,
+        )
+
 
 @dp.callback_query(F.data == "anat_home")
 @dp.callback_query(F.data == "mu_home")
@@ -1507,9 +1617,42 @@ async def cb_anat_home(call: CallbackQuery):
     await call.answer()
 
 @dp.callback_query(F.data == "a_search_help")
-async def cb_a_search(call: CallbackQuery):
+@dp.callback_query(F.data == "mu_search")
+async def cb_mu_search(call: CallbackQuery):
+    storage.medu_search_set_waiting(call.from_user.id, True)
+    storage.kaf_search_set_waiting(call.from_user.id, False)
     await call.answer()
-    await call.message.answer("Напишите в чат, например:\n• плечевая кость\n• печень\n• бедренная\n• череп")
+    await call.message.answer(
+        "🔍 <b>Поиск по MedUniver</b>\n\n"
+        "Напишите запрос одним сообщением, например:\n"
+        "• плечевая кость\n"
+        "• аппендэктомия\n"
+        "• печень\n"
+        "• инфаркт\n\n"
+        "Отмена: /cancel_search"
+    )
+
+
+@dp.message(Command("cancel_search"))
+async def cmd_cancel_search(message: Message):
+    storage.medu_search_set_waiting(message.from_user.id, False)
+    storage.kaf_search_set_waiting(message.from_user.id, False)
+    await message.answer("Поиск отменён.")
+
+
+@dp.message(Command("medusearch"))
+async def cmd_medusearch(message: Message):
+    parts = (message.text or "").split(maxsplit=1)
+    if len(parts) < 2 or not parts[1].strip():
+        storage.medu_search_set_waiting(message.from_user.id, True)
+        await message.answer(
+            "🔍 Напишите запрос для поиска по MedUniver\n"
+            "(или: <code>/medusearch печень</code>)\n\n"
+            "Отмена: /cancel_search"
+        )
+        return
+    await do_medu_search(message, parts[1].strip())
+
 
 @dp.callback_query(F.data.startswith("inst:"))
 async def cb_inst(call: CallbackQuery):
@@ -1881,7 +2024,7 @@ async def cmd_search(message: Message):
 @dp.message(F.text.in_({"🏛 Кафедры", "Кафедры", "/kafedry"}))
 async def btn_kafedry(message: Message):
     await message.answer(
-        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру или 🔍 Поиск:",
         reply_markup=kafedry_keyboard(0),
     )
 
@@ -1890,7 +2033,7 @@ async def btn_kafedry(message: Message):
 async def btn_anatom(message: Message):
     n = sum(medu_count_articles(s) for s in (MEDU.get("subjects") or []))
     await message.answer(
-        f'📚 <b>MedUniver</b> · статей ≈ {n}\nВыберите предмет:',
+        f'📚 <b>MedUniver</b> · статей ≈ {n}\nВыберите предмет или 🔍 Поиск:',
         reply_markup=medu_subjects_kb(0),
         disable_web_page_preview=True,
     )
@@ -2026,7 +2169,54 @@ async def on_document_audio(message: Message, bot: Bot):
 # on_text заменён на feedback_or_search
 
 
+async def do_medu_search(message: Message, query: str):
+    """Только MedUniver, больше результатов."""
+    wait = await message.answer("🔍 Ищу…")
+    results = search_medu(query, limit=20)
+    if not results:
+        try:
+            await wait.edit_text(
+                f"По «{html_lib.escape(query)}» в MedUniver ничего не найдено.\n"
+                "Попробуйте другие слова или откройте предмет вручную."
+            )
+        except Exception:
+            await message.answer(
+                f"По «{html_lib.escape(query)}» в MedUniver ничего не найдено."
+            )
+        return
+    lines = [f"📚 MedUniver · «<b>{html_lib.escape(query)}</b>» · найдено {len(results)}:"]
+    kb = InlineKeyboardBuilder()
+    for subj, sec, ss, idx, a in results:
+        title = a.get("title") or "Статья"
+        short = title[:40] + "…" if len(title) > 42 else title
+        path = f"{subj.get('name','')[:16]} / {(ss.get('name') or sec.get('name') or '')[:22]}"
+        lines.append(
+            f"• {html_lib.escape(short)}\n"
+            f"  <i>{html_lib.escape(path)}</i>"
+        )
+        kb.button(
+            text=f"📄 {short[:36]}",
+            callback_data=f"mu_a:{subj['id']}:{sec['id']}:{ss['id']}:{idx}",
+        )
+    kb.adjust(1)
+    kb.row(InlineKeyboardButton(text="🔍 Новый поиск", callback_data="mu_search"))
+    kb.row(InlineKeyboardButton(text="« MedUniver", callback_data="mu_home"))
+    try:
+        await wait.edit_text(
+            "\n".join(lines),
+            reply_markup=kb.as_markup(),
+            disable_web_page_preview=True,
+        )
+    except Exception:
+        await message.answer(
+            "\n".join(lines),
+            reply_markup=kb.as_markup(),
+            disable_web_page_preview=True,
+        )
+
+
 async def do_search(message: Message, query: str):
+
     kaf = search_units(query, limit=10)
     anat = search_medu(query, limit=12)
     if not kaf and not anat:
@@ -2509,11 +2699,23 @@ async def feedback_or_search(message: Message, bot: Bot):
         return
     # menu buttons handled elsewhere if registered before - order matters
     menu_btns = {
-        "🏛 Кафедры", "🦴 Анатомия", "📅 Расписание", "🎙 Конспект",
+        "🏛 Кафедры", "🦴 Анатомия", "📚 MedUniver", "📅 Расписание", "🎙 Конспект",
         "⭐ Избранное", "📝 Мои конспекты", "📋 Меню", "Кафедры", "Анатомия",
-        "Расписание", "Конспект", "Избранное", "Мои конспекты", "Меню",
+        "MedUniver", "Расписание", "Конспект", "Избранное", "Мои конспекты", "Меню",
     }
     if message.text in menu_btns:
+        return
+    if storage.kaf_search_is_waiting(message.from_user.id):
+        storage.kaf_search_set_waiting(message.from_user.id, False)
+        q = (message.text or "").strip()
+        if q:
+            await do_kaf_search(message, q)
+        return
+    if storage.medu_search_is_waiting(message.from_user.id):
+        storage.medu_search_set_waiting(message.from_user.id, False)
+        q = (message.text or "").strip()
+        if q:
+            await do_medu_search(message, q)
         return
     if storage.feedback_is_waiting(message.from_user.id):
         storage.feedback_set_waiting(message.from_user.id, False)
@@ -2595,7 +2797,9 @@ async def main():
         [
             BotCommand(command="start", description="Главное меню"),
             BotCommand(command="kafedry", description="Кафедры РНИМУ"),
-            BotCommand(command="anatom", description="Анатомия (MedUniver)"),
+            BotCommand(command="kafsearch", description="Поиск по кафедрам"),
+            BotCommand(command="anatom", description="MedUniver"),
+            BotCommand(command="medusearch", description="Поиск по MedUniver"),
             BotCommand(command="schedule", description="Расписание ПЕД 1 курс В"),
             BotCommand(command="notes", description="Конспект из аудио"),
             BotCommand(command="session", description="Начать сессию из нескольких ГС"),
