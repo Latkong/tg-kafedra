@@ -56,7 +56,7 @@ MSK = timezone(timedelta(hours=3))
 MAX_AUDIO_BYTES = 24 * 1024 * 1024  # Groq upload ~25MB
 # Telegram Bot API: getFile обычно до ~20 МБ
 TG_DOWNLOAD_LIMIT = 19 * 1024 * 1024
-CHUNK_SECONDS = 480  # 8 минут — куски для Whisper, пользователю резать не нужно
+CHUNK_SECONDS = 300  # 5 минут — надёжнее для Whisper на длинных ГС
 
 
 def _run_ffmpeg(args: list[str]) -> None:
@@ -72,9 +72,8 @@ def _run_ffmpeg(args: list[str]) -> None:
 
 def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str, bytes]]:
     """
-    Нормализует аудио и при необходимости режет на куски.
-    Возвращает список (chunk_name, bytes) уже готовых для Groq.
-    Пользователю ничего резать не нужно.
+    Нормализует аудио и режет на куски по ~CHUNK_SECONDS.
+    Возвращает (chunk_name, bytes). Пользователю резать не нужно.
     """
     suffix = Path(filename).suffix.lower() or ".ogg"
     if suffix not in {".ogg", ".mp3", ".wav", ".m4a", ".webm", ".mpeg", ".mpga", ".oga", ".opus", ".flac", ".mp4"}:
@@ -85,7 +84,6 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
         src = tmp_path / f"input{suffix}"
         src.write_bytes(audio_bytes)
 
-        # единый формат: mp3 mono 16k — меньше размер, стабильнее для STT
         normalized = tmp_path / "norm.mp3"
         try:
             _run_ffmpeg(
@@ -98,12 +96,10 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
                     str(normalized),
                 ]
             )
-        except Exception:
-            # если ffmpeg не смог — шлём оригинал одним куском
+        except Exception as e:
+            logger.warning("ffmpeg normalize failed: %s", e)
             return [(filename, audio_bytes)]
 
-        norm_size = normalized.stat().st_size
-        # длительность через ffprobe
         duration = 0.0
         try:
             p = subprocess.run(
@@ -121,22 +117,38 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
         except Exception:
             duration = 0.0
 
-        need_split = norm_size > MAX_AUDIO_BYTES or (duration > CHUNK_SECONDS + 30)
+        norm_size = normalized.stat().st_size
+        # Оценка по размеру, если duration неизвестна (~32kbps mono)
+        if duration <= 0 and norm_size > 0:
+            duration = max(1.0, (norm_size * 8) / 32000.0)
+
+        need_split = norm_size > MAX_AUDIO_BYTES or duration > (CHUNK_SECONDS + 15)
+        logger.info(
+            "audio prepare: duration=%.1fs size=%s split=%s",
+            duration, norm_size, need_split,
+        )
         if not need_split:
             return [("chunk0.mp3", normalized.read_bytes())]
 
-        # сегменты по CHUNK_SECONDS
+        # перекодируем сегменты (не copy) — иначе на ogg/mp3 часто ломается
         pattern = str(tmp_path / "seg_%03d.mp3")
-        _run_ffmpeg(
-            [
-                "-i", str(normalized),
-                "-f", "segment",
-                "-segment_time", str(CHUNK_SECONDS),
-                "-reset_timestamps", "1",
-                "-c", "copy",
-                pattern,
-            ]
-        )
+        try:
+            _run_ffmpeg(
+                [
+                    "-i", str(normalized),
+                    "-f", "segment",
+                    "-segment_time", str(CHUNK_SECONDS),
+                    "-reset_timestamps", "1",
+                    "-ac", "1",
+                    "-ar", "16000",
+                    "-b:a", "32k",
+                    pattern,
+                ]
+            )
+        except Exception as e:
+            logger.warning("segment failed, single chunk: %s", e)
+            return [("chunk0.mp3", normalized.read_bytes())]
+
         segs = sorted(tmp_path.glob("seg_*.mp3"))
         if not segs:
             return [("chunk0.mp3", normalized.read_bytes())]
@@ -144,7 +156,8 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
         out: list[tuple[str, bytes]] = []
         for i, seg in enumerate(segs):
             data = seg.read_bytes()
-            # если сегмент всё ещё огромный — пережимаем сильнее
+            if len(data) < 500:
+                continue
             if len(data) > MAX_AUDIO_BYTES:
                 tiny = tmp_path / f"tiny_{i}.mp3"
                 _run_ffmpeg(
@@ -156,8 +169,173 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
                 )
                 data = tiny.read_bytes()
             out.append((f"chunk{i}.mp3", data))
-        return out
+        return out or [("chunk0.mp3", normalized.read_bytes())]
 
+
+
+
+
+async def send_long_html(message: Message, text: str, prefix: str = "") -> None:
+    """Шлёт длинный HTML-текст несколькими сообщениями (лимит Telegram ~4096)."""
+    limit = 3900
+    body = (prefix + text) if prefix else text
+    if len(body) <= limit:
+        await message.answer(body)
+        return
+    # режем по абзацам, иначе жёстко
+    parts: list[str] = []
+    cur = prefix
+    for para in text.split("\n"):
+        trial = (cur + para + "\n") if cur else (para + "\n")
+        if len(trial) > limit:
+            if cur.strip():
+                parts.append(cur.rstrip())
+            cur = para + "\n"
+            while len(cur) > limit:
+                parts.append(cur[:limit])
+                cur = cur[limit:]
+        else:
+            cur = trial
+    if cur.strip():
+        parts.append(cur.rstrip())
+    total = len(parts)
+    for i, p in enumerate(parts, 1):
+        footer = f"\n\n<i>({i}/{total})</i>" if total > 1 else ""
+        chunk = p + footer
+        if len(chunk) > 4090:
+            chunk = chunk[:4080] + "…"
+        await message.answer(chunk)
+
+
+
+def format_note_date(created_at: str | None) -> str:
+    """'2026-09-10 12:30:00 UTC' → '10.09.2026 15:30' (МСК = UTC+3) или как есть."""
+    if not created_at:
+        return "—"
+    s = created_at.replace(" UTC", "").strip()
+    try:
+        # stored as UTC
+        from datetime import datetime, timedelta, timezone
+        dt = datetime.strptime(s[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+        local = dt.astimezone(timezone(timedelta(hours=3)))
+        return local.strftime("%d.%m.%Y %H:%M")
+    except Exception:
+        return created_at[:16]
+
+
+def build_notes_html_file(
+    title: str,
+    notes: str,
+    transcript: str | None = None,
+    created_at: str | None = None,
+) -> bytes:
+    """Красивый standalone HTML: конспект + расшифровка."""
+    date_s = format_note_date(created_at)
+    # notes: markdown-ish → simple HTML blocks
+    notes_html = md_lite_to_html(notes or "").replace("\n", "<br>\n")
+    tr_html = html_lib.escape(transcript or "").replace("\n", "<br>\n")
+    doc = f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{html_lib.escape(title or "Конспект")}</title>
+<style>
+  :root {{
+    --bg: #0f1419;
+    --card: #1a2332;
+    --text: #e7ecf3;
+    --muted: #8b9bb4;
+    --accent: #5b9fd4;
+    --border: #2a3548;
+  }}
+  * {{ box-sizing: border-box; }}
+  body {{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 24px 16px 48px;
+  }}
+  .wrap {{ max-width: 720px; margin: 0 auto; }}
+  header {{
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }}
+  h1 {{
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }}
+  .meta {{ color: var(--muted); font-size: 0.9rem; }}
+  section {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+  }}
+  section h2 {{
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    color: var(--accent);
+    font-weight: 600;
+  }}
+  .content {{ font-size: 0.98rem; word-wrap: break-word; }}
+  .content b {{ color: #fff; }}
+  footer {{
+    margin-top: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }}
+  @media print {{
+    body {{ background: #fff; color: #111; }}
+    section {{ border-color: #ccc; background: #fafafa; }}
+    section h2 {{ color: #1565c0; }}
+  }}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>{html_lib.escape(title or "Конспект")}</h1>
+      <div class="meta">📅 {html_lib.escape(date_s)} · бот Кафедрончик</div>
+    </header>
+    <section>
+      <h2>Конспект</h2>
+      <div class="content">{notes_html}</div>
+    </section>
+    <section>
+      <h2>Расшифровка</h2>
+      <div class="content">{tr_html if tr_html else "<i>нет</i>"}</div>
+    </section>
+    <footer>Файл сгенерирован автоматически</footer>
+  </div>
+</body>
+</html>
+"""
+    return doc.encode("utf-8")
+
+
+async def send_notes_html_document(
+    message: Message,
+    note_id: int,
+    title: str,
+    notes: str,
+    transcript: str | None,
+    created_at: str | None = None,
+) -> None:
+    data = build_notes_html_file(title, notes, transcript, created_at)
+    safe = re.sub(r"[^\w\-]+", "_", (title or "konspekt")[:40], flags=re.U).strip("_") or "konspekt"
+    fname = f"{safe}_{note_id}.html"
+    await message.answer_document(
+        BufferedInputFile(data, filename=fname),
+        caption=f"🌐 HTML-конспект #{note_id} · {html_lib.escape(format_note_date(created_at))}",
+    )
 
 
 def md_lite_to_html(text: str) -> str:
@@ -263,7 +441,7 @@ async def gemini_transcribe(audio_bytes: bytes, filename: str = "audio.mp3") -> 
 
 async def gemini_konspekt(transcript: str) -> str:
     prompt = (
-        "Ты помощник студента-медика. По расшифровке устной речи составь краткий "
+        "По расшифровке устной речи составь краткий "
         "структурированный конспект на русском.\n"
         "Формат:\n"
         "1) Заголовок\n"
@@ -278,7 +456,7 @@ async def gemini_konspekt(transcript: str) -> str:
 async def gemini_notes_from_audio(audio_bytes: bytes, filename: str = "audio.mp3") -> tuple[str, str]:
     """Один запрос: конспект + расшифровка из аудио."""
     prompt = (
-        "Ты помощник студента-медика. По аудиозаписи:\n"
+        "По аудиозаписи:\n"
         "1) Составь структурированный КОНСПЕКТ на русском "
         "(заголовок, тезисы, термины; важные слова выделяй **двойными звёздочками**).\n"
         "2) Затем дай полную РАСШИФРОВКУ речи.\n\n"
@@ -408,7 +586,7 @@ async def groq_konspekt(transcript: str) -> str:
                     "messages": [
                         {
                             "role": "system",
-                            "content": "Ты делаешь учебные конспекты по медицине. Отвечай только на русском.",
+                            "content": "Ты делаешь краткие структурированные конспекты устной речи на русском. Тема может быть любой, не только медицина.",
                         },
                         {"role": "user", "content": prompt},
                     ],
@@ -437,7 +615,7 @@ async def groq_konspekt(transcript: str) -> str:
 
     if len(chunks_text) == 1:
         prompt = (
-            "Ты помощник студента-медика. По расшифровке устной речи составь краткий структурированный конспект на русском.\n"
+            "По расшифровке устной речи составь краткий структурированный конспект на русском. Тема может быть любой.\n"
             "Формат:\n"
             "1) Заголовок (если понятна тема)\n"
             "2) Ключевые тезисы маркированным списком\n"
@@ -466,7 +644,7 @@ async def groq_konspekt(transcript: str) -> str:
 
 
 async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filename: str) -> None:
-    """Скачать → (нарезка) → STT → конспект. Groq → при лимите Gemini."""
+    """Скачать → нарезка → STT всех кусков → конспект. Полная расшифровка несколькими сообщениями."""
     if not GROQ_API_KEY and not GEMINI_API_KEY:
         await message.answer(
             "Нет ключей для расшифровки.\n"
@@ -475,6 +653,8 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         return
 
     status = await message.answer("⏳ Скачиваю аудио…")
+    notes = ""
+    transcript = ""
     try:
         file = await bot.get_file(file_id)
         if file.file_size and file.file_size > TG_DOWNLOAD_LIMIT:
@@ -488,99 +668,131 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         await bot.download_file(file.file_path, buf)
         audio_bytes = buf.getvalue()
 
-        await status.edit_text("🔧 Готовлю аудио…")
+        await status.edit_text("🔧 Готовлю аудио (длинные сам нарежу)…")
         chunks = prepare_and_chunk_audio(audio_bytes, filename)
         n = len(chunks)
-        provider_used = []
+        provider_used: list[str] = []
+        await status.edit_text(f"🔧 Кусков для распознавания: <b>{n}</b>")
 
-        # Если только Gemini и один небольшой кусок — можно одним запросом
-        only_gemini = bool(GEMINI_API_KEY) and not GROQ_API_KEY
-        if only_gemini and n == 1 and len(chunks[0][1]) < 15 * 1024 * 1024:
-            await status.edit_text("🤖 Gemini: конспект из аудио…")
-            notes, transcript = await gemini_notes_from_audio(chunks[0][1], chunks[0][0])
-            provider_used.append("gemini")
-        else:
-            texts: list[str] = []
-            use_gemini_stt = False
-            for i, (cname, cbytes) in enumerate(chunks, 1):
-                label = "Gemini" if use_gemini_stt else "Groq/auto"
-                await status.edit_text(f"🎙 Распознаю речь ({label})… {i}/{n}")
-                try:
-                    if use_gemini_stt:
-                        if not GEMINI_API_KEY:
-                            raise RuntimeError("Gemini недоступен")
-                        part = await gemini_transcribe(cbytes, cname)
-                        provider_used.append("gemini")
-                    else:
-                        part, prov = await transcribe_with_fallback(cbytes, cname)
-                        provider_used.append(prov)
-                        if prov == "gemini":
-                            use_gemini_stt = True  # дальше сразу Gemini
-                except Exception as e:
-                    if not use_gemini_stt and GEMINI_API_KEY and is_quota_error(e):
+        texts: list[str] = []
+        use_gemini_stt = False
+        for i, (cname, cbytes) in enumerate(chunks, 1):
+            label = "Gemini" if use_gemini_stt else "Groq/auto"
+            await status.edit_text(f"🎙 Распознаю речь ({label})… {i}/{n}")
+            try:
+                if use_gemini_stt:
+                    if not GEMINI_API_KEY:
+                        raise RuntimeError("Gemini недоступен")
+                    part = await gemini_transcribe(cbytes, cname)
+                    provider_used.append("gemini")
+                else:
+                    part, prov = await transcribe_with_fallback(cbytes, cname)
+                    provider_used.append(prov)
+                    if prov == "gemini":
                         use_gemini_stt = True
-                        await status.edit_text(f"🎙 Лимит Groq → Gemini… {i}/{n}")
-                        part = await gemini_transcribe(cbytes, cname)
-                        provider_used.append("gemini")
-                    else:
-                        raise
-                if part:
-                    texts.append(part)
+            except Exception as e:
+                if not use_gemini_stt and GEMINI_API_KEY and is_quota_error(e):
+                    use_gemini_stt = True
+                    await status.edit_text(f"🎙 Лимит Groq → Gemini… {i}/{n}")
+                    part = await gemini_transcribe(cbytes, cname)
+                    provider_used.append("gemini")
+                else:
+                    # не рвём всё — сохраняем что есть, помечаем дыру
+                    logger.exception("chunk %s failed", i)
+                    part = f"\n[фрагмент {i}/{n} не распознан: {e}]\n"
+            if part:
+                texts.append(part)
 
-            transcript = "\n".join(texts).strip()
-            if not transcript:
+        transcript = "\n".join(texts).strip()
+        if not transcript or transcript.replace("\n", "").startswith("[фрагмент") and len(texts) <= 1:
+            # если совсем пусто
+            only_errors = all(t.strip().startswith("[фрагмент") for t in texts) if texts else True
+            if only_errors or not any(not t.strip().startswith("[фрагмент") for t in texts):
                 await status.edit_text("Не удалось разобрать речь (пустая расшифровка).")
                 return
 
-            await status.edit_text("📝 Делаю конспект…")
-            try:
-                notes, prov = await konspekt_with_fallback(transcript)
-                provider_used.append(prov)
-            except Exception as e:
-                if GEMINI_API_KEY and is_quota_error(e):
-                    await status.edit_text("📝 Лимит Groq → конспект через Gemini…")
+        # Конспект — отдельно, ошибка не должна съесть расшифровку
+        await status.edit_text("📝 Делаю конспект…")
+        try:
+            notes, prov = await konspekt_with_fallback(transcript)
+            provider_used.append(prov)
+        except Exception as e:
+            logger.exception("konspekt failed")
+            if GEMINI_API_KEY:
+                try:
+                    await status.edit_text("📝 Запасной конспект (Gemini)…")
                     notes = await gemini_konspekt(transcript)
                     provider_used.append("gemini")
-                else:
-                    raise
-
-        header = "<b>Конспект</b>\n\n"
-        body = md_lite_to_html(notes)
-        text_out = header + body
-        if len(text_out) > 4000:
-            await status.edit_text(text_out[:4000] + "…")
-            rest = text_out[4000:]
-            while rest:
-                await message.answer(rest[:4000])
-                rest = rest[4000:]
-        else:
-            await status.edit_text(text_out)
-
-        if transcript:
-            if len(transcript) < 3500:
-                await message.answer("<b>Расшифровка</b>\n\n" + html_lib.escape(transcript))
+                except Exception as e2:
+                    logger.exception("gemini konspekt failed")
+                    notes = (
+                        f"(Не удалось сделать конспект автоматически: {e2})\n\n"
+                        "Ниже — полная расшифровка."
+                    )
             else:
-                await message.answer(
-                    "<b>Расшифровка (начало)</b>\n\n"
-                    + html_lib.escape(transcript[:3500])
-                    + "…"
+                notes = (
+                    f"(Не удалось сделать конспект: {e})\n\n"
+                    "Ниже — полная расшифровка."
                 )
-        # сохранить в историю
+
+        # Сначала конспект
+        await status.edit_text("✅ Готово, отправляю…")
+        await send_long_html(
+            message,
+            md_lite_to_html(notes),
+            prefix="<b>Конспект</b>\n\n",
+        )
+
+        # Полная расшифровка — несколькими сообщениями, без обрезки «только начало»
+        if transcript:
+            await send_long_html(
+                message,
+                html_lib.escape(transcript),
+                prefix="<b>Расшифровка</b>\n\n",
+            )
+
         try:
             uid = message.from_user.id if message.from_user else 0
             title = (notes.splitlines()[0] if notes else "Конспект")[:80]
-            nid = storage.notes_save(uid, notes, transcript, title=title)
-            await message.answer("💾 Сохранено в «Мои конспекты».", reply_markup=notes_result_kb(nid))
+            # убрать markdown-звёздочки из заголовка файла
+            title_clean = re.sub(r"[*#_`]+", "", title).strip() or "Конспект"
+            nid = storage.notes_save(uid, notes, transcript, title=title_clean)
+            row = storage.notes_get(uid, nid)
+            created = (row or {}).get("created_at")
+            await message.answer(
+                f"💾 Сохранено в «Мои конспекты». Кусков STT: {n}.",
+                reply_markup=notes_result_kb(nid),
+            )
+            try:
+                await send_notes_html_document(
+                    message, nid, title_clean, notes, transcript, created,
+                )
+            except Exception:
+                logger.exception("auto html export")
         except Exception:
             logger.exception("notes_save")
-        logger.info("notes providers=%s", provider_used)
+        logger.info("notes providers=%s chunks=%s tr_len=%s", provider_used, n, len(transcript))
     except Exception as e:
         logger.exception("audio notes failed")
         err = html_lib.escape(str(e)[:500])
+        # если успели что-то распознать — отдадим
+        if transcript:
+            try:
+                await message.answer(
+                    f"Ошибка на финале: {err}\nОтправляю то, что успело распознаться:"
+                )
+                await send_long_html(
+                    message,
+                    html_lib.escape(transcript),
+                    prefix="<b>Расшифровка (частично)</b>\n\n",
+                )
+            except Exception:
+                pass
         try:
             await status.edit_text(f"Ошибка: {err}")
         except Exception:
             await message.answer(f"Ошибка: {err}")
+
 
 
 
@@ -1659,6 +1871,14 @@ async def cb_grp_tog(call: CallbackQuery):
 
 
 # ---- notes history + export ----
+def _hist_button_label(it: dict) -> str:
+    date_s = format_note_date(it.get("created_at"))
+    title = (it.get("title") or "Конспект").strip()
+    title = re.sub(r"[*#_`]+", "", title).strip() or "Конспект"
+    if len(title) > 28:
+        title = title[:27] + "…"
+    return f"{date_s} · {title}"
+
 @dp.callback_query(F.data == "hist_home")
 async def cb_hist_home(call: CallbackQuery):
     items = storage.notes_list(call.from_user.id)
@@ -1669,7 +1889,7 @@ async def cb_hist_home(call: CallbackQuery):
         await call.answer()
         return
     for it in items:
-        kb.button(text=f"#{it['id']} {(it.get('title') or 'Конспект')[:35]}", callback_data=f"hist_o:{it['id']}")
+        kb.button(text=_hist_button_label(it), callback_data=f"hist_o:{it['id']}")
     kb.adjust(1)
     kb.button(text="« Меню", callback_data="menu")
     await call.message.edit_text(f"📝 <b>Мои конспекты</b> ({len(items)})", reply_markup=kb.as_markup())
@@ -1684,7 +1904,7 @@ async def btn_hist(message: Message):
         return
     kb = InlineKeyboardBuilder()
     for it in items:
-        kb.button(text=f"#{it['id']} {(it.get('title') or 'Конспект')[:35]}", callback_data=f"hist_o:{it['id']}")
+        kb.button(text=_hist_button_label(it), callback_data=f"hist_o:{it['id']}")
     kb.adjust(1)
     await message.answer(f"📝 <b>Мои конспекты</b> ({len(items)})", reply_markup=kb.as_markup())
 
@@ -1718,14 +1938,12 @@ async def cb_notes_export(call: CallbackQuery):
         data = f"{row.get('title')}\n{row.get('created_at')}\n\n{notes}\n\n--- Расшифровка ---\n{tr}".encode("utf-8")
         await call.message.answer_document(BufferedInputFile(data, filename=f"konspekt_{nid}.txt"))
     else:
-        html = (
-            "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Конспект</title></head><body>"
-            f"<h1>{html_lib.escape(row.get('title') or '')}</h1>"
-            f"<p>{html_lib.escape(row.get('created_at') or '')}</p>"
-            f"<pre>{html_lib.escape(notes)}</pre>"
-            f"<h2>Расшифровка</h2><pre>{html_lib.escape(tr)}</pre>"
-            "</body></html>"
-        ).encode("utf-8")
+        html = build_notes_html_file(
+            row.get("title") or "Конспект",
+            notes,
+            tr,
+            row.get("created_at"),
+        )
         await call.message.answer_document(BufferedInputFile(html, filename=f"konspekt_{nid}.html"))
     await call.answer()
 
@@ -1767,7 +1985,14 @@ async def cmd_session_done(message: Message, bot: Bot):
         else:
             await status.edit_text(text_out)
         nid = storage.notes_save(message.from_user.id, notes, transcript, title="Сессия")
+        row = storage.notes_get(message.from_user.id, nid)
         await message.answer("💾 Сохранено.", reply_markup=notes_result_kb(nid))
+        try:
+            await send_notes_html_document(
+                message, nid, "Сессия", notes, transcript, (row or {}).get("created_at"),
+            )
+        except Exception:
+            logger.exception("session html export")
         if len(transcript) < 3500:
             await message.answer("<b>Расшифровка</b>\n\n" + html_lib.escape(transcript))
     except Exception as e:
@@ -1890,6 +2115,7 @@ async def main():
     if not token:
         raise SystemExit("Укажите BOT_TOKEN")
     storage.init_db()
+    logger.info("SQLite DB: %s", storage.DB_PATH)
     bot = Bot(token=token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await bot.delete_webhook(drop_pending_updates=True)
     await bot.set_my_commands(

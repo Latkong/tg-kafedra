@@ -7,7 +7,31 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-DB_PATH = Path(__file__).resolve().parent / "bot_data.db"
+def _resolve_db_path() -> Path:
+    """Постоянный диск Railway: mount path + DATA_DIR, иначе рядом с кодом."""
+    import os
+
+    candidates = []
+    env = (os.environ.get("DATA_DIR") or "").strip()
+    if env:
+        candidates.append(Path(env))
+    # типичный mount Volume на Railway
+    candidates.append(Path("/data"))
+    candidates.append(Path(__file__).resolve().parent)
+
+    for base in candidates:
+        try:
+            base.mkdir(parents=True, exist_ok=True)
+            probe = base / ".write_test"
+            probe.write_text("ok", encoding="utf-8")
+            probe.unlink(missing_ok=True)
+            return base / "bot_data.db"
+        except Exception:
+            continue
+    return Path(__file__).resolve().parent / "bot_data.db"
+
+
+DB_PATH = _resolve_db_path()
 
 
 def _now() -> str:

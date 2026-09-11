@@ -1,20 +1,31 @@
-# Бот РНИМУ: кафедры, анатомия, расписание, конспекты
+# Бот РНИМУ
 
-## Функции
-- Кафедры, анатомия (MedUniver), расписание ПЕД 1В
-- 🎙 Конспект из голоса/аудио (Groq → fallback Gemini)
-- ⭐ Избранное (кафедры, статьи, дни)
-- 🔔 Напоминания за ~15 мин до пары (группа + МСК)
-- 📝 История конспектов + экспорт TXT/HTML
-- 🎙 Сессия: /session → несколько ГС → /session_done
-- 💬 /feedback — сообщение разработчику
+## Постоянный диск (Railway Volume)
+
+Чтобы избранное, конспекты и настройки группы **не сбрасывались** при Redeploy:
+
+1. Railway → твой сервис → **Settings** → **Volumes** (или **Data** → Volumes)
+2. **Add Volume**
+   - Mount path: `/data`
+   - Size: хватит **1 GB**
+3. Variables (по желанию):
+   ```text
+   DATA_DIR=/data
+   ```
+4. **Redeploy**
+
+В логах при старте должно быть:
+`SQLite DB: /data/bot_data.db`
+
+Без volume база лежит в контейнере и **пропадает** при новом деплое.
 
 ## Variables
 - `BOT_TOKEN`
 - `GROQ_API_KEY`
-- `GEMINI_API_KEY` (запасной)
-- `ADMIN_ID` (по умолчанию 435494037) — куда слать фидбек
+- `GEMINI_API_KEY`
+- `ADMIN_ID` (фидбек)
+- `DATA_DIR=/data` (диск)
 
-## Deploy
-ffmpeg через Aptfile/nixpacks.toml  
-`python bot.py`
+## Запуск
+`python bot.py`  
+Нужен ffmpeg (Aptfile / nixpacks.toml).
