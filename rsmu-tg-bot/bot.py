@@ -175,10 +175,47 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
 
 
 
-async def send_long_text(message: Message, body: str, title: str = "") -> None:
-    """Надёжная отправка длинного текста без ломаных HTML-тегов при нарезке."""
+
+def format_konspekt_for_telegram(raw: str) -> str:
+    """Markdown-ish конспект → безопасный HTML для Telegram."""
+    if not raw:
+        return ""
+    s = raw.replace("\r\n", "\n").replace("\r", "\n")
+    s = re.sub(r"```[\w+-]*\n?", "", s)
+    s = s.replace("```", "")
+    out_lines: list[str] = []
+    for line in s.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("|") and stripped.count("|") >= 2:
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            cells = [c for c in cells if c]
+            if cells and all(re.fullmatch(r":?-{3,}:?", c.replace(" ", "")) for c in cells):
+                continue
+            out_lines.append(" • " + " — ".join(cells))
+        else:
+            out_lines.append(line)
+    s = "\n".join(out_lines)
+
+    def hdr(m):
+        return "<b>" + html_lib.escape(m.group(2).strip()) + "</b>"
+
+    s = re.sub(r"^(#{1,3})\s+(.+)$", hdr, s, flags=re.M)
+    pieces = re.split(r"(\*\*[^*]+?\*\*|__[^\s_][^_]*?__)", s)
+    html_parts: list[str] = []
+    for p in pieces:
+        if (p.startswith("**") and p.endswith("**") and len(p) >= 4) or (
+            p.startswith("__") and p.endswith("__") and len(p) >= 4
+        ):
+            html_parts.append("<b>" + html_lib.escape(p[2:-2]) + "</b>")
+        else:
+            html_parts.append(html_lib.escape(p))
+    return "".join(html_parts)
+
+
+async def send_long_text(message: Message, body: str, title: str = "", *, body_html: bool = False) -> None:
+    """Надёжная отправка длинного текста. body_html=True — уже безопасный HTML."""
     limit = 3500
-    safe = html_lib.escape(body or "")
+    safe = (body or "") if body_html else html_lib.escape(body or "")
     if not safe.strip():
         if title:
             await message.answer(f"<b>{html_lib.escape(title)}</b>\n\n<i>(пусто)</i>")
@@ -766,7 +803,12 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
         if not (notes or "").strip():
             notes = "Конспект пуст — модель не вернула текст. Смотри расшифровку и HTML-файл."
         try:
-            await send_long_text(message, notes, title="Конспект")
+            await send_long_text(
+                message,
+                format_konspekt_for_telegram(notes),
+                title="Конспект",
+                body_html=True,
+            )
         except Exception:
             logger.exception("send notes failed")
             await message.answer("Конспект:\n" + (notes or "")[:3500])
@@ -1943,11 +1985,14 @@ async def cb_hist_open(call: CallbackQuery):
     if not row:
         await call.answer("Нет", show_alert=True)
         return
-    body = md_lite_to_html(row.get("notes") or "")
-    text = f"<b>Конспект #{nid}</b>\n{html_lib.escape(row.get('created_at') or '')}\n\n{body}"
-    if len(text) > 4000:
-        text = text[:3990] + "…"
-    await call.message.answer(text, reply_markup=notes_result_kb(nid))
+    date_s = format_note_date(row.get("created_at"))
+    await send_long_text(
+        call.message,
+        format_konspekt_for_telegram(row.get("notes") or ""),
+        title=f"Конспект #{nid} · {date_s}",
+        body_html=True,
+    )
+    await call.message.answer("Действия:", reply_markup=notes_result_kb(nid))
     await call.answer()
 
 
