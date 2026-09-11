@@ -175,37 +175,63 @@ def prepare_and_chunk_audio(audio_bytes: bytes, filename: str) -> list[tuple[str
 
 
 
-async def send_long_html(message: Message, text: str, prefix: str = "") -> None:
-    """Шлёт длинный HTML-текст несколькими сообщениями (лимит Telegram ~4096)."""
-    limit = 3900
-    body = (prefix + text) if prefix else text
-    if len(body) <= limit:
-        await message.answer(body)
+async def send_long_text(message: Message, body: str, title: str = "") -> None:
+    """Надёжная отправка длинного текста без ломаных HTML-тегов при нарезке."""
+    limit = 3500
+    safe = html_lib.escape(body or "")
+    if not safe.strip():
+        if title:
+            await message.answer(f"<b>{html_lib.escape(title)}</b>\n\n<i>(пусто)</i>")
         return
-    # режем по абзацам, иначе жёстко
+    lines_b = safe.split("\n")
     parts: list[str] = []
-    cur = prefix
-    for para in text.split("\n"):
-        trial = (cur + para + "\n") if cur else (para + "\n")
-        if len(trial) > limit:
-            if cur.strip():
-                parts.append(cur.rstrip())
-            cur = para + "\n"
-            while len(cur) > limit:
-                parts.append(cur[:limit])
-                cur = cur[limit:]
-        else:
+    cur = ""
+    for line in lines_b:
+        trial = (cur + "\n" + line) if cur else line
+        if len(trial) <= limit:
             cur = trial
-    if cur.strip():
-        parts.append(cur.rstrip())
+        else:
+            if cur:
+                parts.append(cur)
+            if len(line) <= limit:
+                cur = line
+            else:
+                while len(line) > limit:
+                    parts.append(line[:limit])
+                    line = line[limit:]
+                cur = line
+    if cur:
+        parts.append(cur)
     total = len(parts)
     for i, p in enumerate(parts, 1):
-        footer = f"\n\n<i>({i}/{total})</i>" if total > 1 else ""
-        chunk = p + footer
-        if len(chunk) > 4090:
-            chunk = chunk[:4080] + "…"
-        await message.answer(chunk)
+        head = f"<b>{html_lib.escape(title)}</b>\n\n" if title else ""
+        foot = f"\n\n<i>({i}/{total})</i>" if total > 1 else ""
+        msg = head + p + foot
+        if len(msg) > 4090:
+            msg = msg[:4080] + "…"
+        try:
+            await message.answer(msg)
+        except Exception as e:
+            logger.warning("send_long_text failed: %s", e)
+            plain = ((title + "\n\n") if title else "") + html_lib.unescape(p)
+            if total > 1:
+                plain += f"\n\n({i}/{total})"
+            await message.answer(plain[:4090])
 
+
+async def send_long_html(message: Message, text: str, prefix: str = "") -> None:
+    """Обёртка: заголовок из prefix, тело без опасной HTML-нарезки."""
+    title = ""
+    if prefix:
+        mm = re.match(r"<b>(.*?)</b>", prefix, flags=re.S)
+        if mm:
+            title = html_lib.unescape(mm.group(1))
+    plain = re.sub(r"<br\s*/?>", "\n", text or "", flags=re.I)
+    plain = re.sub(r"</?b>", "", plain, flags=re.I)
+    plain = re.sub(r"</?i>", "", plain, flags=re.I)
+    plain = re.sub(r"</?u>", "", plain, flags=re.I)
+    plain = html_lib.unescape(plain)
+    await send_long_text(message, plain, title=title)
 
 
 def format_note_date(created_at: str | None) -> str:
@@ -735,21 +761,22 @@ async def process_audio_to_notes(message: Message, bot: Bot, file_id: str, filen
                     "Ниже — полная расшифровка."
                 )
 
-        # Сначала конспект
+        # Сначала конспект — всегда, отдельно, без ломаного HTML
         await status.edit_text("✅ Готово, отправляю…")
-        await send_long_html(
-            message,
-            md_lite_to_html(notes),
-            prefix="<b>Конспект</b>\n\n",
-        )
+        if not (notes or "").strip():
+            notes = "Конспект пуст — модель не вернула текст. Смотри расшифровку и HTML-файл."
+        try:
+            await send_long_text(message, notes, title="Конспект")
+        except Exception:
+            logger.exception("send notes failed")
+            await message.answer("Конспект:\n" + (notes or "")[:3500])
 
-        # Полная расшифровка — несколькими сообщениями, без обрезки «только начало»
+        # Полная расшифровка
         if transcript:
-            await send_long_html(
-                message,
-                html_lib.escape(transcript),
-                prefix="<b>Расшифровка</b>\n\n",
-            )
+            try:
+                await send_long_text(message, transcript, title="Расшифровка")
+            except Exception:
+                logger.exception("send transcript failed")
 
         try:
             uid = message.from_user.id if message.from_user else 0
