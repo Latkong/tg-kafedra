@@ -42,6 +42,11 @@ logger = logging.getLogger(__name__)
 BASE = Path(__file__).resolve().parent
 CATALOG = json.loads((BASE / "departments.json").read_text(encoding="utf-8"))
 ANATOMY = json.loads((BASE / "anatomy_catalog.json").read_text(encoding="utf-8"))
+_MEDU_PATH = BASE / "meduniver_catalog.json"
+if _MEDU_PATH.exists():
+    MEDU = json.loads(_MEDU_PATH.read_text(encoding="utf-8"))
+else:
+    MEDU = {"source": "https://meduniver.com/", "subjects": []}
 SCHEDULE = json.loads((BASE / "schedule_ped1v.json").read_text(encoding="utf-8"))
 KIND_LABEL = {"kafedra": "Кафедра", "lab": "Лаборатория", "otdel": "Отдел", "upr": "Подразделение", "faculty": "Подразделение"}
 
@@ -889,6 +894,50 @@ def search_units(query: str, only_kafedra: bool = False, limit: int = 30):
                     return results
     return results
 
+
+def all_kafedry_list():
+    """Все кафедры: (inst, unit_index, unit), сортировка по названию."""
+    items = []
+    for inst in CATALOG["institutes"]:
+        for idx, unit in enumerate(inst["units"]):
+            if unit.get("kind") == "kafedra":
+                items.append((inst, idx, unit))
+    items.sort(key=lambda x: (x[2].get("name") or "").lower())
+    return items
+
+
+def kafedry_keyboard(page: int = 0) -> InlineKeyboardMarkup:
+    """Главный экран «Кафедры»: список кафедр, не институтов."""
+    items = all_kafedry_list()
+    per = 10
+    start = page * per
+    chunk = items[start : start + per]
+    kb = InlineKeyboardBuilder()
+    for inst, idx, unit in chunk:
+        name = unit.get("name") or "Кафедра"
+        # убрать хвост «ИНН» если дублирует abbr
+        label = name
+        if len(label) > 48:
+            label = label[:45] + "…"
+        # институт в конце коротко
+        abbr = inst.get("abbr") or ""
+        btn = f"{label}" if not abbr else f"{label} · {abbr}"
+        if len(btn) > 64:
+            btn = btn[:61] + "…"
+        kb.button(text=btn, callback_data=f"u:{inst['id']}:{idx}")
+    kb.adjust(1)
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"kafp:{page-1}"))
+    if start + per < len(items):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"kafp:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="🏛 По институтам", callback_data="kaf_by_inst"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
 def institutes_keyboard() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     for inst in CATALOG["institutes"]:
@@ -919,7 +968,8 @@ def units_keyboard(inst_id: str, page: int = 0, only_kafedra: bool = True) -> In
     if nav:
         kb.row(*nav)
     kb.row(InlineKeyboardButton(text="Все подразделения" if only_kafedra else "Только кафедры", callback_data=f"toggle:{inst_id}:{0 if only_kafedra else 1}"))
-    kb.row(InlineKeyboardButton(text="« К институтам", callback_data="kaf_home"))
+    kb.row(InlineKeyboardButton(text="« К кафедрам", callback_data="kaf_home"))
+    kb.row(InlineKeyboardButton(text="🏛 По институтам", callback_data="kaf_by_inst"))
     return kb.as_markup()
 
 def unit_text(inst, unit):
@@ -929,47 +979,152 @@ def unit_text(inst, unit):
         lines.append(f'<a href="{unit["url"]}">Открыть на сайте РНИМУ</a>')
     return "\n".join(lines)
 
-def anatomy_sections_kb():
-    kb = InlineKeyboardBuilder()
-    for s in ANATOMY["sections"]:
-        n = len(s.get("articles") or [])
-        if n == 0:
-            continue
-        kb.button(text=f"{s['name']} ({n})", callback_data=f"as:{s['id']}")
-    kb.adjust(1)
-    kb.row(InlineKeyboardButton(text="🔍 Поиск по анатомии", callback_data="a_search_help"))
-    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
-    return kb.as_markup()
+def medu_count_articles(node) -> int:
+    if node is None:
+        return 0
+    if "subsections" in node:
+        return sum(len(ss.get("articles") or []) for ss in (node.get("subsections") or []))
+    if "sections" in node:
+        return sum(medu_count_articles(sec) for sec in (node.get("sections") or []))
+    return len(node.get("articles") or [])
 
-def anatomy_articles_kb(section_id: str, page: int = 0):
-    sec = next((s for s in ANATOMY["sections"] if s["id"] == section_id), None)
-    arts = (sec or {}).get("articles") or []
-    per, start = 10, page * 10
-    chunk = arts[start:start + per]
+
+def medu_subjects_kb(page: int = 0) -> InlineKeyboardMarkup:
+    subjects = MEDU.get("subjects") or []
+    per = 10
+    chunk = subjects[page * per : (page + 1) * per]
     kb = InlineKeyboardBuilder()
-    for i, a in enumerate(chunk):
-        title = a["title"][:47] + "…" if len(a["title"]) > 50 else a["title"]
-        kb.button(text=title, callback_data=f"aa:{section_id}:{start + i}")
+    for s in chunk:
+        n = medu_count_articles(s)
+        label = s["name"][:40]
+        if n:
+            label = f"{label} ({n})"
+        kb.button(text=label, callback_data=f"mu_s:{s['id']}")
     kb.adjust(1)
     nav = []
     if page > 0:
-        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"ap:{section_id}:{page-1}"))
-    if start + per < len(arts):
-        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"ap:{section_id}:{page+1}"))
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"mu_sp:{page-1}"))
+    if (page + 1) * per < len(subjects):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_sp:{page+1}"))
     if nav:
         kb.row(*nav)
-    kb.row(InlineKeyboardButton(text="« Разделы анатомии", callback_data="anat_home"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     return kb.as_markup()
 
-def search_anatomy(query: str, limit: int = 25):
+
+def medu_find_subject(sid: str):
+    return next((s for s in (MEDU.get("subjects") or []) if s["id"] == sid), None)
+
+
+def medu_find_section(subj, sec_id: str):
+    if not subj:
+        return None
+    return next((s for s in (subj.get("sections") or []) if s["id"] == sec_id), None)
+
+
+def medu_find_sub(sec, sub_id: str):
+    if not sec:
+        return None
+    return next((s for s in (sec.get("subsections") or []) if s["id"] == sub_id), None)
+
+
+def medu_sections_kb(subj_id: str, page: int = 0) -> InlineKeyboardMarkup:
+    subj = medu_find_subject(subj_id)
+    secs = (subj.get("sections") or []) if subj else []
+    per = 10
+    chunk = secs[page * per : (page + 1) * per]
+    kb = InlineKeyboardBuilder()
+    for sec in chunk:
+        n = medu_count_articles(sec)
+        label = sec["name"][:42]
+        if n:
+            label = f"{label} ({n})"
+        kb.button(text=label, callback_data=f"mu_sec:{subj_id}:{sec['id']}")
+    kb.adjust(1)
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"mu_secp:{subj_id}:{page-1}"))
+    if (page + 1) * per < len(secs):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_secp:{subj_id}:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="« Предметы", callback_data="mu_home"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
+def medu_subsections_kb(subj_id: str, sec_id: str, page: int = 0) -> InlineKeyboardMarkup:
+    subj = medu_find_subject(subj_id)
+    sec = medu_find_section(subj, sec_id) if subj else None
+    subs = (sec.get("subsections") or []) if sec else []
+    per = 10
+    chunk = subs[page * per : (page + 1) * per]
+    kb = InlineKeyboardBuilder()
+    for ss in chunk:
+        n = len(ss.get("articles") or [])
+        label = (ss.get("name") or "Подраздел")[:42]
+        if n:
+            label = f"{label} ({n})"
+        kb.button(text=label, callback_data=f"mu_sub:{subj_id}:{sec_id}:{ss['id']}")
+    kb.adjust(1)
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"mu_subp:{subj_id}:{sec_id}:{page-1}"))
+    if (page + 1) * per < len(subs):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_subp:{subj_id}:{sec_id}:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="« Разделы", callback_data=f"mu_s:{subj_id}"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
+def medu_articles_kb(subj_id: str, sec_id: str, sub_id: str, page: int = 0) -> InlineKeyboardMarkup:
+    subj = medu_find_subject(subj_id)
+    sec = medu_find_section(subj, sec_id) if subj else None
+    ss = medu_find_sub(sec, sub_id) if sec else None
+    arts = (ss.get("articles") or []) if ss else []
+    per = 8
+    start = page * per
+    chunk = arts[start : start + per]
+    kb = InlineKeyboardBuilder()
+    for i, a in enumerate(chunk):
+        title = (a.get("title") or "Статья")[:45]
+        kb.button(text=title, callback_data=f"mu_a:{subj_id}:{sec_id}:{sub_id}:{start + i}")
+    kb.adjust(1)
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"mu_ap:{subj_id}:{sec_id}:{sub_id}:{page-1}"))
+    if start + per < len(arts):
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_ap:{subj_id}:{sec_id}:{sub_id}:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    kb.row(InlineKeyboardButton(text="« Подразделы", callback_data=f"mu_sec:{subj_id}:{sec_id}"))
+    kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
+    return kb.as_markup()
+
+
+def search_medu(query: str, limit: int = 25):
     results = []
-    for sec in ANATOMY["sections"]:
-        for i, a in enumerate(sec.get("articles") or []):
-            if matches(a["title"], query):
-                results.append((sec, i, a))
-                if len(results) >= limit:
-                    return results
+    for subj in MEDU.get("subjects") or []:
+        for sec in subj.get("sections") or []:
+            for ss in sec.get("subsections") or []:
+                for idx, art in enumerate(ss.get("articles") or []):
+                    hay = f"{subj['name']} {sec['name']} {ss.get('name','')} {art.get('title','')}"
+                    if matches(hay, query):
+                        results.append((subj, sec, ss, idx, art))
+                        if len(results) >= limit:
+                            return results
     return results
+
+
+def anatomy_sections_kb():
+    return medu_subjects_kb(0)
+
+
+def search_anatomy(query: str, limit: int = 25):
+    return search_medu(query, limit)
+
 
 def fetch_html(url: str) -> str:
     req = Request(url, headers={"User-Agent": UA})
@@ -1199,7 +1354,7 @@ def format_day_schedule(group: str, day_id: str) -> str:
 def main_menu_kb():
     kb = InlineKeyboardBuilder()
     kb.button(text="🏛 Кафедры РНИМУ", callback_data="kaf_home")
-    kb.button(text="🦴 Анатомия (MedUniver)", callback_data="anat_home")
+    kb.button(text="📚 MedUniver", callback_data="mu_home")
     kb.button(text="📅 Расписание ПЕД 1В", callback_data="sch_home")
     kb.button(text="🎙 Конспект из аудио", callback_data="notes_home")
     kb.button(text="⭐ Избранное", callback_data="fav_home")
@@ -1213,7 +1368,7 @@ def main_menu_kb():
 def main_reply_kb() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="🦴 Анатомия")],
+            [KeyboardButton(text="🏛 Кафедры"), KeyboardButton(text="📚 MedUniver")],
             [KeyboardButton(text="📅 Расписание"), KeyboardButton(text="🎙 Конспект")],
             [KeyboardButton(text="⭐ Избранное"), KeyboardButton(text="📝 Мои конспекты")],
             [KeyboardButton(text="📋 Меню")],
@@ -1261,11 +1416,11 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message):
-    n_anat = sum(len(s.get("articles") or []) for s in ANATOMY["sections"])
+    n_anat = sum(medu_count_articles(s) for s in (MEDU.get("subjects") or []))
     text = (
         "<b>Кафедры · Анатомия · Расписание</b>\n\n"
         f"Кафедр: {CATALOG.get('kafedraCount', '?')} · "
-        f"Статей анатомии: {n_anat} · "
+        f"MedUniver статей: {n_anat} · "
         f"Групп в расписании: {len(SCHEDULE.get('groups', []))}\n\n"
         "Выберите раздел кнопками ниже или напишите запрос\n"
         "(например: <u>терапия</u> или <u>плечевая кость</u>).\n\n"
@@ -1291,13 +1446,20 @@ async def cmd_help(message: Message):
 
 @dp.message(Command("kafedry"))
 async def cmd_kaf(message: Message):
-    await message.answer("Выберите институт:", reply_markup=institutes_keyboard())
+    await message.answer(
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        reply_markup=kafedry_keyboard(0),
+    )
 
 @dp.message(Command("anatom"))
+@dp.message(Command("meduniver"))
 async def cmd_anat(message: Message):
+    n = sum(medu_count_articles(s) for s in (MEDU.get("subjects") or []))
     await message.answer(
-        'Анатомия (<a href="https://meduniver.com/Medical/Anatom/">MedUniver</a>). Выберите раздел:',
-        reply_markup=anatomy_sections_kb(), disable_web_page_preview=True,
+        f'📚 <b>MedUniver</b> · статей ≈ {n}\n'
+        f'<a href="https://meduniver.com/">meduniver.com</a>\n'
+        'Предмет → раздел → подраздел → статья:',
+        reply_markup=medu_subjects_kb(0), disable_web_page_preview=True,
     )
 
 @dp.callback_query(F.data == "menu")
@@ -1307,12 +1469,41 @@ async def cb_menu(call: CallbackQuery):
 
 @dp.callback_query(F.data == "kaf_home")
 async def cb_kaf_home(call: CallbackQuery):
-    await call.message.edit_text("Выберите институт:", reply_markup=institutes_keyboard())
+    await call.message.edit_text(
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        reply_markup=kafedry_keyboard(0),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("kafp:"))
+async def cb_kaf_page(call: CallbackQuery):
+    page = int(call.data.split(":")[1])
+    await call.message.edit_text(
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        reply_markup=kafedry_keyboard(page),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data == "kaf_by_inst")
+async def cb_kaf_by_inst(call: CallbackQuery):
+    await call.message.edit_text(
+        "Выберите институт (потом кафедры внутри):",
+        reply_markup=institutes_keyboard(),
+    )
     await call.answer()
 
 @dp.callback_query(F.data == "anat_home")
+@dp.callback_query(F.data == "mu_home")
 async def cb_anat_home(call: CallbackQuery):
-    await call.message.edit_text("🦴 <b>Анатомия</b>\nИсточник: meduniver.com\nВыберите раздел:", reply_markup=anatomy_sections_kb(), disable_web_page_preview=True)
+    n = sum(medu_count_articles(s) for s in (MEDU.get("subjects") or []))
+    await call.message.edit_text(
+        f"📚 <b>MedUniver</b> · статей ≈ {n}\n"
+        "Выберите предмет:",
+        reply_markup=medu_subjects_kb(0),
+        disable_web_page_preview=True,
+    )
     await call.answer()
 
 @dp.callback_query(F.data == "a_search_help")
@@ -1367,6 +1558,207 @@ async def cb_unit(call: CallbackQuery):
     kb.adjust(1)
     await call.message.edit_text(unit_text(inst, unit), reply_markup=kb.as_markup(), disable_web_page_preview=True)
     await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_sp:"))
+async def cb_mu_subjects_page(call: CallbackQuery):
+    page = int(call.data.split(":")[1])
+    await call.message.edit_reply_markup(reply_markup=medu_subjects_kb(page))
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_s:"))
+async def cb_mu_subject(call: CallbackQuery):
+    sid = call.data.split(":", 1)[1]
+    subj = medu_find_subject(sid)
+    if not subj:
+        await call.answer("Не найдено", show_alert=True)
+        return
+    n = medu_count_articles(subj)
+    await call.message.edit_text(
+        f"<b>{html_lib.escape(subj['name'])}</b>\nРазделов: {len(subj.get('sections') or [])} · статей ≈ {n}",
+        reply_markup=medu_sections_kb(sid, 0),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_secp:"))
+async def cb_mu_sections_page(call: CallbackQuery):
+    _, sid, page_s = call.data.split(":", 2)
+    await call.message.edit_reply_markup(reply_markup=medu_sections_kb(sid, int(page_s)))
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_sec:"))
+async def cb_mu_section(call: CallbackQuery):
+    # mu_sec:subj:sec
+    parts = call.data.split(":")
+    sid, sec_id = parts[1], parts[2]
+    subj = medu_find_subject(sid)
+    sec = medu_find_section(subj, sec_id)
+    if not sec:
+        await call.answer("Не найдено", show_alert=True)
+        return
+    subs = sec.get("subsections") or []
+    # если один подраздел — сразу статьи
+    if len(subs) == 1:
+        ss = subs[0]
+        await call.message.edit_text(
+            f"<b>{html_lib.escape(sec['name'])}</b>\n"
+            f"{html_lib.escape(ss.get('name') or '')}\n"
+            f"Статей: {len(ss.get('articles') or [])}",
+            reply_markup=medu_articles_kb(sid, sec_id, ss["id"], 0),
+        )
+    else:
+        await call.message.edit_text(
+            f"<b>{html_lib.escape(sec['name'])}</b>\nПодразделов: {len(subs)}",
+            reply_markup=medu_subsections_kb(sid, sec_id, 0),
+        )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_subp:"))
+async def cb_mu_sub_page(call: CallbackQuery):
+    parts = call.data.split(":")
+    sid, sec_id, page = parts[1], parts[2], int(parts[3])
+    await call.message.edit_reply_markup(reply_markup=medu_subsections_kb(sid, sec_id, page))
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_sub:"))
+async def cb_mu_sub(call: CallbackQuery):
+    parts = call.data.split(":")
+    sid, sec_id, sub_id = parts[1], parts[2], parts[3]
+    subj = medu_find_subject(sid)
+    sec = medu_find_section(subj, sec_id)
+    ss = medu_find_sub(sec, sub_id)
+    if not ss:
+        await call.answer("Не найдено", show_alert=True)
+        return
+    await call.message.edit_text(
+        f"<b>{html_lib.escape(ss.get('name') or '')}</b>\n"
+        f"Статей: {len(ss.get('articles') or [])}",
+        reply_markup=medu_articles_kb(sid, sec_id, sub_id, 0),
+    )
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_ap:"))
+async def cb_mu_art_page(call: CallbackQuery):
+    parts = call.data.split(":")
+    sid, sec_id, sub_id, page = parts[1], parts[2], parts[3], int(parts[4])
+    await call.message.edit_reply_markup(reply_markup=medu_articles_kb(sid, sec_id, sub_id, page))
+    await call.answer()
+
+
+@dp.callback_query(F.data.startswith("mu_a:"))
+async def cb_mu_article(call: CallbackQuery):
+    parts = call.data.split(":")
+    sid, sec_id, sub_id, idx = parts[1], parts[2], parts[3], int(parts[4])
+    subj = medu_find_subject(sid)
+    sec = medu_find_section(subj, sec_id)
+    ss = medu_find_sub(sec, sub_id)
+    arts = (ss.get("articles") or []) if ss else []
+    if idx < 0 or idx >= len(arts):
+        await call.answer("Не найдено", show_alert=True)
+        return
+    art = arts[idx]
+    await call.answer("Загружаю…")
+    try:
+        data = parse_article(art["url"])
+    except Exception as e:
+        logger.exception("article")
+        await call.message.answer(f"Не удалось загрузить.\n{art['url']}\n({e})")
+        return
+    pages = split_pages(data.get("text") or "")
+    cache_id = f"{sid}:{sec_id}:{sub_id}:{idx}"
+    cached = {
+        "title": data.get("title") or art.get("title") or "",
+        "sec_name": f"{subj['name'] if subj else ''} / {sec['name'] if sec else ''} / {ss.get('name') if ss else ''}",
+        "url": data.get("url") or art["url"],
+        "images": data.get("images") or [],
+        "pages": pages,
+        "mu": {"sid": sid, "sec_id": sec_id, "sub_id": sub_id, "idx": idx},
+    }
+    ARTICLE_CACHE[_cache_key(cache_id, 0)] = cached
+    # also key by mu path for pagination
+    ARTICLE_CACHE[cache_id] = cached
+    imgs = cached["images"][:5]
+    if imgs:
+        try:
+            if len(imgs) == 1:
+                await call.message.answer_photo(URLInputFile(imgs[0]))
+            else:
+                media = [InputMediaPhoto(media=URLInputFile(img)) for img in imgs]
+                await call.message.answer_media_group(media)
+        except Exception as e:
+            logger.warning("photos %s", e)
+    page_text, page = format_article_page(cached, 0)
+    await call.message.answer(
+        page_text,
+        reply_markup=medu_article_nav_kb(sid, sec_id, sub_id, idx, page, len(pages), cached["url"]),
+        disable_web_page_preview=True,
+    )
+
+
+def medu_article_nav_kb(sid, sec_id, sub_id, idx, page, total, url) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    nav = []
+    if page > 0:
+        nav.append(InlineKeyboardButton(text="⬅️", callback_data=f"mu_pg:{sid}:{sec_id}:{sub_id}:{idx}:{page-1}"))
+    if page < total - 1:
+        nav.append(InlineKeyboardButton(text="➡️", callback_data=f"mu_pg:{sid}:{sec_id}:{sub_id}:{idx}:{page+1}"))
+    if nav:
+        kb.row(*nav)
+    if url:
+        kb.button(text="На сайте", url=url)
+    kb.button(text="⭐ В избранное", callback_data=f"fav_add:mu:{sid}:{sec_id}:{sub_id}:{idx}")
+    kb.button(text="« К статьям", callback_data=f"mu_sub:{sid}:{sec_id}:{sub_id}")
+    kb.button(text="« Меню", callback_data="menu")
+    kb.adjust(2, 1, 1, 1)
+    return kb.as_markup()
+
+
+@dp.callback_query(F.data.startswith("mu_pg:"))
+async def cb_mu_page(call: CallbackQuery):
+    parts = call.data.split(":")
+    sid, sec_id, sub_id, idx, page = parts[1], parts[2], parts[3], int(parts[4]), int(parts[5])
+    cache_id = f"{sid}:{sec_id}:{sub_id}:{idx}"
+    cached = ARTICLE_CACHE.get(cache_id)
+    if not cached:
+        # reload
+        subj = medu_find_subject(sid)
+        sec = medu_find_section(subj, sec_id)
+        ss = medu_find_sub(sec, sub_id)
+        arts = (ss.get("articles") or []) if ss else []
+        if idx >= len(arts):
+            await call.answer("Нет", show_alert=True)
+            return
+        try:
+            data = parse_article(arts[idx]["url"])
+        except Exception:
+            await call.answer("Ошибка загрузки", show_alert=True)
+            return
+        cached = {
+            "title": data.get("title") or arts[idx].get("title") or "",
+            "sec_name": "",
+            "url": data.get("url") or arts[idx]["url"],
+            "images": data.get("images") or [],
+            "pages": split_pages(data.get("text") or ""),
+        }
+        ARTICLE_CACHE[cache_id] = cached
+    page_text, page = format_article_page(cached, page)
+    try:
+        await call.message.edit_text(
+            page_text,
+            reply_markup=medu_article_nav_kb(sid, sec_id, sub_id, idx, page, len(cached["pages"]), cached["url"]),
+            disable_web_page_preview=True,
+        )
+    except Exception as e:
+        logger.info("edit: %s", e)
+    await call.answer(f"стр. {page+1}/{len(cached['pages'])}")
+
+
 
 @dp.callback_query(F.data.startswith("as:"))
 async def cb_anat_section(call: CallbackQuery):
@@ -1488,14 +1880,18 @@ async def cmd_search(message: Message):
 
 @dp.message(F.text.in_({"🏛 Кафедры", "Кафедры", "/kafedry"}))
 async def btn_kafedry(message: Message):
-    await message.answer("Выберите институт:", reply_markup=institutes_keyboard())
-
-
-@dp.message(F.text.in_({"🦴 Анатомия", "Анатомия", "/anatom"}))
-async def btn_anatom(message: Message):
     await message.answer(
-        'Анатомия (<a href="https://meduniver.com/Medical/Anatom/">MedUniver</a>). Выберите раздел:',
-        reply_markup=anatomy_sections_kb(),
+        f"🏛 <b>Кафедры РНИМУ</b> ({len(all_kafedry_list())})\nВыберите кафедру:",
+        reply_markup=kafedry_keyboard(0),
+    )
+
+
+@dp.message(F.text.in_({"🦴 Анатомия", "Анатомия", "📚 MedUniver", "MedUniver", "/anatom"}))
+async def btn_anatom(message: Message):
+    n = sum(medu_count_articles(s) for s in (MEDU.get("subjects") or []))
+    await message.answer(
+        f'📚 <b>MedUniver</b> · статей ≈ {n}\nВыберите предмет:',
+        reply_markup=medu_subjects_kb(0),
         disable_web_page_preview=True,
     )
 
@@ -1632,7 +2028,7 @@ async def on_document_audio(message: Message, bot: Bot):
 
 async def do_search(message: Message, query: str):
     kaf = search_units(query, limit=10)
-    anat = search_anatomy(query, limit=12)
+    anat = search_medu(query, limit=12)
     if not kaf and not anat:
         await message.answer(f"По запросу «{html_lib.escape(query)}» ничего не найдено.")
         return
@@ -1649,11 +2045,16 @@ async def do_search(message: Message, query: str):
                 idx = 0
             kb.button(text=f"🏛 {inst['abbr']}: {short[:28]}", callback_data=f"u:{inst['id']}:{idx}")
     if anat:
-        lines.append("\n<b>Анатомия</b>")
-        for sec, idx, a in anat[:10]:
+        lines.append("\n<b>MedUniver</b>")
+        for subj, sec, ss, idx, a in anat[:10]:
             short = a["title"][:37] + "…" if len(a["title"]) > 40 else a["title"]
-            lines.append(f"• {html_lib.escape(short)}")
-            kb.button(text=f"🦴 {short[:32]}", callback_data=f"aa:{sec['id']}:{idx}")
+            lines.append(
+                f"• {html_lib.escape(short)} <i>({html_lib.escape(subj['name'][:20])})</i>"
+            )
+            kb.button(
+                text=f"📚 {short[:32]}",
+                callback_data=f"mu_a:{subj['id']}:{sec['id']}:{ss['id']}:{idx}",
+            )
     kb.adjust(1)
     kb.row(InlineKeyboardButton(text="« Меню", callback_data="menu"))
     await message.answer("\n".join(lines), reply_markup=kb.as_markup(), disable_web_page_preview=True)
